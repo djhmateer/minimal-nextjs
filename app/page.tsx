@@ -17,7 +17,7 @@
 
 // export const dynamic = 'force-dynamic'
 
-export const dynamic = 'force-static'
+// export const dynamic = 'force-static'
 
 const Homepage = () => {
   const currentTime = new Date().toLocaleString();
