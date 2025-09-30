@@ -35,10 +35,10 @@ export default function RootLayout({
               <h1 className="text-xl font-semibold text-gray-900">Minimal Next.js</h1>
               <div className="flex space-x-4">
                 <Link href="/" className="text-gray-600 hover:text-blue-600 transition-colors">
-                  Home
+                  Home (Static)
                 </Link>
                 <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors">
-                  About
+                  About (Dynamic)
                 </Link>
               </div>
             </nav>
