@@ -32,7 +32,9 @@ export default function RootLayout({
         <header className="bg-white shadow-sm border-b">
           <div className="max-w-4xl mx-auto px-4 py-4">
             <nav className="flex items-center space-x-6">
-              <h1 className="text-xl font-semibold text-gray-900">Minimal Next.js</h1>
+              <Link href="/" className="text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors">
+                Minimal Next.js
+              </Link>
               <div className="flex space-x-4">
                 <Link href="/" className="text-gray-600 hover:text-blue-600 transition-colors">
                   Home (Static)
