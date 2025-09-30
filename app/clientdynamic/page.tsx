@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 export const dynamic = 'force-dynamic';
 
-const ClientDynamicPage = async () => {
+const ClientDynamicPage = () => {
     const currentTime = new Date().toLocaleString();
     const [count, setCount] = useState(0);
 
