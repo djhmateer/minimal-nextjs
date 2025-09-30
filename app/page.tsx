@@ -1,7 +1,7 @@
 // app/page.tsx
 // sfc - Stateless Function Component
 
-// notice this isn't async. only use async when need SSR
+// notice this isn't async. only use async when need dynamic SSR
 // this page uses the default of 'auto' which means next.js will decide based on if you use async or not
 // see https://nextjs.org/docs/app/building-your-application/routing#dynamic-segments
 // here we explicitly set it to 'auto' just for demo purposes. normally you'd just leave this out
@@ -11,13 +11,13 @@
 
 // keep as a statically generated page on the server.. not any good for dynamic data
 
-
 // auto seems to for force-dynamic here which I don't know why
+// putting in nothing forces auto, which does the same
 // export const dynamic = 'auto';
+
 // export const dynamic = 'force-dynamic'
 
-// nothing is the same as auto (good!) which should point to force-static.. which it does
-// export const dynamic = 'force-static'
+export const dynamic = 'force-static'
 
 const Homepage = () => {
   const currentTime = new Date().toLocaleString();
