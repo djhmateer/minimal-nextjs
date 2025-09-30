@@ -10,7 +10,7 @@
 
 
 // keep as a statically generated page on the server.. not any good for dynamic data
-// export const dynamic = 'auto';
+export const dynamic = 'auto';
 // export const dynamic = 'force-static'
 
 const Homepage = () => {
