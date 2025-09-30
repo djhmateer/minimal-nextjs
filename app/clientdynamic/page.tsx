@@ -4,7 +4,8 @@ import { useState } from 'react';
 
 export const dynamic = 'force-dynamic';
 
-const ClientDynamicPage = () => {
+const ClientDynamicPage = async () => {
+    const currentTime = new Date().toLocaleString();
     const [count, setCount] = useState(0);
 
     return (
@@ -13,6 +14,7 @@ const ClientDynamicPage = () => {
             <p className="mb-4">When you navigate between routes, Next.js unmounts the current page component, an mounts the new one.  So that is why the state returns to 0 after clicking away.
                 Could use localStorage, or state in the layout component as this stays mounted.</p>
             <div className="mb-4">
+                <p>Server render time: {currentTime}</p>
                 <p className="mb-2">Count: {count}</p>
                 <button
                     onClick={() => setCount(count + 1)}
