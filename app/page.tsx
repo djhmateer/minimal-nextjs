@@ -12,12 +12,9 @@
 // keep as a statically generated page on the server.. not any good for dynamic data
 
 // auto seems to be go for dynamic here
-// it's okay if I leave out
 
 // export const dynamic = 'auto';
-
-// static works too
-export const dynamic = 'force-static'
+// export const dynamic = 'force-static'
 
 const Homepage = () => {
   const currentTime = new Date().toLocaleString();
