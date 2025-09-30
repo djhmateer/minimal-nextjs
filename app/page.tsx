@@ -11,13 +11,12 @@
 
 // keep as a statically generated page on the server.. not any good for dynamic data
 
-// nothing is the same as force-static (good!)
-// force-static is same as above (good!)
 
-// auto seems to be go for dynamic here
+// auto seems to for force-dynamic here which I don't know why
+// export const dynamic = 'auto';
+// export const dynamic = 'force-dynamic'
 
-export const dynamic = 'auto';
-
+// nothing is the same as auto (good!) which should point to force-static.. which it does
 // export const dynamic = 'force-static'
 
 const Homepage = () => {
