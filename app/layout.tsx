@@ -44,12 +44,7 @@ export default function RootLayout({
                 </Link>
 
                 <Link href="/client" className="text-gray-600 hover:text-blue-600 transition-colors">
-                  Client (Auto - Static)
-                </Link>
-
-                
-                <Link href="/clientdynamic" className="text-gray-600 hover:text-blue-600 transition-colors">
-                  Client (Dynamic)
+                  Client (Static)
                 </Link>
 
               </div>

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 const ClientPage = () => {
+     const currentTime = new Date().toLocaleString();
     const [count, setCount] = useState(0);
 
     return (
@@ -11,6 +12,7 @@ const ClientPage = () => {
             <p className="mb-4">When you navigate between routes, Next.js unmounts the current page component, an mounts the new one.  So that is why the state returns to 0 after clicking away.
                 Could use localStorage, or state in the layout component as this stays mounted.</p>
             <div className="mb-4">
+                <p className="mb-2">Server Build time: {currentTime}</p>
                 <p className="mb-2">Count: {count}</p>
                 <button
                     onClick={() => setCount(count + 1)}
