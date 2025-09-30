@@ -26,18 +26,36 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 min-h-screen`}
       >
-        {/* menu here */}
-        <div>
-          <Link href="/">Home</Link> | <Link href="/about">About</Link>
-        </div>
+        {/* Header */}
+        <header className="bg-white shadow-sm border-b">
+          <div className="max-w-4xl mx-auto px-4 py-4">
+            <nav className="flex items-center space-x-6">
+              <h1 className="text-xl font-semibold text-gray-900">Minimal Next.js</h1>
+              <div className="flex space-x-4">
+                <Link href="/" className="text-gray-600 hover:text-blue-600 transition-colors">
+                  Home
+                </Link>
+                <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors">
+                  About
+                </Link>
+              </div>
+            </nav>
+          </div>
+        </header>
 
-        <div>
+        {/* Main Content */}
+        <main className="max-w-4xl mx-auto px-4 py-8">
           {children}
-        </div>
+        </main>
 
-        {/* footer here */}
+        {/* Footer */}
+        <footer className="mt-auto bg-white border-t py-6">
+          <div className="max-w-4xl mx-auto px-4 text-center text-gray-500 text-sm">
+            Built with Next.js and TailwindCSS
+          </div>
+        </footer>
       </body>
     </html>
   );

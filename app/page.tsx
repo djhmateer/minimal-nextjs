@@ -4,7 +4,12 @@
 const Homepage = () => {
   const currentTime = new Date().toLocaleString();
 
-  return <>Homepage - Minimal-nextjs - build time is (ie this page is statically generated on the server - Server Side Generated) {currentTime} </>;
+  return (
+  <div className="p-4">
+    <h1 className="text-2xl mb-4">Home</h1>
+    <p>build time is (ie this page is statically generated on the server - Server Side Generated) {currentTime}</p>
+  </div>
+);
 };
 
 export default Homepage;
