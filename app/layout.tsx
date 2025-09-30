@@ -47,6 +47,11 @@ export default function RootLayout({
                   Client (Auto - Static)
                 </Link>
 
+                
+                <Link href="/clientdynamic" className="text-gray-600 hover:text-blue-600 transition-colors">
+                  Client (Dynamic)
+                </Link>
+
               </div>
             </nav>
           </div>
