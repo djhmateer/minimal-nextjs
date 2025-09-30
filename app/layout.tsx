@@ -40,8 +40,8 @@ export default function RootLayout({
                 <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors">
                   About (Dynamic)
                 </Link>
-                
-<Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors">
+
+                <Link href="/client" className="text-gray-600 hover:text-blue-600 transition-colors">
                   Client (Auto - Static)
                 </Link>
 
