@@ -18,5 +18,5 @@ export function middleware(request) {
 //   - (?!_next/static|_next/image|favicon.ico) - Negative lookahead: Don't match these patterns
 //   - .* - Match everything else
 export const config = {
-  matcher: '/((?!_next/static|_next/image|favicon.ico).*)',
+  matcher: '/((?!_next/static|_next/image|favicon.ico|.*\\.svg).*)',
 }
