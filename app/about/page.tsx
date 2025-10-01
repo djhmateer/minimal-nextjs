@@ -7,7 +7,7 @@
 // this is just for demo purposes. normally you'd only use dynamic when you need to
 export const dynamic = 'force-dynamic';
 
-const AboutPage = async () => {
+const About = async () => {
   const currentTime = new Date().toLocaleString();
   return (
     <div className="p-4">
@@ -18,4 +18,4 @@ const AboutPage = async () => {
   );
 };
 
-export default AboutPage;
+export default About;

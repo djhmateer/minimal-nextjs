@@ -19,7 +19,7 @@
 // putting in nothing forces auto, which is static, which is what we want
 export const dynamic = 'force-static'
 
-const Homepage = () => {
+const Home = () => {
   const currentTime = new Date().toLocaleString();
 
   return (
@@ -30,4 +30,4 @@ const Homepage = () => {
   );
 };
 
-export default Homepage;
+export default Home;
