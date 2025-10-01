@@ -37,17 +37,17 @@ export default function RootLayout({
               </Link>
               <div className="flex space-x-4">
                 <Link href="/" className="text-gray-600 hover:text-blue-600 transition-colors">
-                  Home (Static SSR)
+                  Home Server Component (Static SSG)
                 </Link>
                 <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors">
-                  About (Dynamic SSG)
+                  About Server Component (Dynamic SSR)
                 </Link>
 
                 <Link href="/client" className="text-gray-600 hover:text-blue-600 transition-colors">
-                  Client (Static SSG)
+                  Client Component (Static SSG)
                 </Link>
                  <Link href="/posts" className="text-gray-600 hover:text-blue-600 transition-colors">
-                  Posts (SSR)
+                  Posts Server Component (Dynamic SSR)
                 </Link>
 
               </div>
