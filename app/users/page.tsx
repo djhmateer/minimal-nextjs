@@ -2,7 +2,7 @@
 
 // import next from "next";
 
-// lets see if it gets dynamic by default - it didn't
+// lets see if it gets dynamic by default - it didn't unless I forced a revalidate on fetch
 export const dynamic = 'force-dynamic';
 
 interface User {
