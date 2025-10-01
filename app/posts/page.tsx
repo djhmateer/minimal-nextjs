@@ -15,7 +15,7 @@ const Post = async () => {
     // get some data https://jsonplaceholder.typicode.com/posts
     const response = await fetch('https://jsonplaceholder.typicode.com/posts');
     const posts: Post[] = await response.json();
-    console.log('Posts fetched:', posts);
+    console.log('Posts fetched:', posts.length);
 
     return (
         <div className="p-4">
