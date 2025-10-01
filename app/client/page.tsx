@@ -20,7 +20,7 @@ const Client = () => {
                 >
                     Click me!
                 </button>
-                <p className="mb-2">Console.log prod?</p>
+                <p className="mb-2">Console.log prod does show in the browser window which makes sense as running on the client</p>
             </div>
         </div>
     );
