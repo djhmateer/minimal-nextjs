@@ -51,6 +51,7 @@ export default function RootLayout({
                 </Link>
                 <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>Contact Component inside Dynamic Server Component</Link>
                 <Link href="/users" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>Users</Link>
+                <Link href="/foo" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>Custom 404</Link>
 
               </div>
             </nav>

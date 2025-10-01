@@ -1,5 +1,7 @@
 // app/users/page.tsx
 
+import { notFound } from "next/navigation";
+
 export const dynamic = 'force-dynamic';
 
 interface User {
@@ -26,12 +28,23 @@ interface User {
     };
 }
 
+async function fetchUser(userId: string): Promise<User> {
+    const res = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
+    // api returns 404 for non-existent users
+    if (res.status === 404) {
+        notFound();
+    }
+    if (!res.ok) {
+        throw new Error(`Failed to fetch user: ${res.status} ${res.statusText}`);
+    }
+    return await res.json();
+}
+
 export default async function UserPage({ params }: { params: Promise<{ userId: string }> }) {
     const { userId } = await params;
     console.log('UserPage', userId);
 
-    const res = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
-    const user: User = await res.json();
+    const user = await fetchUser(userId);
 
     return (
         <div className="p-4">
