@@ -32,25 +32,25 @@ export default function RootLayout({
         <header className="bg-white shadow-sm border-b">
           <div className="max-w-4xl mx-auto px-4 py-4">
             <nav className="flex items-center space-x-6">
-              <Link href="/" className="text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors">
+              <Link href="/" className="text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors" prefetch={false}>
                 Minimal Next.js
               </Link>
               <div className="flex space-x-4">
-                <Link href="/" className="text-gray-600 hover:text-blue-600 transition-colors">
+                <Link href="/" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>
                   Home Server Component (Static SSG)
                 </Link>
-                <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors">
+                <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>
                   About Server Component (Dynamic SSR)
                 </Link>
 
-                <Link href="/client" className="text-gray-600 hover:text-blue-600 transition-colors">
+                <Link href="/client" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>
                   Client Component (Static SSG)
                 </Link>
-                <Link href="/posts" className="text-gray-600 hover:text-blue-600 transition-colors">
+                <Link href="/posts" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>
                   Posts Server Component (Dynamic SSR)
                 </Link>
-                <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors">Contact Component inside Dynamic Server Component</Link>
-                <Link href="/users" className="text-gray-600 hover:text-blue-600 transition-colors">Users</Link>
+                <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>Contact Component inside Dynamic Server Component</Link>
+                <Link href="/users" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>Users</Link>
 
               </div>
             </nav>
