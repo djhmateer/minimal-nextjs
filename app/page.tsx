@@ -27,7 +27,7 @@ const Home = () => {
     <div className="p-4">
       <h1 className="text-2xl mb-4">Home</h1>
       <p>Next.js default of statically generated on the server - Server Side Generated. Build time: {currentTime}</p>
-      <p>There is a console.log("Home Page") which is not shown on prod (but is on dev as a server output and browser console)</p>
+      <p>There is a console.log(&quot;Home Page&quot;) which is not shown on prod (but is on dev as a server output and browser console)</p>
     </div>
   );
 };
