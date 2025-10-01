@@ -46,7 +46,7 @@ export default function RootLayout({
                 <Link href="/client" className="text-gray-600 hover:text-blue-600 transition-colors">
                   Client Component (Static SSG)
                 </Link>
-                 <Link href="/posts" className="text-gray-600 hover:text-blue-600 transition-colors">
+                 <Link href="/posts" prefetch={false} className="text-gray-600 hover:text-blue-600 transition-colors">
                   Posts Server Component (Dynamic SSR)
                 </Link>
 
