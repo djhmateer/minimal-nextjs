@@ -3,7 +3,7 @@
 import next from "next";
 
 // lets see if it gets dynamic by default - it didn't
-// export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';
 
 interface User {
     id: number;
@@ -18,7 +18,10 @@ interface User {
 export default async function Users() {
     console.log('Users page');
     const startTime = Date.now();
-    const res = await fetch('https://jsonplaceholder.typicode.com/users', { next: { revalidate: 0 } });
+
+    // const res = await fetch('https://jsonplaceholder.typicode.com/users', { next: { revalidate: 0 } });
+    const res = await fetch('https://jsonplaceholder.typicode.com/users');
+
     const users: User[] = await res.json();
     const endTime = Date.now();
     const duration = endTime - startTime;
