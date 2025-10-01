@@ -1,6 +1,8 @@
 // app/users/page.tsx
 
-// lets see if it gets dynamic.. it should
+import next from "next";
+
+// lets see if it gets dynamic by default - it didn't
 // export const dynamic = 'force-dynamic';
 
 interface User {
@@ -15,7 +17,8 @@ interface User {
 // lets prefer this to arrow functions as more explicit and consistent with docs
 export default async function Users() {
     console.log('Users page');
-    const res = await fetch('https://jsonplaceholder.typicode.com/users');
+    // const res = await fetch('https://jsonplaceholder.typicode.com/users');
+    const res = await fetch('https://jsonplaceholder.typicode.com/users', { next: { revalidate: 0 } });
     const users: User[] = await res.json();
     console.log('Users fetched:', users.length);
 
