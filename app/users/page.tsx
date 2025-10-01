@@ -26,6 +26,7 @@ export default async function Users() {
     const endTime = Date.now();
     const duration = endTime - startTime;
     console.log(`Users fetched: ${users.length} in ${duration}ms`);
+    console.log('Users fetched:', users.length);
 
     return (
         <div className="p-4">
