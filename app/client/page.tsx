@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-const Client = () => {
+export default function Client() {
     console.log('Client page');
     const currentTime = new Date().toLocaleString();
     const [count, setCount] = useState(0);
@@ -24,6 +24,4 @@ const Client = () => {
             </div>
         </div>
     );
-};
-
-export default Client;
+}

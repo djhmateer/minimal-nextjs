@@ -19,7 +19,7 @@
 // putting in nothing forces auto, which is static, which is what we want
 export const dynamic = 'force-static'
 
-const Home = () => {
+export default function Home() {
   const currentTime = new Date().toLocaleString();
   console.log('Home page');
 
@@ -30,6 +30,4 @@ const Home = () => {
       <p>There is a console.log(&quot;Home Page&quot;) which is only shown at build time. not shown on live prod (but is on dev as a server output as dev is built each time and browser console). Makes sense as a static</p>
     </div>
   );
-};
-
-export default Home;
+}

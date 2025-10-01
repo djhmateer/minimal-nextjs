@@ -11,7 +11,7 @@ interface Post {
     body: string;
 }
 
-const Contact = async () => {
+export default async function Contact() {
     console.log('Contact page');
     // const currentTime = new Date().toLocaleString();
     // get some data https://jsonplaceholder.typicode.com/posts
@@ -36,6 +36,4 @@ const Contact = async () => {
             </div>
         </div>
     );
-};
-
-export default Contact;
+}

@@ -9,7 +9,7 @@ interface Post {
     body: string;
 }
 
-const Post = async () => {
+export default async function Posts() {
     console.log('Posts page');
     // const currentTime = new Date().toLocaleString();
     // get some data https://jsonplaceholder.typicode.com/posts
@@ -35,6 +35,4 @@ const Post = async () => {
             </div>
         </div>
     );
-};
-
-export default Post;
+}

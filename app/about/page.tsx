@@ -7,7 +7,7 @@
 // this is just for demo purposes. normally you'd only use dynamic when you need to
 export const dynamic = 'force-dynamic';
 
-const About = async () => {
+export default async function About() {
   console.log('About page');
   const currentTime = new Date().toLocaleString();
   return (
@@ -18,6 +18,4 @@ const About = async () => {
       <p>Console.Log works on prod in server output - good.</p>
     </div>
   );
-};
-
-export default About;
+}
