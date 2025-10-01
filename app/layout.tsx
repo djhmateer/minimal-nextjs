@@ -49,9 +49,8 @@ export default function RootLayout({
                 <Link href="/posts" className="text-gray-600 hover:text-blue-600 transition-colors">
                   Posts Server Component (Dynamic SSR)
                 </Link>
-                <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors">
-                  Client Component inside Dynamic Server Component
-                </Link>
+                <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors">Client Component inside Dynamic Server Component</Link>
+                <Link href="/users" className="text-gray-600 hover:text-blue-600 transition-colors">Users</Link>
 
               </div>
             </nav>
