@@ -15,9 +15,12 @@ export default async function Contact() {
     console.log('Contact page');
     // const currentTime = new Date().toLocaleString();
     // get some data https://jsonplaceholder.typicode.com/posts
+    const startTime = Date.now();
     const response = await fetch('https://jsonplaceholder.typicode.com/posts');
     const posts: Post[] = await response.json();
-    console.log('Contact Posts fetched:', posts.length);
+    const endTime = Date.now();
+    const duration = endTime - startTime;
+    console.log(`Contact Posts fetched: ${posts.length} in ${duration}ms`);
 
     return (
         <div className="p-4">
