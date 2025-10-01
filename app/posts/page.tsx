@@ -21,7 +21,7 @@ const Post = async () => {
         <div className="p-4">
             <h1 className="text-2xl mb-4">Posts</h1>
             <p className="mb-4">console.log of the fetched posts from https://jsonplaceholder.typicode.com/posts is shown in server output</p>
-            <p className="mb-4">Each page is SSR'd so a new request, and a new call to get data</p>
+            <p className="mb-4">Each page is SSRd so a new request, and a new call to get data</p>
 
             <div className="space-y-4">
                 {posts.slice(0, 3).map((post) => (
