@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 const Client = () => {
+    console.log('Client page');
     const currentTime = new Date().toLocaleString();
     const [count, setCount] = useState(0);
 

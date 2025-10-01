@@ -8,6 +8,7 @@
 export const dynamic = 'force-dynamic';
 
 const About = async () => {
+  console.log('About page');
   const currentTime = new Date().toLocaleString();
   return (
     <div className="p-4">

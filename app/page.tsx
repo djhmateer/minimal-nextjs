@@ -21,6 +21,7 @@ export const dynamic = 'force-static'
 
 const Home = () => {
   const currentTime = new Date().toLocaleString();
+  console.log('Home page');
 
   return (
     <div className="p-4">
