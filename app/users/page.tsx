@@ -26,7 +26,6 @@ export default async function Users() {
     const endTime = Date.now();
     const duration = endTime - startTime;
     console.log(`Users fetched: ${users.length} in ${duration}ms`);
-    console.log('Users fetched:', users.length);
 
     return (
         <div className="p-4">
@@ -36,7 +35,7 @@ export default async function Users() {
                 {users.map((user) => (
                     <div key={user.id} className="bg-white border border-gray-200 rounded p-4 shadow-sm">
                         <h2 className="text-lg font-semibold text-gray-900 mb-2">
-                            {user.name} (@{user.username})
+                            {user.id}. {user.name} (@{user.username})
                         </h2>
                         <div className="text-gray-600 space-y-1">
                             <p>Email: {user.email}</p>
