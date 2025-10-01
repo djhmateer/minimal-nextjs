@@ -13,6 +13,7 @@ const Post = async () => {
     return (
         <div className="p-4">
             <h1 className="text-2xl mb-4">Post</h1>
+            <p>console.log of the fetched posts from https://jsonplaceholder.typicode.com/posts  is show in server output</p>
         </div>
     );
 };
