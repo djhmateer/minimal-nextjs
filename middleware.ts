@@ -5,11 +5,8 @@ export function middleware(request: NextRequest) {
   const start = Date.now()
 
   const response = NextResponse.next()
-  const duration = Date.now() - start
 
-  console.log(`${new Date().toISOString()} - ${request.method} ${request.nextUrl.pathname} - ${duration}ms`)
-
-  response.headers.set('x-response-time', `${duration}ms`)
+  console.log(`${new Date().toISOString()} - ${request.method} ${request.nextUrl.pathname}`)
 
   return response
 }
