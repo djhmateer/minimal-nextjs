@@ -20,6 +20,7 @@ const Client = () => {
                 >
                     Click me!
                 </button>
+                <p className="mb-2">Console.log prod?</p>
             </div>
         </div>
     );

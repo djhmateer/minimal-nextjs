@@ -26,7 +26,8 @@ const Home = () => {
   return (
     <div className="p-4">
       <h1 className="text-2xl mb-4">Home</h1>
-      <p>this data is the next.js default of statically generated on the server - Server Side Generated. Build time: {currentTime}</p>
+      <p>Next.js default of statically generated on the server - Server Side Generated. Build time: {currentTime}</p>
+      <p>There is a console.log("Home Page") which is not shown on prod (but is on dev as a server output and browser console)</p>
     </div>
   );
 };
