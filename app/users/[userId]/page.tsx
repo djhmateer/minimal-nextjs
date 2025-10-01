@@ -5,14 +5,14 @@
 // lets see if it gets dynamic by default - it didn't
 export const dynamic = 'force-dynamic';
 
-interface User {
-    id: number;
-    name: string;
-    email: string;
-    username: string;
-    phone: string;
-    website: string;
-}
+// interface User {
+//     id: number;
+//     name: string;
+//     email: string;
+//     username: string;
+//     phone: string;
+//     website: string;
+// }
 
 // lets prefer this to arrow functions as more explicit and consistent with docs
 // in the props we can destructure the params
