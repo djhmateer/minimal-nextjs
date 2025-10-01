@@ -46,6 +46,9 @@ export default function RootLayout({
                 <Link href="/client" className="text-gray-600 hover:text-blue-600 transition-colors">
                   Client (Static SSG)
                 </Link>
+                 <Link href="/client" className="text-gray-600 hover:text-blue-600 transition-colors">
+                  Post (SSR)
+                </Link>
 
               </div>
             </nav>
