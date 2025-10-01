@@ -1,6 +1,6 @@
 // app/users/page.tsx
 
-import next from "next";
+// import next from "next";
 
 // lets see if it gets dynamic by default - it didn't
 export const dynamic = 'force-dynamic';
