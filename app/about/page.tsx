@@ -9,6 +9,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function About() {
   console.log('About page');
+  await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate slow loading
   const currentTime = new Date().toLocaleString();
   return (
     <div className="p-4">
