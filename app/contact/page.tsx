@@ -2,12 +2,12 @@
 
 export const dynamic = 'force-dynamic';
 
-interface Post {
-    id: number;
-    userId: number;
-    title: string;
-    body: string;
-}
+// interface Post {
+//     id: number;
+//     userId: number;
+//     title: string;
+//     body: string;
+// }
 
 const Contact = async () => {
     console.log('Contact page');
@@ -15,7 +15,7 @@ const Contact = async () => {
     // get some data https://jsonplaceholder.typicode.com/posts
     const response = await fetch('https://jsonplaceholder.typicode.com/posts');
     const posts: Post[] = await response.json();
-    console.log('Posts fetched:', posts.length);
+    console.log('Contact Posts fetched:', posts.length);
 
     return (
         <div className="p-4">
