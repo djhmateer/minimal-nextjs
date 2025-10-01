@@ -17,6 +17,7 @@ export default async function Users() {
     console.log('Users page');
     const res = await fetch('https://jsonplaceholder.typicode.com/users');
     const users: User[] = await res.json();
+    console.log('Users fetched:', users.length);
 
     return (
         <div className="p-4">
