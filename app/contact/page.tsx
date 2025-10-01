@@ -1,13 +1,15 @@
 // app/posts/page.tsx
 
+import ButtonComponent from "./button";
+
 export const dynamic = 'force-dynamic';
 
-// interface Post {
-//     id: number;
-//     userId: number;
-//     title: string;
-//     body: string;
-// }
+interface Post {
+    id: number;
+    userId: number;
+    title: string;
+    body: string;
+}
 
 const Contact = async () => {
     console.log('Contact page');
@@ -20,6 +22,7 @@ const Contact = async () => {
     return (
         <div className="p-4">
             <h1 className="text-2xl mb-4">Contact</h1>
+            <div><ButtonComponent /></div>
 
             <div className="space-y-4">
                 {posts.slice(0, 2).map((post) => (
