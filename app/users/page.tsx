@@ -17,10 +17,12 @@ interface User {
 // lets prefer this to arrow functions as more explicit and consistent with docs
 export default async function Users() {
     console.log('Users page');
-    // const res = await fetch('https://jsonplaceholder.typicode.com/users');
+    const startTime = Date.now();
     const res = await fetch('https://jsonplaceholder.typicode.com/users', { next: { revalidate: 0 } });
     const users: User[] = await res.json();
-    console.log('Users fetched:', users.length);
+    const endTime = Date.now();
+    const duration = endTime - startTime;
+    console.log(`Users fetched: ${users.length} in ${duration}ms`);
 
     return (
         <div className="p-4">
