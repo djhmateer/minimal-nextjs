@@ -12,7 +12,8 @@ const AboutPage = async () => {
   return (
     <div className="p-4">
       <h1 className="text-2xl mb-4">About</h1>
-      <p>build time is (ie page data is Server Side Rendered on each request {currentTime}</p>
+      <p>Html is Server Side Rendered on each request {currentTime}</p>
+      <p>Html is generated on the server and sent to the client as a fetch request (no full page reload)</p>
     </div>
   );
 };
