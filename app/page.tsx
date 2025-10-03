@@ -1,4 +1,5 @@
 // app/page.tsx
+// import React from 'react';
 // sfc - Stateless Function Component
 
 // notice this isn't async. only use async when need dynamic SSR
