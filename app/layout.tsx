@@ -84,7 +84,7 @@ export default function RootLayout({
             <div>Built with Next.js and TailwindCSS</div>
             {gitInfo && (
               <div className="mt-2 text-xs">
-                Commit: <span className="font-mono">{gitInfo.shortHash}</span> • {new Date(gitInfo.timestamp).toLocaleString()}
+                Commit: <span className="font-mono">{gitInfo.shortHash}</span> | {new Date(gitInfo.timestamp).toLocaleString()} | Message: {gitInfo.message}
               </div>
             )}
           </div>
