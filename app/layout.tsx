@@ -58,8 +58,8 @@ export default function RootLayout({
                 <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 and 3. Contact Component inside Dynamic Server Component</Link>
                 <Link href="/users" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>3.Users</Link>
                 <Link href="/dbtest" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>3.Dbtest</Link>
-                <Link href="/foo" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>404</Link>
-                <Link href="/shadcn" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>1.shadcn</Link>
+                {/* <Link href="/foo" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>404</Link> */}
+                <Link href="/shadcn" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>3.shadcn</Link>
               </div>
             </nav>
           </div>
