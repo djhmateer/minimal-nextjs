@@ -25,7 +25,7 @@ function getGitInfo() {
     const gitInfoPath = join(process.cwd(), 'git-info.json');
     const gitInfo = JSON.parse(readFileSync(gitInfoPath, 'utf8'));
     return gitInfo;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -35,6 +35,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // an any type because the structure of git-info.json can vary
   const gitInfo = getGitInfo();
 
   return (
@@ -82,9 +83,13 @@ export default function RootLayout({
         <footer className="mt-auto bg-white border-t py-6">
           <div className="max-w-4xl mx-auto px-4 text-center text-gray-500 text-sm">
             <div>Built with Next.js and TailwindCSS</div>
-            {gitInfo && (
+            {gitInfo ? (
               <div className="mt-2 text-xs">
                 {new Date(gitInfo.timestamp).toLocaleString()} | {gitInfo.message}
+              </div>
+            ) : (
+              <div className="mt-2 text-xs text-gray-400">
+                no git-info.json file found - normal mode for dev
               </div>
             )}
           </div>
