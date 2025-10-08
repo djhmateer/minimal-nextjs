@@ -2,9 +2,29 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Technology Stack & Architecture Decisions
+
+### Core Technologies
+
+- **Next.js 15.5.4 (App Router)** - Server-first React framework with file-based routing, Server Components, streaming, and built-in optimizations
+- **React 19.2.0** - Latest React with improved Server Components, async/await in components, and better hydration
+- **TypeScript 5.9.3** - Strict type checking for better DX and fewer runtime errors
+- **Turbopack** - Rust-based bundler (Webpack successor) for 10x faster dev/build performance
+- **TailwindCSS 4.1.14** - Utility-first CSS with v4's new `@theme` directive, better performance, and native CSS layers
+- **PostgreSQL + pg 8.16.3** - Relational database with node-postgres driver for production-ready data persistence
+- **pnpm** - Fast, efficient package manager with content-addressable storage
+
+### Why These Choices?
+
+1. **App Router over Pages Router** - Better performance, native streaming, Server Components by default, no client-side JS for static content
+2. **Turbopack over Webpack** - Incremental builds, better caching, faster cold starts (Webpack is slow for large projects)
+3. **TailwindCSS 4.x** - Removed JIT engine overhead, better performance, smaller CSS output
+4. **PostgreSQL** - ACID compliance, mature ecosystem, excellent for learning SQL and relational data modeling
+5. **pnpm** - Saves disk space (shared dependencies), faster than npm/yarn, prevents phantom dependencies with strict node_modules
+
 ## Project Overview
 
-This is a minimal Next.js 15.5.4 project demonstrating App Router patterns with TypeScript, React 19, and TailwindCSS 4. The project serves as a learning playground for exploring different rendering strategies (SSG, SSR, Client Components), loading states, dynamic routing, and data fetching patterns.
+This is a minimal Next.js 15.5.4 project demonstrating App Router patterns with TypeScript, React 19, and TailwindCSS 4. The project serves as a learning playground for exploring different rendering strategies (SSG, SSR, Client Components), loading states, dynamic routing, data fetching patterns, and PostgreSQL database integration.
 
 ## Essential Commands
 
@@ -71,6 +91,14 @@ All routes demonstrate different rendering strategies:
   - Uses `notFound()` for 404 handling when user doesn't exist
   - Demonstrates dynamic route parameters with async/await params
 
+- **`/dbtest`** - `app/dbtest/page.tsx`
+  - PostgreSQL connection test route with SSR (`force-dynamic`)
+  - Connects to local PostgreSQL database (`minimal_nextjs`)
+  - Lists all tables in the database
+  - Queries and displays users from `users` table
+  - Demonstrates error handling for database operations
+  - Uses `pg` Pool for connection management
+
 #### Special Files
 
 - **`app/layout.tsx`** - Root layout
@@ -106,10 +134,11 @@ All routes demonstrate different rendering strategies:
 ### Configuration Files
 
 - **`package.json`**
-  - Next.js 15.5.4, React 19.1.1
+  - Next.js 15.5.4, React 19.2.0
   - Turbopack enabled for dev and build
-  - TailwindCSS 4.1.13 with PostCSS integration
+  - TailwindCSS 4.1.14 with PostCSS integration
   - TypeScript 5.9.3 with strict mode
+  - PostgreSQL driver: pg 8.16.3 and @types/pg 8.15.5
 
 - **`next.config.ts`**
   - Minimal configuration (default Next.js config)
@@ -127,11 +156,26 @@ All routes demonstrate different rendering strategies:
   - Flat config format (modern ESLint)
   - Next.js core-web-vitals and TypeScript presets
   - FlatCompat for compatibility
+  - **Note**: Planned migration to Biome for faster linting
 
 - **`middleware.ts`**
   - Request logging middleware
   - Uses matcher to exclude static assets
   - Logs timestamp, method, and pathname
+
+### Database Architecture
+
+- **PostgreSQL Connection** - `app/dbtest/page.tsx`
+  - Uses `pg.Pool` for connection pooling
+  - Connection config:
+    - User: `bob`
+    - Password: `password`
+    - Host: `localhost`
+    - Database: `minimal_nextjs`
+    - Port: `5432`
+  - Queries system catalog (`pg_catalog.pg_tables`) to list tables
+  - Demonstrates basic CRUD with `SELECT * FROM users`
+  - Proper error handling and connection cleanup with `pool.end()`
 
 ## Key Patterns & Learnings
 
@@ -149,7 +193,7 @@ The project demonstrates all three rendering modes:
    - Use `export const dynamic = 'force-dynamic'`
    - Page rendered on each request
    - Best for dynamic content or personalized data
-   - Examples: `/about`, `/posts`, `/users`, `/contact`
+   - Examples: `/about`, `/posts`, `/users`, `/contact`, `/dbtest`
 
 3. **Client-Side Rendering (CSR)**
    - Use `'use client'` directive
@@ -178,10 +222,17 @@ The project demonstrates all three rendering modes:
 
 ### Data Fetching
 
+#### External APIs
 - Fetch directly in async Server Components
 - JSONPlaceholder API used for demo data
 - No explicit caching configuration (relies on Next.js defaults)
 - `force-dynamic` ensures fresh data on each request
+
+#### Database Queries
+- Use `pg.Pool` for PostgreSQL connections in Server Components
+- Always clean up with `pool.end()` in finally block
+- Error handling with try/catch
+- Console.log queries for debugging (visible in server logs)
 
 ### Navigation
 
@@ -199,6 +250,41 @@ The project demonstrates all three rendering modes:
 - **No Delays**: Artificial delays (2s setTimeout) were used for testing but removed
 - **Custom 404**: `app/not-found.tsx` handles invalid routes
 
+## Database Setup
+
+### PostgreSQL Configuration
+
+The project connects to a local PostgreSQL database:
+- **Database Name**: `minimal_nextjs`
+- **User**: `bob`
+- **Password**: `password`
+- **Host**: `localhost`
+- **Port**: `5432`
+
+### Required Schema
+
+```sql
+CREATE DATABASE minimal_nextjs;
+
+\c minimal_nextjs
+
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL
+);
+
+INSERT INTO users (name) VALUES ('Alice'), ('Bob'), ('Charlie');
+```
+
+### Database Route: `/dbtest`
+
+The `/dbtest` route demonstrates:
+1. PostgreSQL connection with `pg.Pool`
+2. Listing all tables using `pg_catalog.pg_tables`
+3. Querying users table with `SELECT * FROM users`
+4. Error handling and connection cleanup
+5. Displaying results in React components
+
 ## Experimentation History
 
 Based on git commits, this project has been used to explore:
@@ -210,9 +296,35 @@ Based on git commits, this project has been used to explore:
 - Console.log behavior across SSG, SSR, and CSR
 - Dynamic route parameters and 404 handling
 - Mixing Server and Client Components
+- PostgreSQL integration with Server Components
+
+## Next Steps & Future Enhancements
+
+### Planned Additions
+
+1. **UI Component Library**
+   - Integrate [shadcn/ui](https://ui.shadcn.com/) for accessible, customizable components
+   - Explore [TweakCN](https://tweakcn.com/) for component variations and advanced theming
+   - Benefits: Radix UI primitives, full TypeScript support, copy-paste components
+
+2. **Authentication System**
+   - Implement [Better Auth](https://www.better-auth.com/) for type-safe authentication
+   - Features: Social login, session management, middleware protection
+   - Will integrate with existing PostgreSQL database
+
+3. **Tooling Migration**
+   - Replace ESLint with [Biome](https://biomejs.dev/)
+   - Benefits: 100x faster linting, built-in formatter, single tool for linting + formatting
+   - Biome supports Next.js, TypeScript, React out of the box
 
 ## References
 
 - [Next.js Dynamic Routes](https://nextjs.org/docs/app/building-your-application/routing#dynamic-segments)
 - [Route Segment Config](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamic)
 - [JSONPlaceholder API](https://jsonplaceholder.typicode.com/)
+- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
+- [node-postgres (pg) Documentation](https://node-postgres.com/)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [TweakCN](https://tweakcn.com/)
+- [Better Auth](https://www.better-auth.com/)
+- [Biome](https://biomejs.dev/)
