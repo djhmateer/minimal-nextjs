@@ -65,7 +65,7 @@ export default function ShadcnbPage() {
         <CardHeader>
           <CardTitle>Contact Us</CardTitle>
           <CardDescription>
-            Send us a message and we'll get back to you as soon as possible.
+            Send us a message and we&apos;ll get back to you as soon as possible.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -105,7 +105,7 @@ export default function ShadcnbPage() {
                     <FormLabel>Message</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Tell us what's on your mind..."
+                        placeholder="Tell us what&apos;s on your mind..."
                         className="resize-none"
                         rows={5}
                         {...field}
