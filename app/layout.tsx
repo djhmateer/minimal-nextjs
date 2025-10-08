@@ -4,6 +4,7 @@ import "./globals.css";
 import Link from "next/link";
 import { readFileSync } from "fs";
 import { join } from "path";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,6 +44,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 min-h-screen`}
       >
+        <Toaster />
         {/* Header */}
         <header className="bg-white shadow-sm border-b">
           <div className="max-w-4xl mx-auto px-4 py-4">
@@ -60,7 +62,7 @@ export default function RootLayout({
                 <Link href="/dbtest" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>3.Dbtest</Link>
                 {/* <Link href="/foo" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>404</Link> */}
                 <Link href="/shadcn" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>3.shadcn</Link>
-                <Link href="/shadcn" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>shadcnb</Link>
+                <Link href="/shadcnb" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>shadcnb</Link>
               </div>
             </nav>
           </div>
