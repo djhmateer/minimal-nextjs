@@ -4,6 +4,7 @@
 import { Button } from "@/components/ui/button"
 
 export default function Home() {
+  console.log('shadcn page')
   return (
     <div>
       <Button>Click me</Button>
