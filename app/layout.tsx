@@ -80,11 +80,18 @@ export default function RootLayout({
 
         {/* Footer */}
         <footer className="mt-auto bg-white border-t py-6">
-          <div className="max-w-4xl mx-auto px-4 text-center text-gray-500 text-sm">
-            <div>Built with Next.js and TailwindCSS</div>
+          <div className="max-w-4xl mx-auto px-4 text-center">
+            <div className="text-gray-500 text-sm">Built with Next.js and TailwindCSS</div>
             {gitInfo && (
-              <div className="mt-2 text-xs">
-                Commit: <span className="font-mono">{gitInfo.shortHash}</span> | {new Date(gitInfo.timestamp).toLocaleString()} | Message: {gitInfo.message}
+              <div className="mt-3 flex items-center justify-center gap-3 text-xs text-gray-400">
+                <span className="flex items-center gap-1">
+                  <span className="font-semibold text-gray-500">Commit:</span>
+                  <code className="px-1.5 py-0.5 bg-gray-100 rounded font-mono text-gray-700">{gitInfo.shortHash}</code>
+                </span>
+                <span className="text-gray-300">•</span>
+                <span className="text-gray-500">{new Date(gitInfo.timestamp).toLocaleString()}</span>
+                <span className="text-gray-300">•</span>
+                <span className="text-gray-500 italic max-w-md truncate">{gitInfo.message}</span>
               </div>
             )}
           </div>
