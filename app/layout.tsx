@@ -51,25 +51,15 @@ export default function RootLayout({
                 Minimal Next.js
               </Link>
               <div className="flex space-x-4">
-                <Link href="/" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>
-                  Home Server Component (Static SSG)
-                </Link>
-                <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>
-                  About Server Component (Dynamic SSR)
-                </Link>
-
-                <Link href="/client" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>
-                  Client Component (Static SSG)
-                </Link>
-                <Link href="/posts" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>
-                  Posts Server Component (Dynamic SSR)
-                </Link>
-                <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>Contact Component inside Dynamic Server Component</Link>
-                <Link href="/users" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>Users</Link>
-                <Link href="/dbtest" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>Dbtest</Link>
+                <Link href="/" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>1.Home Server Component (Static SSG) </Link>
+                <Link href="/client" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2. Client Component (Static SSG) </Link>
+                <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>3. About Server Component (Dynamic SSR) </Link>
+                <Link href="/posts" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>3. Posts Server Component (Dynamic SSR) </Link>
+                <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 and 3. Contact Component inside Dynamic Server Component</Link>
+                <Link href="/users" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>3.Users</Link>
+                <Link href="/dbtest" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>3.Dbtest</Link>
                 <Link href="/foo" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>404</Link>
-                <Link href="/shadcn" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>shadcn</Link>
-
+                <Link href="/shadcn" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>1.shadcn</Link>
               </div>
             </nav>
           </div>

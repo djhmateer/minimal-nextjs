@@ -33,9 +33,9 @@ export default function Home() {
       <div className="mt-6 border-l-4 border-gray-300 pl-4">
         <p className="font-semibold mb-3">Rendering Strategies</p>
         <ul className="space-y-2 text-sm">
-          <li>Static Site Generatation SSG (this page). No `export const dynamic = &apos;force-dynamic&apos;`. console.log will show only in initial build output. It is just a html page. no custom js to run on client.</li>
-          <li>SSG with `&apos;use client&apos;` - have access to the browser. Classic React style. console.log to client. </li>
-          <li>Server Side Render SSR with `export const dynamic = &apos;force-dynamic&apos;` - renders on server each time. console.log to server.</li>
+          <li>1.Static Site Generatation SSG (this page). No `export const dynamic = &apos;force-dynamic&apos;`. console.log will show only in initial build output. It is just a html page. no custom js to run on client.</li>
+          <li>2.SSG with `&apos;use client&apos;` - have access to the browser. Classic React style. console.log to client. </li>
+          <li>3.Server Side Render SSR with `export const dynamic = &apos;force-dynamic&apos;` - renders on server each time. console.log to server.</li>
         </ul>
       </div>
     </div>
