@@ -3,7 +3,10 @@
 echo "Step 1: Pulling latest changes..."
 git pull
 
-echo "Step 2: Generating git commit info..."
+echo "Step 2: Installing dependencies..."
+pnpm install --frozen-lockfile
+
+echo "Step 3: Generating git commit info..."
 git_hash=$(git rev-parse HEAD)
 git_short_hash=$(git rev-parse --short HEAD)
 git_timestamp=$(git log -1 --format=%cd --date=iso)
@@ -20,13 +23,13 @@ EOF
 
 echo "Git info written to git-info.json"
 
-echo "Step 3: Building application..."
+echo "Step 4: Building application..."
 step_start=$(date +%s)
 pnpm build
 step_end=$(date +%s)
 echo "Build completed in $((step_end - step_start)) seconds"
 
-echo "Step 4: Starting application..."
+echo "Step 5: Starting application..."
 
 # Have got middleware.js for logging on prod
 pnpm start
