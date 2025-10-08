@@ -75,7 +75,7 @@ All routes demonstrate different rendering strategies:
 
 - **`/contact`** - `app/contact/page.tsx`
   - Server component with SSR (`force-dynamic`)
-  - Fetches posts from JSONPlaceholder API
+  - Fetches posts from JSONPlaceholder API (displays first 2 posts)
   - Includes a Client Component button (`app/contact/button.tsx`)
   - Demonstrates mixing Server and Client Components
 
@@ -160,8 +160,8 @@ All routes demonstrate different rendering strategies:
 
 - **`middleware.ts`**
   - Request logging middleware
-  - Uses matcher to exclude static assets
-  - Logs timestamp, method, and pathname
+  - Uses matcher to exclude static assets (`_next/static`, `_next/image`, `favicon.ico`, `*.svg`)
+  - Logs timestamp, method, and pathname in format: `ISO_timestamp - METHOD /path`
 
 ### Database Architecture
 
@@ -299,6 +299,16 @@ Based on git commits, this project has been used to explore:
 - PostgreSQL integration with Server Components
 
 ## Next Steps & Future Enhancements
+
+### Immediate Next Step
+
+**TODO: Integrate shadcn/ui**
+- Run `pnpm dlx shadcn@latest init` to initialize shadcn/ui
+- Configure components directory (recommended: `components/ui`)
+- Set up Tailwind CSS integration (already configured)
+- Add first component (e.g., Button, Card) using `pnpm dlx shadcn@latest add button`
+- Replace existing hardcoded button in `/contact/button.tsx` with shadcn Button component
+- Benefits: Accessible components built on Radix UI, full TypeScript support, customizable with Tailwind
 
 ### Planned Additions
 

@@ -119,8 +119,8 @@ app/
 | `/` | Server Component | SSG | Static home page with build timestamp |
 | `/about` | Server Component | SSR | Server-rendered page with request timestamp |
 | `/client` | Client Component | CSR | Interactive page with state and events |
-| `/posts` | Server Component | SSR | Fetches posts from API on each request |
-| `/contact` | Server Component | SSR | Demonstrates Server + Client Component composition |
+| `/posts` | Server Component | SSR | Fetches posts from API on each request (3 posts) |
+| `/contact` | Server Component | SSR | Demonstrates Server + Client Component composition (2 posts) |
 | `/users` | Server Component | SSR | User list with links to detail pages |
 | `/users/[userId]` | Server Component | SSR | Dynamic route with 404 handling |
 | `/dbtest` | Server Component | SSR | PostgreSQL connection test with table listing |
@@ -195,7 +195,7 @@ Request logging middleware (`middleware.ts`) logs all route requests to console:
 2025-10-03T10:30:45.123Z - GET /about
 ```
 
-Excludes static assets (`/_next/static`, images, SVGs).
+Excludes static assets (`/_next/static`, `/_next/image`, `favicon.ico`, `*.svg`).
 
 ## API Integration
 
@@ -250,6 +250,32 @@ All navigation links use `prefetch={false}` to disable automatic prefetching for
 Invalid routes display a custom 404 page (`app/not-found.tsx`). The `/users/[userId]` route also uses `notFound()` for non-existent users.
 
 ## Next Steps & Roadmap
+
+### Immediate Next Step
+
+**TODO: Integrate shadcn/ui**
+
+Follow these steps to add shadcn/ui to the project:
+
+1. Initialize shadcn/ui:
+   ```bash
+   pnpm dlx shadcn@latest init
+   ```
+
+2. During setup, choose:
+   - Style: **Default**
+   - Base color: **Slate** (or your preference)
+   - CSS variables: **Yes**
+   - Components location: `components/ui`
+
+3. Add your first component:
+   ```bash
+   pnpm dlx shadcn@latest add button
+   ```
+
+4. Replace the hardcoded button in `app/contact/button.tsx` with the shadcn Button component
+
+5. Continue adding components as needed (Card, Input, Dialog, etc.)
 
 ### Planned Additions
 
