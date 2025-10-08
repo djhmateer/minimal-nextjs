@@ -60,8 +60,8 @@ export default function ShadcnbPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-8">
-      <Card className="w-full max-w-lg">
+    <div className="max-w-lg mx-auto pt-8">
+      <Card className="w-full">
         <CardHeader>
           <CardTitle>Contact Us</CardTitle>
           <CardDescription>
