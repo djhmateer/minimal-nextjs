@@ -67,7 +67,7 @@ export default function Home() {
 
       {/* Rendering Strategies Overview */}
       <div className="mb-8 p-6 bg-slate-50 rounded-lg border border-slate-200">
-        <h2 className="text-lg font-semibold mb-3 text-slate-900">Next.js Rendering Strategies</h2>
+        <h2 className="text-lg font-semibold mb-3 text-slate-900">Next.js App Router Patterns</h2>
         <div className="space-y-3 text-sm text-slate-700">
           <div className="p-3 bg-white rounded border border-slate-200">
             <p className="font-semibold text-slate-900 mb-1">1. Static Site Generation (SSG) - This Page</p>
