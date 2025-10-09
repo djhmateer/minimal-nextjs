@@ -84,14 +84,15 @@ export default function Home() {
               <p className="font-semibold text-slate-900 mb-1">2. Server-Side Rendering (SSR)</p>
               <p className="text-xs text-slate-700">
                 RSC with <code className="bg-slate-100 px-1 rounded">export const dynamic = &apos;force-dynamic&apos;</code> + <code className="bg-slate-100 px-1 rounded">async</code> function.
-                Renders on server each time. console.log to server. Sends React Flight payload (sort of HTML) to client.
+                Renders on the server for each request. console.log appears on the server. Sends a streamed React Flight payload (HTML + client instructions) to the browser.
               </p>
             </div>
             <div className="p-3 bg-white rounded border border-slate-200">
               <p className="font-semibold text-slate-900 mb-1">3. Server Actions</p>
               <p className="text-xs text-slate-700">
                 <code className="bg-slate-100 px-1 rounded">&apos;use server&apos;</code> directive.
-                Functions that run on server. Used for form submissions (e.g., Form POST).
+                Functions that run on the server — typically for form submissions (<form action={action}>).
+Can update data and trigger revalidation.
               </p>
             </div>
           </div>
@@ -105,7 +106,8 @@ export default function Home() {
               <p className="font-semibold text-slate-900 mb-1">4. Client Component (Browser)</p>
               <p className="text-xs text-slate-700">
                 <code className="bg-slate-100 px-1 rounded">&apos;use client&apos;</code> directive.
-                Runs in browser. Has access to useState, useEffect. Classic React style. console.log to browser console.
+                Runs in the browser. Has access to useState, useEffect, and browser APIs.
+console.log appears in the browser console.
               </p>
             </div>
           </div>
