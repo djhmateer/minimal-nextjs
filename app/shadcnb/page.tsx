@@ -5,14 +5,12 @@
  * - react-hook-form for form state management
  * - zod for schema validation
  * - shadcn/ui components for UI
- * - sonner for toast notifications
  */
 "use client"
 
 // Form validation libraries
 import { zodResolver } from "@hookform/resolvers/zod" // Connects Zod schema to react-hook-form
 import { useForm } from "react-hook-form" // Form state management and validation
-import { toast } from "sonner" // Toast notifications for user feedback
 import { z } from "zod" // TypeScript-first schema validation
 
 // shadcn/ui components
@@ -74,16 +72,10 @@ export default function ShadcnbPage() {
   /**
    * Handle form submission
    * This runs after validation passes
-   * Shows a toast notification with the submitted data
    */
   function onSubmit(data: z.infer<typeof contactFormSchema>) {
-    toast("Contact form submitted!", {
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-neutral-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
+    console.log("Form submitted:", data)
+    // TODO: Send data to backend API
   }
 
   return (
