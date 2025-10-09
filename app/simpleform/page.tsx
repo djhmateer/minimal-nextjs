@@ -52,6 +52,36 @@ export default function SimpleFormPage() {
     <div className="max-w-lg mx-auto pt-8">
       <h1 className="text-2xl font-bold mb-6">Simple Form (Server Action)</h1>
 
+      {/* WARNING: Missing the point */}
+      <div className="mb-8 p-6 bg-orange-50 rounded-lg border-2 border-orange-300">
+        <h2 className="text-lg font-bold text-orange-900 mb-3">⚠️ This Misses the Point of Next.js/React</h2>
+        <div className="text-sm text-orange-800 space-y-3">
+          <p>
+            <strong>This basic Server Component approach defeats the purpose of using Next.js and React.</strong>
+          </p>
+          <p>
+            The <strong>whole point</strong> of Next.js and React is to provide a <strong>better user experience (UX)</strong>
+            through interactive, responsive interfaces. This implementation provides <strong>no UX improvements</strong> over
+            a traditional HTML form with PHP/Rails backend:
+          </p>
+          <ul className="ml-6 space-y-1 list-disc">
+            <li>No loading indicators (user doesn&apos;t know if form is submitting)</li>
+            <li>No inline validation feedback (errors only after full page reload)</li>
+            <li>No success messages on the same page (requires redirect)</li>
+            <li>Page refresh on submit (jarring, breaks flow)</li>
+            <li>Form data lost if you navigate away</li>
+          </ul>
+          <p className="pt-2 border-t border-orange-200 mt-3">
+            <strong>Why use Next.js/React if you&apos;re not improving UX?</strong> This could be plain HTML + any server-side
+            language. You&apos;re shipping a React framework for zero benefit.
+          </p>
+          <p className="font-semibold">
+            ✅ <strong>Better approaches:</strong> Use Client Components with useActionState, React Hook Form + Zod,
+            or shadcn/ui Form components to actually leverage React&apos;s strengths.
+          </p>
+        </div>
+      </div>
+
       {/* Explanation section */}
       <div className="mb-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
         <h2 className="text-lg font-semibold mb-3 text-blue-900">How This Works</h2>
