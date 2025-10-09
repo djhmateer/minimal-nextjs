@@ -1,86 +1,66 @@
 "use server"
 
 /**
- * Server action for handling contact form submissions
+ * Server action for handling contact form submissions with Zod validation
  *
  * IMPORTANT: Server-side validation is REQUIRED for security!
  * - Client-side validation can be bypassed (disabled JS, DevTools, direct API calls)
  * - Never trust client data - always validate on the server
  * - This is your security layer
+ *
+ * We use the SAME Zod schema as the client for:
+ * - Consistency: Same validation rules everywhere
+ * - DRY: Don't Repeat Yourself
+ * - Type safety: Shared TypeScript types
+ * - Maintainability: Change once, updates everywhere
  */
 
-export type ContactFormData = {
-  name: string
-  email: string
-  message: string
-}
+import { contactFormSchema, type ContactFormData } from "./schema"
 
 export async function submitContactForm(data: ContactFormData) {
   // ========================================================================
-  // STEP 1: SERVER-SIDE VALIDATION (Security Layer)
+  // STEP 1: SERVER-SIDE VALIDATION with Zod (Security Layer)
   // ========================================================================
-  // Even though React Hook Form validates on the client, we MUST validate
+  // Even though the client uses the same Zod schema, we MUST validate
   // on the server because:
   // - Users can disable JavaScript
   // - Attackers can bypass client validation
   // - Direct API calls can send malicious data
+  //
+  // Using Zod's safeParse instead of parse:
+  // - safeParse returns { success: true, data } or { success: false, error }
+  // - parse throws an error (harder to handle)
 
-  const errors: string[] = []
+  const validationResult = contactFormSchema.safeParse(data)
 
-  // Validate name
-  if (!data.name || typeof data.name !== "string") {
-    errors.push("Name is required")
-  } else if (data.name.trim().length < 2) {
-    errors.push("Name must be at least 2 characters")
-  } else if (data.name.length > 100) {
-    errors.push("Name must not exceed 100 characters")
-  }
+  if (!validationResult.success) {
+    // Extract error messages from Zod validation
+    const errorMessages = validationResult.error.issues.map(err => err.message)
+    console.log("❌ Server: Zod validation failed:", errorMessages)
 
-  // Validate email
-  if (!data.email || typeof data.email !== "string") {
-    errors.push("Email is required")
-  } else {
-    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
-    if (!emailRegex.test(data.email)) {
-      errors.push("Please enter a valid email address")
-    }
-    if (data.email.length > 255) {
-      errors.push("Email must not exceed 255 characters")
-    }
-  }
-
-  // Validate message
-  if (!data.message || typeof data.message !== "string") {
-    errors.push("Message is required")
-  } else if (data.message.trim().length < 10) {
-    errors.push("Message must be at least 10 characters")
-  } else if (data.message.length > 500) {
-    errors.push("Message must not exceed 500 characters")
-  }
-
-  // If validation fails, return errors
-  if (errors.length > 0) {
-    console.log("❌ Server: Validation failed:", errors)
     return {
       success: false,
-      message: errors.join(". "),
+      message: errorMessages.join(". "),
       timestamp: new Date().toISOString()
     }
   }
 
+  // Use validated data (TypeScript knows this is valid ContactFormData)
+  const validatedData = validationResult.data
+
   // ========================================================================
-  // STEP 2: Sanitize data (trim whitespace)
+  // STEP 2: Sanitize data (trim whitespace, normalize email)
   // ========================================================================
   const sanitizedData = {
-    name: data.name.trim(),
-    email: data.email.trim().toLowerCase(),
-    message: data.message.trim()
+    name: validatedData.name.trim(),
+    email: validatedData.email.trim().toLowerCase(),
+    message: validatedData.message.trim()
   }
 
   // ========================================================================
   // STEP 3: Server-side logging
   // ========================================================================
-  console.log("✓ Server: Validation passed")
+  console.log("✓ Server: Zod validation passed")
   console.log("=== Server: Contact Form Submission ===")
   console.log("Timestamp:", new Date().toISOString())
   console.log("Data:", JSON.stringify(sanitizedData, null, 2))

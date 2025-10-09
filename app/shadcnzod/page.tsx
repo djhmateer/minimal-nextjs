@@ -1,18 +1,22 @@
 /**
- * Contact Form Page - demonstrates shadcn/ui components with form validation
+ * Contact Form Page - demonstrates shadcn/ui components with Zod validation
  *
  * This is a Client Component that uses:
- * - react-hook-form for form state management with manual validation
+ * - react-hook-form for form state management
+ * - Zod for schema validation (shared with server)
+ * - zodResolver to connect Zod schema to React Hook Form
  * - shadcn/ui components for UI
  */
 "use client"
 
 // Form validation library
-import { useForm } from "react-hook-form" // Form state management and validation
+import { useForm } from "react-hook-form" // Form state management
+import { zodResolver } from "@hookform/resolvers/zod" // Connects Zod to React Hook Form
 import { useState } from "react"
 
-// Server actions
-import { submitContactForm, type ContactFormData } from "./actions"
+// Server actions and shared schema
+import { submitContactForm } from "./actions"
+import { contactFormSchema, type ContactFormData } from "./schema"
 
 // shadcn/ui components
 import { Button } from "@/components/ui/button"
@@ -43,11 +47,16 @@ export default function ShadcnbPage() {
   const [submitResult, setSubmitResult] = useState<string | null>(null)
 
   /**
-   * Initialize react-hook-form with manual validation
+   * Initialize react-hook-form with Zod validation
+   * - resolver: zodResolver connects Zod schema to React Hook Form
    * - mode: "onChange" validates as user types
    * - defaultValues: Initial values for all form fields
+   *
+   * The Zod schema (contactFormSchema) is shared between client and server,
+   * ensuring consistent validation rules everywhere.
    */
   const form = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
     mode: "onChange",
     defaultValues: {
       name: "",
@@ -59,7 +68,7 @@ export default function ShadcnbPage() {
   /**
    * Handle form submission
    * This runs after validation passes
-   * Calls server action to log and process data
+   * Calls server action (which uses same Zod schema) to log and process data
    */
   async function onSubmit(data: ContactFormData) {
     console.log("Client: Submitting form:", data)
@@ -99,13 +108,13 @@ export default function ShadcnbPage() {
         <h2 className="text-lg font-semibold mb-3 text-blue-900">How This Works</h2>
         <div className="text-sm text-blue-800 space-y-2">
           <p>
-            <strong>Client Component</strong> using <strong>shadcn/ui</strong> + <strong>React Hook Form</strong> + <strong>Server Actions</strong>
+            <strong>Client Component</strong> using <strong>shadcn/ui</strong> + <strong>React Hook Form</strong> + <strong>Zod</strong> + <strong>Server Actions</strong>
           </p>
           <p>
-            <strong>Flow:</strong> Type → Validate on change → Show inline errors → Submit → Server validates → Success/error inline
+            <strong>Flow:</strong> Type → Zod validates on change → Show inline errors → Submit → Server validates with Zod → Success/error inline
           </p>
           <p>
-            <strong>Validation:</strong> Client (manual rules) + Server (manual validation for security)
+            <strong>Validation:</strong> Shared Zod schema used on both client (via zodResolver) and server (via safeParse)
           </p>
         </div>
       </div>
@@ -118,39 +127,44 @@ export default function ShadcnbPage() {
             <h3 className="text-sm font-semibold text-green-700 mb-2">✅ Pros</h3>
             <ul className="text-xs text-gray-700 space-y-1">
               <li>• Real-time validation (onChange + onBlur)</li>
+              <li>• Shared Zod schema (client + server)</li>
+              <li>• No validation duplication (DRY)</li>
+              <li>• Type-safe (auto-generated types)</li>
               <li>• Loading states & success feedback</li>
               <li>• Built-in accessibility (ARIA)</li>
-              <li>• Professional UI out of the box</li>
-              <li>• TypeScript type-safe</li>
-              <li>• Battle-tested (React Hook Form)</li>
-              <li>• Server-side security validation</li>
+              <li>• Professional UI (shadcn/ui)</li>
+              <li>• Battle-tested stack</li>
+              <li>• Server security validation</li>
             </ul>
           </div>
 
           {/* Cons */}
           <div>
-            <h3 className="text-sm font-semibold text-red-700 mb-2">❌ Cons</h3>
+            <h3 className="text-sm font-semibold text-amber-700 mb-2">⚠️ Trade-offs</h3>
             <ul className="text-xs text-gray-700 space-y-1">
-              <li>• Manual validation rules (verbose)</li>
-              <li>• Validation duplication (client + server)</li>
-              <li>• No shared schema</li>
-              <li>• Bundle: ~22.8 KB</li>
-              <li>• Should use Zod instead</li>
+              <li>• Larger bundle: ~23 KB (includes Zod)</li>
+              <li>• More dependencies (zod, @hookform/resolvers)</li>
+              <li>• Learning curve for Zod syntax</li>
+              <li>• Requires JavaScript (no progressive enhancement)</li>
             </ul>
           </div>
         </div>
       </div>
 
-      {/* Next step */}
-      <div className="mb-8 p-4 bg-purple-50 rounded-lg border border-purple-200">
-        <h2 className="text-sm font-semibold text-purple-900 mb-2">🚀 Next Step: Add Zod</h2>
-        <p className="text-xs text-purple-800 mb-2">
-          Replace manual <code className="bg-purple-100 px-1 rounded">rules</code> with Zod schema for shared client/server validation:
+      {/* Implementation highlight */}
+      <div className="mb-8 p-4 bg-green-50 rounded-lg border-2 border-green-300">
+        <h2 className="text-sm font-semibold text-green-900 mb-2">✅ Production-Ready Implementation</h2>
+        <p className="text-xs text-green-800 mb-2">
+          This form uses <strong>Zod schema validation</strong> shared between client and server:
         </p>
-        <div className="bg-purple-100 p-2 rounded font-mono text-xs text-purple-900">
-          const schema = z.object(&#123; name: z.string().min(2), ... &#125;)<br/>
-          useForm(&#123; resolver: zodResolver(schema) &#125;)
+        <div className="bg-green-100 p-2 rounded font-mono text-xs text-green-900">
+          schema.ts → contactFormSchema (shared)<br/>
+          page.tsx → useForm(&#123; resolver: zodResolver(schema) &#125;)<br/>
+          actions.ts → schema.safeParse(data)
         </div>
+        <p className="text-xs text-green-700 mt-2">
+          <strong>Benefits:</strong> Single source of truth, consistent validation, type safety, DRY principle
+        </p>
       </div>
 
       {/* Card wrapper for the form */}
@@ -166,17 +180,10 @@ export default function ShadcnbPage() {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 
-              {/* Name field - validates minimum 2 characters */}
+              {/* Name field - validated by Zod schema */}
               <FormField
                 control={form.control}
                 name="name"
-                rules={{
-                  required: "Name is required",
-                  minLength: {
-                    value: 2,
-                    message: "Name must be at least 2 characters.",
-                  },
-                }}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Name</FormLabel>
@@ -184,23 +191,16 @@ export default function ShadcnbPage() {
                       {/* {...field} spreads onChange, onBlur, value, ref to Input */}
                       <Input placeholder="John Doe" {...field} />
                     </FormControl>
-                    {/* FormMessage displays validation errors */}
+                    {/* FormMessage displays Zod validation errors */}
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              {/* Email field - validates email format */}
+              {/* Email field - validated by Zod schema */}
               <FormField
                 control={form.control}
                 name="email"
-                rules={{
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Please enter a valid email address.",
-                  },
-                }}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
@@ -212,21 +212,10 @@ export default function ShadcnbPage() {
                 )}
               />
 
-              {/* Message field - validates 10-500 characters */}
+              {/* Message field - validated by Zod schema */}
               <FormField
                 control={form.control}
                 name="message"
-                rules={{
-                  required: "Message is required",
-                  minLength: {
-                    value: 10,
-                    message: "Message must be at least 10 characters.",
-                  },
-                  maxLength: {
-                    value: 500,
-                    message: "Message must not be longer than 500 characters.",
-                  },
-                }}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Message</FormLabel>
