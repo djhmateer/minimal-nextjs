@@ -33,9 +33,10 @@ export default function Home() {
       <div className="mt-6 border-l-4 border-gray-300 pl-4">
         <p className="font-semibold mb-3">Rendering Strategies</p>
         <ul className="space-y-2 text-sm">
-          <li>1.Static Site Generation SSG (this page). `export const dynamic = &apos;force-static&apos;`. console.log will show only in initial build output. It is just a html page. no custom js to run on client.</li>
-          <li>2.SSG with `&apos;use client&apos;` - have access to the browser. Classic React style. console.log to client. </li>
-          <li>3.Server Side Rendering SSR with `export const dynamic = &apos;force-dynamic&apos;` - renders on server each time. console.log to server. need async in function.</li>
+          <li>1.Static Site Generation SSG (this page). Uses a React Server Component (RSC).. `export const dynamic = &apos;force-static&apos;`. console.log will show only in initial build output. It is just a html page. no custom js to run on client.</li>
+          <li>2.Server-Side Rendering SSR. RSC with `export const dynamic = &apos;force-dynamic&apos;` - renders on server each time. console.log to server. need async in function. sends React Flight payload (sort of html) to client</li>
+          <li>3.Browser - Client Component with `&apos;use client&apos;` - have access to the browser. Classic React style. console.log to client. </li>
+          <li>4.Server Action. RSC. with `&apos;use server&apos;` - eg for Form POST </li>
         </ul>
       </div>
     </div>
