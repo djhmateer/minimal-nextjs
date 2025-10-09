@@ -2,16 +2,17 @@
  * Contact Form Page - demonstrates shadcn/ui components with form validation
  *
  * This is a Client Component that uses:
- * - react-hook-form for form state management
- * - zod for schema validation
+ * - react-hook-form for form state management with manual validation
  * - shadcn/ui components for UI
  */
 "use client"
 
-// Form validation libraries
-import { zodResolver } from "@hookform/resolvers/zod" // Connects Zod schema to react-hook-form
+// Form validation library
 import { useForm } from "react-hook-form" // Form state management and validation
-import { z } from "zod" // TypeScript-first schema validation
+import { useState } from "react"
+
+// Server actions
+import { submitContactForm, type ContactFormData } from "./actions"
 
 // shadcn/ui components
 import { Button } from "@/components/ui/button"
@@ -34,34 +35,20 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 
-/**
- * Contact form validation schema using Zod
- * Defines the shape and validation rules for the form data
- */
-const contactFormSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
-  }),
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  message: z.string().min(10, {
-    message: "Message must be at least 10 characters.",
-  }).max(500, {
-    message: "Message must not be longer than 500 characters.",
-  }),
-})
-
 export default function ShadcnbPage() {
   console.log("Rendering ShadcnbPage")
 
+  // Track submission state
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitResult, setSubmitResult] = useState<string | null>(null)
+
   /**
-   * Initialize react-hook-form with Zod validation
-   * - resolver: Connects the Zod schema to react-hook-form
+   * Initialize react-hook-form with manual validation
+   * - mode: "onChange" validates as user types
    * - defaultValues: Initial values for all form fields
    */
-  const form = useForm<z.infer<typeof contactFormSchema>>({
-    resolver: zodResolver(contactFormSchema),
+  const form = useForm<ContactFormData>({
+    mode: "onChange",
     defaultValues: {
       name: "",
       email: "",
@@ -72,10 +59,28 @@ export default function ShadcnbPage() {
   /**
    * Handle form submission
    * This runs after validation passes
+   * Calls server action to log and process data
    */
-  function onSubmit(data: z.infer<typeof contactFormSchema>) {
-    console.log("Form submitted:", data)
-    // TODO: Send data to backend API
+  async function onSubmit(data: ContactFormData) {
+    console.log("Client: Submitting form:", data)
+    setIsSubmitting(true)
+    setSubmitResult(null)
+
+    try {
+      // Call server action
+      const result = await submitContactForm(data)
+      console.log("Client: Server response:", result)
+
+      setSubmitResult(`✓ ${result.message} at ${new Date(result.timestamp).toLocaleTimeString()}`)
+
+      // Reset form after successful submission
+      form.reset()
+    } catch (error) {
+      console.error("Client: Submission error:", error)
+      setSubmitResult("✗ Failed to submit form. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -97,6 +102,13 @@ export default function ShadcnbPage() {
               <FormField
                 control={form.control}
                 name="name"
+                rules={{
+                  required: "Name is required",
+                  minLength: {
+                    value: 2,
+                    message: "Name must be at least 2 characters.",
+                  },
+                }}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Name</FormLabel>
@@ -114,6 +126,13 @@ export default function ShadcnbPage() {
               <FormField
                 control={form.control}
                 name="email"
+                rules={{
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Please enter a valid email address.",
+                  },
+                }}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
@@ -129,6 +148,17 @@ export default function ShadcnbPage() {
               <FormField
                 control={form.control}
                 name="message"
+                rules={{
+                  required: "Message is required",
+                  minLength: {
+                    value: 10,
+                    message: "Message must be at least 10 characters.",
+                  },
+                  maxLength: {
+                    value: 500,
+                    message: "Message must not be longer than 500 characters.",
+                  },
+                }}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Message</FormLabel>
@@ -150,7 +180,16 @@ export default function ShadcnbPage() {
               />
 
               {/* Submit button - triggers validation then onSubmit */}
-              <Button type="submit" className="w-full">Send Message</Button>
+              <Button type="submit" className="w-full" disabled={isSubmitting}>
+                {isSubmitting ? "Submitting..." : "Send Message"}
+              </Button>
+
+              {/* Show submission result */}
+              {submitResult && (
+                <div className={`text-sm text-center ${submitResult.startsWith("✓") ? "text-green-600" : "text-red-600"}`}>
+                  {submitResult}
+                </div>
+              )}
             </form>
           </Form>
         </CardContent>
