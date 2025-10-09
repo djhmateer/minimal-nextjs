@@ -1,10 +1,21 @@
+/**
+ * Contact Form Page - demonstrates shadcn/ui components with form validation
+ *
+ * This is a Client Component that uses:
+ * - react-hook-form for form state management
+ * - zod for schema validation
+ * - shadcn/ui components for UI
+ * - sonner for toast notifications
+ */
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { z } from "zod"
+// Form validation libraries
+import { zodResolver } from "@hookform/resolvers/zod" // Connects Zod schema to react-hook-form
+import { useForm } from "react-hook-form" // Form state management and validation
+import { toast } from "sonner" // Toast notifications for user feedback
+import { z } from "zod" // TypeScript-first schema validation
 
+// shadcn/ui components
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -25,6 +36,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 
+/**
+ * Contact form validation schema using Zod
+ * Defines the shape and validation rules for the form data
+ */
 const contactFormSchema = z.object({
   name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
@@ -40,6 +55,13 @@ const contactFormSchema = z.object({
 })
 
 export default function ShadcnbPage() {
+  console.log("Rendering ShadcnbPage")
+
+  /**
+   * Initialize react-hook-form with Zod validation
+   * - resolver: Connects the Zod schema to react-hook-form
+   * - defaultValues: Initial values for all form fields
+   */
   const form = useForm<z.infer<typeof contactFormSchema>>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
@@ -49,6 +71,11 @@ export default function ShadcnbPage() {
     },
   })
 
+  /**
+   * Handle form submission
+   * This runs after validation passes
+   * Shows a toast notification with the submitted data
+   */
   function onSubmit(data: z.infer<typeof contactFormSchema>) {
     toast("Contact form submitted!", {
       description: (
@@ -61,6 +88,7 @@ export default function ShadcnbPage() {
 
   return (
     <div className="max-w-lg mx-auto pt-8">
+      {/* Card wrapper for the form */}
       <Card className="w-full">
         <CardHeader>
           <CardTitle>Contact Us</CardTitle>
@@ -69,8 +97,11 @@ export default function ShadcnbPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {/* Form provider - passes form methods to child components */}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+
+              {/* Name field - validates minimum 2 characters */}
               <FormField
                 control={form.control}
                 name="name"
@@ -78,12 +109,16 @@ export default function ShadcnbPage() {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
+                      {/* {...field} spreads onChange, onBlur, value, ref to Input */}
                       <Input placeholder="John Doe" {...field} />
                     </FormControl>
+                    {/* FormMessage displays validation errors */}
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
+              {/* Email field - validates email format */}
               <FormField
                 control={form.control}
                 name="email"
@@ -97,6 +132,8 @@ export default function ShadcnbPage() {
                   </FormItem>
                 )}
               />
+
+              {/* Message field - validates 10-500 characters */}
               <FormField
                 control={form.control}
                 name="message"
@@ -111,6 +148,7 @@ export default function ShadcnbPage() {
                         {...field}
                       />
                     </FormControl>
+                    {/* FormDescription shows helper text */}
                     <FormDescription>
                       Your message will be reviewed by our team.
                     </FormDescription>
@@ -118,6 +156,8 @@ export default function ShadcnbPage() {
                   </FormItem>
                 )}
               />
+
+              {/* Submit button - triggers validation then onSubmit */}
               <Button type="submit" className="w-full">Send Message</Button>
             </form>
           </Form>
