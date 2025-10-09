@@ -52,6 +52,50 @@ export default function SimpleFormPage() {
     <div className="max-w-lg mx-auto pt-8">
       <h1 className="text-2xl font-bold mb-6">Simple Form (Server Action)</h1>
 
+      {/* Explanation section */}
+      <div className="mb-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
+        <h2 className="text-lg font-semibold mb-3 text-blue-900">How This Works</h2>
+        <div className="text-sm text-blue-800 space-y-2">
+          <p>
+            <strong>Architecture:</strong> This is a <strong>Server Component</strong> (SSG - Static Site Generation)
+            with zero client-side JavaScript for this page.
+          </p>
+          <p>
+            <strong>Flow:</strong> Form submits → <code className="bg-blue-100 px-1 rounded">actions.ts</code> Server
+            Action processes data → Redirects to <code className="bg-blue-100 px-1 rounded">/simpleform/thank-you</code>
+          </p>
+          <p>
+            <strong>Benefits:</strong> Lightweight, works without JS, secure server-side processing, prevents duplicate submissions on refresh.
+          </p>
+        </div>
+      </div>
+
+      {/* Limitations section */}
+      <div className="mb-8 p-6 bg-amber-50 rounded-lg border border-amber-200">
+        <h2 className="text-lg font-semibold mb-3 text-amber-900">Current Limitations</h2>
+        <ul className="text-sm text-amber-800 space-y-2 list-disc list-inside">
+          <li>
+            <strong>No error handling:</strong> If submission fails, no feedback shown to user
+          </li>
+          <li>
+            <strong>No loading state:</strong> No visual indication that form is submitting
+          </li>
+          <li>
+            <strong>No form state preservation:</strong> If you navigate away, all form data is lost (not saved)
+          </li>
+          <li>
+            <strong>No field validation feedback:</strong> Only basic HTML5 validation (browser-level)
+          </li>
+          <li>
+            <strong>No success message on page:</strong> Must redirect to see confirmation
+          </li>
+        </ul>
+        <p className="text-xs text-amber-700 mt-3">
+          💡 See comments below for improvements using <code className="bg-amber-100 px-1 rounded">useActionState</code>
+          (requires converting to Client Component)
+        </p>
+      </div>
+
       {/*
         FORM ACTION BINDING:
         - action={submitContact} binds form to Server Action

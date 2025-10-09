@@ -61,7 +61,8 @@ export default function RootLayout({
                 <Link href="/users" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2.Users</Link>
                 <Link href="/dbtest" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2.Dbtest</Link>
                 {/* <Link href="/foo" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>404</Link> */}
-                <Link href="/simpleform" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>4.simpleform</Link>
+                <Link href="/simpleform" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>1 and 4.simpleform</Link>
+                <Link href="/simpleformclient" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>3 and 4.simpleformclient</Link>
                 <Link href="/shadcn" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2.shadcn</Link>
                 <Link href="/shadcnb" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>4.shadcnb</Link>
               </div>
