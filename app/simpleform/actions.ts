@@ -20,9 +20,10 @@
 
 "use server"
 
+import { redirect } from "next/navigation"
+
 // import { db } from "@/lib/db"
 // import { revalidatePath } from "next/cache"
-// import { redirect } from "next/navigation"
 
 /**
  * Server Action: Handle contact form submission
@@ -83,22 +84,17 @@ export async function submitContact(formData: FormData) {
     console.log("Server: Received contact form submission:", { name, email, message })
 
     // ========================================================================
-    // STEP 4: Handle response (optional)
+    // STEP 4: Redirect to success page
     // ========================================================================
-    // Options for response handling:
+    // After successful processing, redirect to form-specific thank-you page
+    // Benefits:
+    // - Clear success confirmation
+    // - Prevents form resubmission on refresh (no duplicate entries)
+    // - Clean URL for user to bookmark or share
+    // - Better UX than staying on form page
+    // - Scoped under /simpleform for better organization
     //
-    // 1. Redirect after success:
-    //    redirect("/thank-you")
-    //
-    // 2. Revalidate cached data:
-    //    revalidatePath("/contacts") // Refresh the contacts list page
-    //
-    // 3. Return data to client (requires useActionState):
-    //    return { success: true, message: "Form submitted!" }
-    //
-    // 4. Throw error for error handling:
-    //    if (!email) throw new Error("Email required")
-
-    // Current: No return value when used directly in form action
-    // The form will trigger a page reload on submission
+    // Note: redirect() throws a NEXT_REDIRECT error internally - this is normal!
+    // Next.js catches it and performs the navigation. Don't wrap in try/catch.
+    redirect("/simpleform/thank-you")
 }
