@@ -91,8 +91,8 @@ export default function Home() {
               <p className="font-semibold text-slate-900 mb-1">3. Server Actions</p>
               <p className="text-xs text-slate-700">
                 <code className="bg-slate-100 px-1 rounded">&apos;use server&apos;</code> directive.
-                Functions that run on the server — typically for form submissions (<form action={action}>).
-Can update data and trigger revalidation.
+                Functions that run on the server — typically for form submissions (<code className="bg-slate-100 px-1 rounded">&lt;form action=&#123;action&#125;&gt;</code>).
+                Can update data and trigger revalidation.
               </p>
             </div>
           </div>
@@ -107,7 +107,7 @@ Can update data and trigger revalidation.
               <p className="text-xs text-slate-700">
                 <code className="bg-slate-100 px-1 rounded">&apos;use client&apos;</code> directive.
                 Runs in the browser. Has access to useState, useEffect, and browser APIs.
-console.log appears in the browser console.
+                console.log appears in the browser console.
               </p>
             </div>
           </div>
