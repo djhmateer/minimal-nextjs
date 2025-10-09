@@ -67,35 +67,47 @@ export default function Home() {
 
       {/* Rendering Strategies Overview */}
       <div className="mb-8 p-6 bg-slate-50 rounded-lg border border-slate-200">
-        <h2 className="text-lg font-semibold mb-3 text-slate-900">Next.js App Router Patterns</h2>
-        <div className="space-y-3 text-sm text-slate-700">
-          <div className="p-3 bg-white rounded border border-slate-200">
-            <p className="font-semibold text-slate-900 mb-1">1. Static Site Generation (SSG) - This Page</p>
-            <p className="text-xs text-slate-700">
-              Uses a React Server Component (RSC) with <code className="bg-slate-100 px-1 rounded">export const dynamic = &apos;force-static&apos;</code>.
-              Renders at build time. Same HTML for all users. console.log in build output only. No custom JS to run on client.
-            </p>
+        <h2 className="text-lg font-semibold mb-4 text-slate-900">Next.js App Router Patterns</h2>
+
+        {/* Server-Side Patterns */}
+        <div className="mb-6">
+          <h3 className="text-sm font-semibold text-slate-900 mb-3 border-b border-slate-300 pb-1">Server-Side Patterns</h3>
+          <div className="space-y-3 text-sm text-slate-700">
+            <div className="p-3 bg-white rounded border border-slate-200">
+              <p className="font-semibold text-slate-900 mb-1">1. Static Site Generation (SSG) - This Page</p>
+              <p className="text-xs text-slate-700">
+                Uses a React Server Component (RSC) with <code className="bg-slate-100 px-1 rounded">export const dynamic = &apos;force-static&apos;</code>.
+                Renders at build time. Same HTML for all users. console.log in build output only. No custom JS to run on client.
+              </p>
+            </div>
+            <div className="p-3 bg-white rounded border border-slate-200">
+              <p className="font-semibold text-slate-900 mb-1">2. Server-Side Rendering (SSR)</p>
+              <p className="text-xs text-slate-700">
+                RSC with <code className="bg-slate-100 px-1 rounded">export const dynamic = &apos;force-dynamic&apos;</code> + <code className="bg-slate-100 px-1 rounded">async</code> function.
+                Renders on server each time. console.log to server. Sends React Flight payload (sort of HTML) to client.
+              </p>
+            </div>
+            <div className="p-3 bg-white rounded border border-slate-200">
+              <p className="font-semibold text-slate-900 mb-1">3. Server Actions</p>
+              <p className="text-xs text-slate-700">
+                <code className="bg-slate-100 px-1 rounded">&apos;use server&apos;</code> directive.
+                Functions that run on server. Used for form submissions (e.g., Form POST).
+              </p>
+            </div>
           </div>
-          <div className="p-3 bg-white rounded border border-slate-200">
-            <p className="font-semibold text-slate-900 mb-1">2. Server-Side Rendering (SSR)</p>
-            <p className="text-xs text-slate-700">
-              RSC with <code className="bg-slate-100 px-1 rounded">export const dynamic = &apos;force-dynamic&apos;</code> + <code className="bg-slate-100 px-1 rounded">async</code> function.
-              Renders on server each time. console.log to server. Sends React Flight payload (sort of HTML) to client.
-            </p>
-          </div>
-          <div className="p-3 bg-white rounded border border-slate-200">
-            <p className="font-semibold text-slate-900 mb-1">3. Client Component (Browser)</p>
-            <p className="text-xs text-slate-700">
-              <code className="bg-slate-100 px-1 rounded">&apos;use client&apos;</code> directive.
-              Runs in browser. Has access to useState, useEffect. Classic React style. console.log to browser console.
-            </p>
-          </div>
-          <div className="p-3 bg-white rounded border border-slate-200">
-            <p className="font-semibold text-slate-900 mb-1">4. Server Actions</p>
-            <p className="text-xs text-slate-700">
-              <code className="bg-slate-100 px-1 rounded">&apos;use server&apos;</code> directive.
-              Functions that run on server. Used for form submissions (e.g., Form POST).
-            </p>
+        </div>
+
+        {/* Client-Side Patterns */}
+        <div>
+          <h3 className="text-sm font-semibold text-slate-900 mb-3 border-b border-slate-300 pb-1">Client-Side Patterns</h3>
+          <div className="space-y-3 text-sm text-slate-700">
+            <div className="p-3 bg-white rounded border border-slate-200">
+              <p className="font-semibold text-slate-900 mb-1">4. Client Component (Browser)</p>
+              <p className="text-xs text-slate-700">
+                <code className="bg-slate-100 px-1 rounded">&apos;use client&apos;</code> directive.
+                Runs in browser. Has access to useState, useEffect. Classic React style. console.log to browser console.
+              </p>
+            </div>
           </div>
         </div>
       </div>
