@@ -101,7 +101,7 @@ export default function ShadcnbPage() {
   return (
     <div className="max-w-lg mx-auto pt-8">
       {/* Page title */}
-      <h1 className="text-2xl font-bold mb-6">shadcn/ui Form (React Hook Form)</h1>
+      <h1 className="text-2xl font-bold mb-6">shadcn/ui Form (React Hook Form) with Zod</h1>
 
       {/* How it works */}
       <div className="mb-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
