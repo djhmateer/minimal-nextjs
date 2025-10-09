@@ -1,42 +1,165 @@
-// app/page.tsx
-// import React from 'react';
-// sfc - Stateless Function Component
+/**
+ * Home Page - Static Site Generation (SSG) Demo
+ *
+ * This is a Server Component that demonstrates Static Site Generation:
+ * - No 'use client' directive = Server Component (default in App Router)
+ * - export const dynamic = 'force-static' = Build-time rendering
+ * - Not async = No dynamic data fetching
+ * - Generates static HTML at build time
+ *
+ * LIFECYCLE:
+ * 1. Build Time: Component runs ONCE during `pnpm build`
+ * 2. console.log appears in build output (not runtime logs)
+ * 3. HTML is generated and cached
+ * 4. All requests serve the same cached HTML (fast!)
+ * 5. No server computation on each request
+ *
+ * WHEN TO USE SSG:
+ * - Content doesn't change per request
+ * - Same content for all users
+ * - Maximum performance (pre-rendered HTML)
+ * - Examples: landing pages, docs, blogs, marketing pages
+ *
+ * TECHNOLOGIES:
+ * - Next.js 15.5.4 App Router
+ * - React 19.2.0 Server Components
+ * - TailwindCSS 4.1.14 for styling
+ * - TypeScript 5.9.3
+ *
+ * RENDERING STRATEGY:
+ * force-static = Build-time rendering (SSG)
+ * - Alternative: 'force-dynamic' for SSR (renders on each request)
+ * - Alternative: 'auto' lets Next.js decide (async = dynamic, sync = static)
+ *
+ * See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamic
+ */
 
-// notice this isn't async. only use async when need dynamic SSR
-// this page uses the default of 'auto' which means next.js will decide based on if you use async or not
-// see https://nextjs.org/docs/app/building-your-application/routing#dynamic-segments
-// here we explicitly set it to 'auto' just for demo purposes. normally you'd just leave this out
-
-// https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamic
-
-
-// keep as a statically generated page on the server.. not any good for dynamic data
-
-// auto seems to for force-dynamic here which I don't know why
-// export const dynamic = 'auto';
-
-// export const dynamic = 'force-dynamic'
-
-// putting in nothing forces auto, which is static, which is what we want
+// Force static generation at build time
+// Without this, Next.js uses 'auto' which infers from code (async = dynamic)
 export const dynamic = 'force-static'
 
+/**
+ * Home Component - Static Server Component
+ *
+ * This component:
+ * - Runs ONLY at build time (not on each request)
+ * - Captures timestamp during build
+ * - console.log appears in build output only
+ * - Generates static HTML served to all users
+ *
+ * Note: currentTime shows BUILD time, not request time
+ * This proves the page is truly static (same HTML for everyone)
+ */
 export default function Home() {
+  // Captured at BUILD time, not request time
+  // Same value for all users since it's static HTML
   const currentTime = new Date().toLocaleString();
+
+  // This console.log appears in build output (pnpm build)
+  // NOT in server logs during runtime
+  // NOT in browser console (this is a Server Component)
   console.log('Home page');
 
   return (
-    <div className="p-8 max-w-3xl">
-      <h1 className="text-3xl font-bold mb-6">Home</h1>
-      <p className="mb-2">Next.js default of statically generated on the server - Static Site Generation. Build time: {currentTime}</p>
-      <p className="mb-6 text-sm text-gray-600">There is a console.log(&quot;Home Page&quot;) which is only shown at build time. not shown on live prod (but is on dev as a server output as dev is built each time and browser console). Makes sense as a static</p>
+    <div className="max-w-3xl mx-auto pt-8 px-8">
+      {/* Page title */}
+      <h1 className="text-3xl font-bold mb-6">Static Site Generation (SSG)</h1>
 
-      <div className="mt-6 border-l-4 border-gray-300 pl-4">
-        <p className="font-semibold mb-3">Rendering Strategies</p>
-        <ul className="space-y-2 text-sm">
-          <li>1.Static Site Generation SSG (this page). Uses a React Server Component (RSC).. `export const dynamic = &apos;force-static&apos;`. console.log will show only in initial build output. It is just a html page. no custom js to run on client.</li>
-          <li>2.Server-Side Rendering SSR. RSC with `export const dynamic = &apos;force-dynamic&apos;` - renders on server each time. console.log to server. need async in function. sends React Flight payload (sort of html) to client</li>
-          <li>3.Browser - Client Component with `&apos;use client&apos;` - have access to the browser. Classic React style. console.log to client. </li>
-          <li>4.Server Action. RSC. with `&apos;use server&apos;` - eg for Form POST </li>
+      {/* Rendering Strategies Overview */}
+      <div className="mb-8 p-6 bg-slate-50 rounded-lg border border-slate-200">
+        <h2 className="text-lg font-semibold mb-3 text-slate-900">Next.js Rendering Strategies</h2>
+        <div className="space-y-3 text-sm text-slate-700">
+          <div className="p-3 bg-white rounded border border-slate-200">
+            <p className="font-semibold text-slate-900 mb-1">1.Static Site Generation SSG (this page). Uses a React Server Component (RSC).. `export const dynamic = &apos;force-static&apos;`. console.log will show only in initial build output. It is just a html page. no custom js to run on client.</p>
+           
+          </div>
+          <div className="p-3 bg-white rounded border border-slate-200">
+            <p className="font-semibold text-slate-900 mb-1">2.Server-Side Rendering SSR. RSC with `export const dynamic = &apos;force-dynamic&apos;` - renders on server each time. console.log to server. need async in function. sends React Flight payload (sort of html) to client
+            </p>
+          </div>
+          <div className="p-3 bg-white rounded border border-slate-200">
+            <p className="font-semibold text-slate-900 mb-1">3.Browser - Client Component with `&apos;use client&apos;` - have access to the browser. Classic React style. console.log to client.
+            </p>
+          </div>
+          <div className="p-3 bg-white rounded border border-slate-200">
+            <p className="font-semibold text-slate-900 mb-1">4.Server Action. RSC. with `&apos;use server&apos;` - eg for Form POST
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Build timestamp proof */}
+      <div className="mb-8 p-4 bg-purple-50 rounded-lg border border-purple-200">
+        <p className="text-sm text-purple-900">
+          <strong>Build Time:</strong> {currentTime}
+        </p>
+        <p className="text-xs text-purple-700 mt-1">
+          This timestamp is captured during <code className="bg-purple-100 px-1 rounded">pnpm build</code> and is the same for all users. Refresh the page - it won&apos;t change!
+        </p>
+      </div>
+
+      {/* How it works */}
+      <div className="mb-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
+        <h2 className="text-lg font-semibold mb-3 text-blue-900">How This Works</h2>
+        <div className="text-sm text-blue-800 space-y-2">
+          <p>
+            <strong>Server Component</strong> with <strong>Static Site Generation (SSG)</strong>
+          </p>
+          <p>
+            <strong>Lifecycle:</strong> Component runs ONCE at build time → HTML generated → Cached → Served to all users (no re-rendering)
+          </p>
+          <p>
+            <strong>Key Setting:</strong> <code className="bg-blue-100 px-1 rounded">export const dynamic = &apos;force-static&apos;</code>
+          </p>
+          <p>
+            <strong>Technologies:</strong> Next.js 15.5.4 App Router + React 19.2.0 Server Components + TailwindCSS 4.1.14 + TypeScript 5.9.3
+          </p>
+        </div>
+      </div>
+
+      {/* Pros & Cons */}
+      <div className="mb-8 p-6 bg-gray-50 rounded-lg border border-gray-200">
+        <div className="grid grid-cols-2 gap-6">
+          {/* Pros */}
+          <div>
+            <h3 className="text-sm font-semibold text-green-700 mb-2">✅ Pros</h3>
+            <ul className="text-xs text-gray-700 space-y-1">
+              <li>• Maximum performance (pre-rendered HTML)</li>
+              <li>• Zero server computation per request</li>
+              <li>• Perfect for CDN distribution</li>
+              <li>• Lowest Time to First Byte (TTFB)</li>
+              <li>• Works without JavaScript</li>
+              <li>• SEO friendly (crawlers get full HTML)</li>
+              <li>• Scales to millions of users easily</li>
+              <li>• Lowest hosting costs</li>
+            </ul>
+          </div>
+
+          {/* Cons */}
+          <div>
+            <h3 className="text-sm font-semibold text-amber-700 mb-2">⚠️ Trade-offs</h3>
+            <ul className="text-xs text-gray-700 space-y-1">
+              <li>• Content same for all users</li>
+              <li>• Must rebuild to update content</li>
+              <li>• Not suitable for personalized data</li>
+              <li>• No real-time updates</li>
+              <li>• Build time increases with pages</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Console.log behavior */}
+      <div className="mb-8 p-4 bg-green-50 rounded-lg border-2 border-green-300">
+        <h2 className="text-sm font-semibold text-green-900 mb-2">🔍 Debugging: Where Does console.log Appear?</h2>
+        <p className="text-xs text-green-800 mb-2">
+          This page has <code className="bg-green-100 px-1 rounded">console.log(&apos;Home page&apos;)</code> in the component:
+        </p>
+        <ul className="text-xs text-green-700 space-y-1 ml-4">
+          <li>✅ <strong>Build output:</strong> Visible during <code className="bg-green-100 px-1 rounded">pnpm build</code></li>
+          <li>✅ <strong>Dev mode:</strong> Server terminal (page re-renders on each request in dev)</li>
+          <li>❌ <strong>Production runtime:</strong> NOT in server logs (page is cached HTML)</li>
+          <li>❌ <strong>Browser console:</strong> Never (this is a Server Component, not Client Component)</li>
         </ul>
       </div>
     </div>
