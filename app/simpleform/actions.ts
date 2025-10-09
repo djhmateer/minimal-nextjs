@@ -12,7 +12,6 @@ export async function submitContact(formData: FormData) {
     //   await db.insert("contacts", { name, email, message })
     console.log("Server: Received contact form submission:", { name, email, message })
 
-    // Return value is optional. Can return data to client if needed.
-
-    return { success: true }
+    // When used directly in form action, don't return a value
+    // To return data to client, use useFormState or useActionState instead
 }
