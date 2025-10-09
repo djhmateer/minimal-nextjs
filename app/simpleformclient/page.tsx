@@ -1,51 +1,42 @@
 // ============================================================================
-// SIMPLE FORM PAGE - Next.js 15 Server Action Demo (Server Component)
+// SIMPLE FORM PAGE - Next.js 15 Server Action Demo
 // ============================================================================
-// This is a SERVER COMPONENT that demonstrates Server Actions with forms.
+// This component demonstrates the Server Action pattern for form handling.
 //
 // KEY CONCEPTS:
-// 1. NO "use client" needed - Server Actions work in Server Components!
+// 1. "use client" directive required because we're using a form action
 // 2. Form directly references Server Action via action={submitContact}
 // 3. Works WITHOUT JavaScript (progressive enhancement)
 // 4. No API route needed - Server Actions handle everything
-// 5. Zero client-side JavaScript shipped for this page
 //
 // FLOW:
 // 1. User fills form → 2. Clicks submit → 3. Browser POSTs FormData
 // 4. Next.js routes to Server Action → 5. Action processes on server
-// 6. Server redirects to /simpleform/thank-you
+// 6. Page reloads with result (or redirects, or updates state)
 //
-// WHY THIS IS A SERVER COMPONENT:
-// - No React hooks (useState, useEffect, etc.)
-// - No event handlers (onClick, onChange, etc.)
-// - No client-side interactivity
-// - Just a plain HTML form with Server Action
-// - Result: Smaller bundle, faster page load, better SEO
-//
-// PROGRESSIVE ENHANCEMENT:
-// With JS: Smooth submission via Next.js navigation
-// Without JS: Traditional POST submission - still works!
+// WHY "use client"?
+// - Even though this uses Server Actions, the form element itself needs
+//   client-side JavaScript for the action prop to work optimally
+// - Without JS, form still works via traditional POST submission!
 // ============================================================================
+
+"use client"
 
 import { submitContact } from "./actions"
 
 /**
- * Simple Form Page Component (Server Component)
+ * Simple Form Page Component
  *
  * CURRENT IMPLEMENTATION:
- * - Server Component (no client-side JavaScript)
  * - Basic form with direct Server Action binding
- * - Redirects to /simpleform/thank-you after submission
+ * - No loading states or error handling (form reloads on submit)
  * - Progressive enhancement: works without JavaScript
  *
- * BENEFITS OF SERVER COMPONENT:
- * - Zero client JS for this page (smaller bundle)
- * - Fully server-rendered HTML
- * - Better performance and SEO
- * - Still supports Server Actions (Next.js 15 feature)
+ * PROGRESSIVE ENHANCEMENT:
+ * With JS: Smooth submission, stays on page, no flash
+ * Without JS: Traditional POST, page reload, still works!
  *
- * See below for recommended improvements using useActionState
- * (Note: useActionState requires "use client" directive).
+ * See below for recommended improvements using useActionState.
  */
 export default function SimpleFormPage() {
   return (
@@ -115,9 +106,6 @@ export default function SimpleFormPage() {
 
         1. ADD LOADING & ERROR STATES WITH useActionState:
 
-        NOTE: This requires adding "use client" directive at the top!
-
-        "use client"
         import { useActionState } from "react"
 
         const [state, formAction, isPending] = useActionState(submitContact, null)
@@ -131,7 +119,7 @@ export default function SimpleFormPage() {
           </button>
         </form>
 
-        // Update Server Action to return state instead of redirect:
+        // Update Server Action to return state:
         return { success: true, message: "Form submitted!" }
 
 
