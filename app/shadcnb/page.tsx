@@ -67,7 +67,7 @@ export default function ShadcnbPage() {
     setSubmitResult(null)
 
     try {
-      // Call server action
+      // Call server action (this function is inside ations.ts)
       const result = await submitContactForm(data)
       console.log("Client: Server response:", result)
 
