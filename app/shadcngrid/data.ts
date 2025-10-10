@@ -6,7 +6,7 @@ export type Product = {
   price: number
   status: "in_stock" | "low_stock" | "out_of_stock"
   quantity: number
-  lastChecked: Date
+  lastChecked: string // ISO string format for server/client serialization
 }
 
 // Simulated database call - replace this with actual database query
@@ -15,7 +15,8 @@ export async function getProducts(): Promise<Product[]> {
   // await new Promise((resolve) => setTimeout(resolve, 100))
 
   // Get current server time (this runs on the server, not client)
-  const serverTime = new Date()
+  // Convert to ISO string for proper serialization across server/client boundary
+  const serverTime = new Date().toISOString()
 
   return [
     {

@@ -56,11 +56,11 @@ export const columns: ColumnDef<Product>[] = [
     accessorKey: "lastChecked",
     header: "Last Time Checked Stock",
     cell: ({ row }) => {
-      const date = row.getValue("lastChecked") as Date
+      const dateString = row.getValue("lastChecked") as string
       const formatted = new Intl.DateTimeFormat("en-US", {
         dateStyle: "short",
         timeStyle: "medium",
-      }).format(new Date(date))
+      }).format(new Date(dateString))
       return <div className="text-sm text-slate-700">{formatted}</div>
     },
   },
