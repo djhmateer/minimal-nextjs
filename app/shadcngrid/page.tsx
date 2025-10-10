@@ -3,7 +3,7 @@ import { getProducts } from "./data"
 import { columns } from "./columns"
 
 // probably don't need to do this - can check on the build time output
-// export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic'
 
 export default async function ShadcnGridPage() {
   // Fetch data (simulated database call - replace with real DB query)
