@@ -6,12 +6,16 @@ export type Product = {
   price: number
   status: "in_stock" | "low_stock" | "out_of_stock"
   quantity: number
+  lastChecked: Date
 }
 
 // Simulated database call - replace this with actual database query
 export async function getProducts(): Promise<Product[]> {
   // Simulate network delay
   // await new Promise((resolve) => setTimeout(resolve, 100))
+
+  // Get current server time (this runs on the server, not client)
+  const serverTime = new Date()
 
   return [
     {
@@ -21,6 +25,7 @@ export async function getProducts(): Promise<Product[]> {
       price: 299.99,
       quantity: 45,
       status: "in_stock",
+      lastChecked: serverTime,
     },
     {
       id: "PROD002",
@@ -29,6 +34,7 @@ export async function getProducts(): Promise<Product[]> {
       price: 399.99,
       quantity: 12,
       status: "low_stock",
+      lastChecked: serverTime,
     },
     {
       id: "PROD003",
@@ -37,6 +43,7 @@ export async function getProducts(): Promise<Product[]> {
       price: 79.99,
       quantity: 0,
       status: "out_of_stock",
+      lastChecked: serverTime,
     },
     {
       id: "PROD004",
@@ -45,6 +52,7 @@ export async function getProducts(): Promise<Product[]> {
       price: 149.99,
       quantity: 67,
       status: "in_stock",
+      lastChecked: serverTime,
     },
     {
       id: "PROD005",
@@ -53,6 +61,7 @@ export async function getProducts(): Promise<Product[]> {
       price: 59.99,
       quantity: 8,
       status: "low_stock",
+      lastChecked: serverTime,
     },
     {
       id: "PROD006",
@@ -61,6 +70,7 @@ export async function getProducts(): Promise<Product[]> {
       price: 49.99,
       quantity: 120,
       status: "in_stock",
+      lastChecked: serverTime,
     },
     {
       id: "PROD007",
@@ -69,6 +79,7 @@ export async function getProducts(): Promise<Product[]> {
       price: 599.99,
       quantity: 23,
       status: "in_stock",
+      lastChecked: serverTime,
     },
     {
       id: "PROD008",
@@ -77,6 +88,7 @@ export async function getProducts(): Promise<Product[]> {
       price: 89.99,
       quantity: 5,
       status: "low_stock",
+      lastChecked: serverTime,
     },
   ]
 }
