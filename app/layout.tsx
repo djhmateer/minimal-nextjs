@@ -55,13 +55,13 @@ export default function RootLayout({
               <div className="flex space-x-4">
                 <Link href="/" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>1.Home (Static SSG) </Link>
                 <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2. (Dynamic SSR) </Link>
-                <Link href="/client" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>3. Browser Client Component (Static SSG) </Link>
+                <Link href="/client" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>1 and 4. Browser Client Component (Static SSG) </Link>
                 <Link href="/posts" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2. Posts Server Component (Dynamic SSR) </Link>
-                <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 and 3. Contact Component inside Dynamic Server Component</Link>
+                <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 and 4. Contact Component inside Dynamic Server Component</Link>
                 <Link href="/users" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2.Users</Link>
                 <Link href="/dbtest" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2.Dbtest</Link>
                 {/* <Link href="/foo" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>404</Link> */}
-                <Link href="/simpleform" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>1 and 4.simpleform</Link>
+                <Link href="/simpleform" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>1 and 3.simpleform</Link>
                 <Link href="/simpleformclient" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>1, 3 and 4.simpleformclient</Link>
                 <Link href="/shadcn" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2.shadcn</Link>
                 <Link href="/shadcnb" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>1. 3 and 4.shadcnb</Link>
