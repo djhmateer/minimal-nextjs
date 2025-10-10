@@ -28,10 +28,11 @@ export default async function ShadcnGridPage() {
             <p>
               <strong>Pattern 4: Client Component</strong> - The DataTable uses{" "}
               <code className="bg-blue-100 px-1 rounded">&apos;use client&apos;</code> for interactive table features
-              (columns.tsx and data-table.tsx are Client Components).
+              (data-table.tsx is a Client Component).
             </p>
             <p className="text-blue-700">
-              <strong>Architecture:</strong> Server Component (page.tsx) fetches data → passes to Client Component (DataTable) → renders interactive UI in browser.
+              <strong>Architecture:</strong> Server Component (page.tsx) calls <code className="bg-blue-100 px-1 rounded">getProducts()</code> from data.ts
+              → passes data to Client Component (data-table.tsx) → renders interactive UI in browser.
             </p>
           </div>
         </div>
