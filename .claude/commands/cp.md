@@ -1,0 +1,1 @@
+Analyze all uncommitted changes in the repository, generate an appropriate commit message following the repository's commit message style (examining recent git history to match the format), stage all changes, create the commit, and push to the remote repository.
