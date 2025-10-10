@@ -1,6 +1,5 @@
 import { DataTable } from "./data-table"
 import { getProducts } from "./data"
-import { columns } from "./columns"
 
 // probably don't need to do this - can check on the build time output
 export const dynamic = 'force-dynamic'
@@ -23,6 +22,8 @@ export default async function ShadcnGridPage() {
             <p>
               <strong>Pattern 2: Server-Side Rendering (SSR)</strong> - This page component is an async Server Component
               that fetches data on each request using <code className="bg-blue-100 px-1 rounded">await getProducts()</code>.
+              Note: <code className="bg-blue-100 px-1 rounded">export const dynamic = &apos;force-dynamic&apos;</code> is required
+              to force SSR; otherwise Next.js would use SSG (static generation) by default.
             </p>
             <p>
               <strong>Pattern 4: Client Component</strong> - The DataTable uses{" "}
@@ -36,7 +37,7 @@ export default async function ShadcnGridPage() {
         </div>
       </div>
 
-      <DataTable columns={columns} data={data} />
+      <DataTable data={data} />
     </div>
   )
 }
