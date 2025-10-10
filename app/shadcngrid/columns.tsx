@@ -57,10 +57,10 @@ export const columns: ColumnDef<Product>[] = [
     header: "Last Time Checked Stock",
     cell: ({ row }) => {
       const dateString = row.getValue("lastChecked") as string
-      const formatted = new Intl.DateTimeFormat("en-US", {
-        dateStyle: "short",
-        timeStyle: "medium",
-      }).format(new Date(dateString))
+      // Simple display of ISO string to avoid hydration issues with locale formatting
+      // Format: "2025-01-10T14:30:45.123Z" becomes readable display
+      const date = new Date(dateString)
+      const formatted = date.toISOString().replace('T', ' ').slice(0, 19)
       return <div className="text-sm text-slate-700">{formatted}</div>
     },
   },
