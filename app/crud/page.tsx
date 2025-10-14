@@ -86,6 +86,43 @@ export default async function CrudPage() {
            DataTable handles all interactions (clicks, forms, modals)
            Note: Edits are in-memory only. Add Server Action for persistence */}
       <DataTable data={data} />
+
+      {/* Improvement suggestions section */}
+      <div className="mt-8 p-4 bg-orange-50 rounded-lg border border-orange-200">
+        <h2 className="text-sm font-semibold text-orange-900 mb-2">🚀 Suggested Improvements</h2>
+        <div className="text-xs text-orange-800 space-y-3">
+          <div>
+            <strong className="text-red-700">🔴 Critical:</strong>
+            <ul className="list-disc ml-5 mt-1 space-y-1">
+              <li><strong>Add Database Persistence</strong> - Currently edits are lost on refresh. Add Server Action with db.update() and revalidatePath()</li>
+              <li><strong>Add Input Validation</strong> - Use Zod schema to prevent invalid data (negative prices, empty names, etc.)</li>
+              <li><strong>Fix NaN Errors</strong> - Add fallback values: parseFloat(value) || 0 to prevent form breaking on invalid input</li>
+            </ul>
+          </div>
+
+          <div>
+            <strong className="text-yellow-700">🟡 Medium Priority:</strong>
+            <ul className="list-disc ml-5 mt-1 space-y-1">
+              <li><strong>Refactor Duplicate State</strong> - editingProduct and formData track same thing, use single source of truth</li>
+              <li><strong>Dynamic colSpan</strong> - Replace hardcoded colSpan=7 with table.getAllColumns().length</li>
+              <li><strong>Add Loading State</strong> - Show "Saving..." button state during async operations</li>
+              <li><strong>Add Error Handling</strong> - Try/catch with error toasts for failed operations</li>
+            </ul>
+          </div>
+
+          <div>
+            <strong className="text-green-700">🟢 Nice to Have:</strong>
+            <ul className="list-disc ml-5 mt-1 space-y-1">
+              <li>Keyboard shortcuts (Esc to close, Enter to submit)</li>
+              <li>Extract form to ProductEditForm component (currently 200+ lines)</li>
+              <li>Optimistic UI updates with useOptimistic hook</li>
+              <li>Replace native select with shadcn Select component</li>
+              <li>Dirty state tracking (warn before closing with unsaved changes)</li>
+              <li>Add delete functionality (currently edit-only)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

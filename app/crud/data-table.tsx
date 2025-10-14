@@ -104,7 +104,7 @@ export function DataTable({ data }: DataTableProps) {
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                className="cursor-pointer hover:bg-gray-50"
+                className="cursor-pointer hover:bg-gray-200"
                 onClick={() => {
                   const product = row.original
                   setEditingProduct(product)
