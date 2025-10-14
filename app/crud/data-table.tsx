@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useReactTable, getCoreRowModel, flexRender } from "@tanstack/react-table"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -133,6 +133,9 @@ export function DataTable({ data }: DataTableProps) {
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>Edit Product</DialogTitle>
+            <DialogDescription>
+              Make changes to the product details below.
+            </DialogDescription>
           </DialogHeader>
 
           {formData && (

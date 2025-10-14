@@ -13,7 +13,7 @@ export default async function ShadcnGridPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">CRUD</h1>
         <p className="text-slate-600 mb-4">
-          A data table built with shadcn/ui and TanStack Table
+          A data table built with shadcn/ui's Data Table (TanStack Table) and Dialog
         </p>
 
         {/* Next.js Rendering Pattern Explanation */}
