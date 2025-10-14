@@ -87,13 +87,14 @@ export default async function CrudPage() {
            Note: Edits are in-memory only. Add Server Action for persistence */}
       <DataTable data={data} />
 
-      {/* Improvement suggestions section */}
+      {/* To explore section */}
       <div className="mt-8 p-4 bg-orange-50 rounded-lg border border-orange-200">
-        <h2 className="text-sm font-semibold text-orange-900 mb-2">🚀 Suggested Improvements</h2>
+        <h2 className="text-sm font-semibold text-orange-900 mb-2">🚀 To Explore</h2>
         <div className="text-xs text-orange-800 space-y-3">
           <div>
             <strong className="text-red-700">🔴 Critical:</strong>
             <ul className="list-disc ml-5 mt-1 space-y-1">
+              <li><strong>Investigate hover lag</strong> - Why is there a lag on hover? Perhaps test with &gt;1k rows to see if virtualization or other optimization techniques are needed?</li>
               <li><strong>Add Database Persistence</strong> - Currently edits are lost on refresh. Add Server Action with db.update() and revalidatePath()</li>
               <li><strong>Add Input Validation</strong> - Use Zod schema to prevent invalid data (negative prices, empty names, etc.)</li>
               <li><strong>Fix NaN Errors</strong> - Add fallback values: parseFloat(value) || 0 to prevent form breaking on invalid input</li>
