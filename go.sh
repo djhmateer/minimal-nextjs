@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Kill any existing instances of go.sh (except current process)
+echo "Killing any existing instances of go.sh..."
+ps -ef | grep '/bin/bash ./go.sh' | grep -v grep | grep -v $$ | awk '{print $2}' | xargs -r kill -9
+sleep 1
+
 echo "Step 1: Pulling latest changes..."
 git pull
 
