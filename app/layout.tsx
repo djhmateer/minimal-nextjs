@@ -70,7 +70,7 @@ export default function RootLayout({
                 <Link href="/shadcnb" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>1. 3 and 4.shadcnb</Link>
                 <Link href="/shadcnzod" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>1. 3 and 4.shadcnzod (standard form)</Link>
                 <Link href="/shadcngrid" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 and 4. shadcngrid (standard grid - read db)</Link>
-                <Link href="/crud" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>crud</Link>
+                <Link href="/crud" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>tasks crud</Link>
               </div>
             </nav>
           </div>
