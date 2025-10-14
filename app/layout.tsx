@@ -45,9 +45,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 min-h-screen`}
       >
         <Toaster />
-        {/* Header */}
+        {/* Header: white bg, small shadow, bottom border */}
         <header className="bg-white shadow-sm border-b">
-          <div className="max-w-4xl mx-auto px-4 py-4">
+          {/* Container: max-width 896px, centered, 16px padding */}
+          {/* <div className="max-w-4xl mx-auto px-4 py-4"> */}
+          <div className="max-w-8xl mx-auto px-4 py-4">
+            {/* Navigation: flexbox, vertically centered items, 24px horizontal gap */}
             <nav className="flex items-center space-x-6">
               <Link href="/" className="text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors" prefetch={false}>
                 Minimal Next.js
