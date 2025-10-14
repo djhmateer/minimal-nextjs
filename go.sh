@@ -5,6 +5,7 @@ echo "Killing anything on port3000 existing probably zombie instances of go.sh"
 # ps -ef | grep '/bin/bash ./go.sh' | grep -v grep | grep -v $$ | awk '{print $2}' | xargs -r kill -9
 # ps -ef | grep 'sh -c next start' | grep -v grep | grep -v $$ | awk '{print $2}' | xargs -r kill -9
 
+# sudo apt install -y net-tools
 sudo netstat -tulnp | grep 3000 | awk '{print $7}' | cut -d'/' -f1 | xargs -r sudo kill -9
 
 
