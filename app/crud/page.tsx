@@ -105,7 +105,7 @@ export default async function CrudPage() {
             <ul className="list-disc ml-5 mt-1 space-y-1">
               <li><strong>Refactor Duplicate State</strong> - editingProduct and formData track same thing, use single source of truth</li>
               <li><strong>Dynamic colSpan</strong> - Replace hardcoded colSpan=7 with table.getAllColumns().length</li>
-              <li><strong>Add Loading State</strong> - Show "Saving..." button state during async operations</li>
+              <li><strong>Add Loading State</strong> - Show &quot;Saving...&quot; button state during async operations</li>
               <li><strong>Add Error Handling</strong> - Try/catch with error toasts for failed operations</li>
             </ul>
           </div>
