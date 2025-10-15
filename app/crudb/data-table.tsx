@@ -69,7 +69,7 @@ export function DataTable({ data }: DataTableProps) {
               <Label htmlFor="name">Product Name</Label>
               <Input
                 id="name"
-                value={formData?.name}
+                value={formData?.name || ""}
                 onChange={(e) => setFormData({ ...formData!, name: e.target.value })}
               />
             </div>
@@ -78,7 +78,7 @@ export function DataTable({ data }: DataTableProps) {
               <Label htmlFor="category">Category</Label>
               <Input
                 id="category"
-                value={formData?.category}
+                value={formData?.category || ""}
                 onChange={(e) => setFormData({ ...formData!, category: e.target.value })}
               />
             </div>
@@ -89,7 +89,7 @@ export function DataTable({ data }: DataTableProps) {
                 id="price"
                 type="number"
                 step="0.01"
-                value={formData?.price}
+                value={formData?.price || ""}
                 onChange={(e) => setFormData({ ...formData!, price: parseFloat(e.target.value) || 0 })}
               />
             </div>
@@ -99,7 +99,7 @@ export function DataTable({ data }: DataTableProps) {
               <Input
                 id="quantity"
                 type="number"
-                value={formData?.quantity}
+                value={formData?.quantity || ""}
                 onChange={(e) => setFormData({ ...formData!, quantity: parseInt(e.target.value) || 0 })}
               />
             </div>
@@ -109,7 +109,7 @@ export function DataTable({ data }: DataTableProps) {
               <select
                 id="status"
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                value={formData?.status}
+                value={formData?.status || ""}
                 onChange={(e) => setFormData({ ...formData!, status: e.target.value as Product["status"] })}
               >
                 <option value="in_stock">In Stock</option>
