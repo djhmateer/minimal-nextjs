@@ -43,7 +43,7 @@ export function DataTable({ data }: DataTableProps) {
           {data.map((product) => (
             <TableRow
               key={product.id}
-              className="cursor-pointer hover:bg-gray-200"
+              className="cursor-pointer"
               onClick={() => setFormData(product)}
             >
               <TableCell>{product.id}</TableCell>
