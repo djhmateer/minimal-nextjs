@@ -1,5 +1,8 @@
 "use client"
 
+// CUSTOMIZED: Removed all animations (fade, zoom, transitions) for instant modal popup (performance)
+// Affected: DialogOverlay, DialogContent, DialogClose button
+
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { XIcon } from "lucide-react"

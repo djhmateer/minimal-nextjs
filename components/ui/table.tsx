@@ -52,6 +52,8 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
   )
 }
 
+// CUSTOMIZED: Changed hover:bg-muted/50 to hover:bg-gray-200 for better visibility
+// CUSTOMIZED: Removed transition-colors for instant hover feedback (performance)
 function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
   return (
     <tr
