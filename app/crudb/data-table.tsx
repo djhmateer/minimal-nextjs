@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -62,6 +62,9 @@ export function DataTable({ data }: DataTableProps) {
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>Edit Product</DialogTitle>
+            <DialogDescription>
+              Make changes to the product details below.
+            </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-3 py-4">
@@ -69,6 +72,7 @@ export function DataTable({ data }: DataTableProps) {
               <Label htmlFor="name">Product Name</Label>
               <Input
                 id="name"
+                autoComplete="off"
                 value={formData?.name || ""}
                 onChange={(e) => setFormData({ ...formData!, name: e.target.value })}
               />
@@ -78,6 +82,7 @@ export function DataTable({ data }: DataTableProps) {
               <Label htmlFor="category">Category</Label>
               <Input
                 id="category"
+                autoComplete="off"
                 value={formData?.category || ""}
                 onChange={(e) => setFormData({ ...formData!, category: e.target.value })}
               />
@@ -89,6 +94,7 @@ export function DataTable({ data }: DataTableProps) {
                 id="price"
                 type="number"
                 step="0.01"
+                autoComplete="off"
                 value={formData?.price || ""}
                 onChange={(e) => setFormData({ ...formData!, price: parseFloat(e.target.value) || 0 })}
               />
@@ -99,6 +105,7 @@ export function DataTable({ data }: DataTableProps) {
               <Input
                 id="quantity"
                 type="number"
+                autoComplete="off"
                 value={formData?.quantity || ""}
                 onChange={(e) => setFormData({ ...formData!, quantity: parseInt(e.target.value) || 0 })}
               />
@@ -108,6 +115,7 @@ export function DataTable({ data }: DataTableProps) {
               <Label htmlFor="status">Status</Label>
               <select
                 id="status"
+                autoComplete="off"
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 value={formData?.status || ""}
                 onChange={(e) => setFormData({ ...formData!, status: e.target.value as Product["status"] })}
