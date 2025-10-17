@@ -8,6 +8,8 @@ echo "Killing anything on port3000 existing probably zombie instances of go.sh"
 # sudo apt install -y net-tools
 sudo netstat -tulnp | grep 3000 | awk '{print $7}' | cut -d'/' -f1 | xargs -r sudo kill -9
 
+# sudo netstat -tulnp | grep 3001 | awk '{print $7}' | cut -d'/' -f1 | xargs -r sudo kill -9
+
 
 # sleep 1
 
