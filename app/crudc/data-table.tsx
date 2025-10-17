@@ -12,8 +12,6 @@ interface DataTableProps {
   data: Product[]
 }
 
-const SUCCESS_MESSAGE_TIMEOUT = 3000
-
 export function DataTable({ data }: DataTableProps) {
   const [formData, setFormData] = useState<Product | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
@@ -133,7 +131,7 @@ export function DataTable({ data }: DataTableProps) {
             </Button>
             <Button onClick={() => {
               setSuccessMessage(`Updated ${formData?.name}`)
-              setTimeout(() => setSuccessMessage(null), SUCCESS_MESSAGE_TIMEOUT)
+              setTimeout(() => setSuccessMessage(null), 3000)
               setFormData(null)
             }}>
               Save Changes
