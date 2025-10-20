@@ -11,9 +11,6 @@
 import Link from 'next/link'
 
 export default function ServerError({ error }: { error: Error & { digest?: string } }) {
-  // Extract error details
-  const errorWithCause = error as Error & { cause?: Error }
-
   // Try to find real error in cause chain
   let realError: string | null = null
   let currentError: Error | undefined = error
