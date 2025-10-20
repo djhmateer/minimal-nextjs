@@ -23,7 +23,7 @@ export default async function CrudPageD() {
   const data = await getProducts()
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="max-w-full mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">CRUD-D - Products - Database ({data.length} rows)</h1>
       <DataTable data={data} />
     </div>
