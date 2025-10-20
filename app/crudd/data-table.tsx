@@ -12,7 +12,7 @@ interface DataTableProps {
   data: Product[]
 }
 
-const ITEMS_PER_PAGE = 50
+const ITEMS_PER_PAGE = 15
 
 export function DataTable({ data }: DataTableProps) {
   const [formData, setFormData] = useState<Product | null>(null)
