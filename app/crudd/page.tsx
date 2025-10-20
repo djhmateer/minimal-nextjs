@@ -18,7 +18,8 @@ export const dynamic = 'force-dynamic'
  * Database: Uses products table seeded via `pnpm seed:products`
  */
 export default async function CrudPageD() {
-  // Fetch 208 products from PostgreSQL database
+  // Fetch products from PostgreSQL database
+  console.log('[CRUD-D] Server Component rendering at:', new Date().toISOString())
   const data = await getProducts()
 
   return (
