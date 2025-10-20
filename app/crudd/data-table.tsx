@@ -12,74 +12,113 @@ interface DataTableProps {
   data: Product[]
 }
 
-/**
- * DataTable Component - Client-side interactive table with modal edit functionality
- *
- * Features:
- * - Click-to-edit: Click any row to open edit modal
- * - Modal form powered by shadcn/ui Dialog component
- * - Success message banner with 3s auto-dismiss
- * - Mock CRUD operations (no database persistence)
- *
- * Performance:
- * - Renders all 208 rows at once (no virtualization)
- * - Client-side state management for form and success message
- * - Optimistic updates (no API calls)
- *
- * @param data - Array of Product objects passed from Server Component
- */
-export function DataTable({ data }: DataTableProps) {
-  // formData: Holds the product being edited (null when modal is closed)
-  const [formData, setFormData] = useState<Product | null>(null)
+const ITEMS_PER_PAGE = 50
 
-  // successMessage: Displayed in green banner after save (auto-dismissed after 3s)
+export function DataTable({ data }: DataTableProps) {
+  const [formData, setFormData] = useState<Product | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
+
+  // Calculate pagination
+  const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE)
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+  const endIndex = startIndex + ITEMS_PER_PAGE
+  const currentData = data.slice(startIndex, endIndex)
 
   return (
-    <div className="rounded-md border">
-      {/* Success Message Banner - Appears after save, auto-dismisses after 3s */}
+    <div className="space-y-4">
+      {/* Success Message */}
       {successMessage && (
-        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 mx-4 mt-4">
-          <span className="block sm:inline">{successMessage}</span>
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+          {successMessage}
         </div>
       )}
 
-      {/* Main Data Table - shadcn/ui Table component */}
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>ID</TableHead>
-            <TableHead>Product Name</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead>Price in £</TableHead>
-            <TableHead>Quantity</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Last Time Checked Stock</TableHead>
-          </TableRow>
-        </TableHeader>
+      {/* Pagination Info */}
+      <div className="flex items-center justify-between">
+        <div className="text-sm text-gray-600">
+          Showing {startIndex + 1} to {Math.min(endIndex, data.length)} of {data.length} products
+        </div>
+        <div className="text-sm text-gray-600">
+          Page {currentPage} of {totalPages}
+        </div>
+      </div>
 
-        <TableBody>
-          {/* Render all 208 products - Click any row to edit */}
-          {data.map((product) => (
-            <TableRow
-              key={product.id}
-              className="cursor-pointer"
-              onClick={() => setFormData(product)} // Open modal with this product's data
-            >
-              <TableCell>{product.id}</TableCell>
-              <TableCell>{product.name}</TableCell>
-              <TableCell>{product.category}</TableCell>
-              <TableCell>{product.price}</TableCell>
-              <TableCell>{product.quantity}</TableCell>
-              <TableCell>{product.status}</TableCell>
-              <TableCell>{product.lastChecked}</TableCell>
+      {/* Table */}
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>ID</TableHead>
+              <TableHead>Product Name</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead>Price in £</TableHead>
+              <TableHead>Quantity</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Last Time Checked Stock</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
 
-      {/* Edit Modal - Opens when formData is set (clicking a row) */}
-      {/* Controlled by: open={!!formData} - Modal open when formData is truthy */}
+          <TableBody>
+            {currentData.map((product) => (
+              <TableRow
+                key={product.id}
+                className="cursor-pointer"
+                onClick={() => setFormData(product)}
+              >
+                <TableCell>{product.id}</TableCell>
+                <TableCell>{product.name}</TableCell>
+                <TableCell>{product.category}</TableCell>
+                <TableCell>{product.price}</TableCell>
+                <TableCell>{product.quantity}</TableCell>
+                <TableCell>{product.status}</TableCell>
+                <TableCell>{product.lastChecked}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex items-center justify-center gap-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setCurrentPage(1)}
+          disabled={currentPage === 1}
+        >
+          First
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setCurrentPage(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </Button>
+        <span className="text-sm px-4">
+          Page {currentPage} of {totalPages}
+        </span>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setCurrentPage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setCurrentPage(totalPages)}
+          disabled={currentPage === totalPages}
+        >
+          Last
+        </Button>
+      </div>
+
+      {/* Edit Modal */}
       <Dialog open={!!formData} onOpenChange={() => setFormData(null)}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -89,9 +128,7 @@ export function DataTable({ data }: DataTableProps) {
             </DialogDescription>
           </DialogHeader>
 
-          {/* Edit Form - All fields are controlled inputs */}
           <div className="space-y-3 py-4">
-            {/* Product Name - Text input */}
             <div className="space-y-1">
               <Label htmlFor="name">Product Name</Label>
               <Input
@@ -102,7 +139,6 @@ export function DataTable({ data }: DataTableProps) {
               />
             </div>
 
-            {/* Category - Text input */}
             <div className="space-y-1">
               <Label htmlFor="category">Category</Label>
               <Input
@@ -113,20 +149,18 @@ export function DataTable({ data }: DataTableProps) {
               />
             </div>
 
-            {/* Price - Number input with decimal support (step="0.01") */}
             <div className="space-y-1">
               <Label htmlFor="price">Price</Label>
               <Input
                 id="price"
                 type="number"
-                step="0.01" // Allow decimal values for currency
+                step="0.01"
                 autoComplete="off"
                 value={formData?.price || ""}
                 onChange={(e) => setFormData({ ...formData!, price: parseFloat(e.target.value) || 0 })}
               />
             </div>
 
-            {/* Quantity - Integer input */}
             <div className="space-y-1">
               <Label htmlFor="quantity">Quantity</Label>
               <Input
@@ -138,7 +172,6 @@ export function DataTable({ data }: DataTableProps) {
               />
             </div>
 
-            {/* Status - Dropdown select (native HTML select with Tailwind styling) */}
             <div className="space-y-1">
               <Label htmlFor="status">Status</Label>
               <select
@@ -155,29 +188,14 @@ export function DataTable({ data }: DataTableProps) {
             </div>
           </div>
 
-          {/* Dialog Actions - Cancel and Save buttons */}
           <DialogFooter>
-            {/* Cancel Button - Close modal without saving */}
             <Button variant="outline" onClick={() => setFormData(null)}>
               Cancel
             </Button>
-
-            {/* Save Button - Mock save operation (no API call or database update) */}
             <Button onClick={() => {
-              // Show success message with product name
               setSuccessMessage(`Updated ${formData?.name}`)
-
-              // Auto-dismiss success message after 3 seconds
               setTimeout(() => setSuccessMessage(null), 3000)
-
-              // Close modal by clearing formData
               setFormData(null)
-
-              // NOTE: This is a mock save - in production, you would:
-              // 1. Call an API endpoint (e.g., POST /api/products/${id})
-              // 2. Update the database
-              // 3. Revalidate the data on the server
-              // 4. Handle errors and loading states
             }}>
               Save Changes
             </Button>
