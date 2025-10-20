@@ -1,10 +1,12 @@
 // dev: Run this seeder with `pnpm seed:products`
+// dev: Uses .env.development for local development
+// prod: Uses .env.production for production
 
 import { Pool } from 'pg';
 import { config } from 'dotenv';
 
-// Load environment variables from .env.local
-config({ path: '.env.local' });
+// Load environment variables from .env.development (dev) or .env.production (prod)
+config({ path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development' });
 
 /**
  * Database Seed Script for Products Table
@@ -23,6 +25,11 @@ config({ path: '.env.local' });
  */
 
 async function seedProducts() {
+  // Validate required environment variables
+  if (!process.env.POSTGRES_USER || !process.env.POSTGRES_PASSWORD || !process.env.POSTGRES_HOST || !process.env.POSTGRES_DATABASE) {
+    throw new Error('Missing required PostgreSQL environment variables. Check .env.development (dev) or .env.production (prod) file.');
+  }
+
   // Database connection using environment variables
   const pool = new Pool({
     user: process.env.POSTGRES_USER,

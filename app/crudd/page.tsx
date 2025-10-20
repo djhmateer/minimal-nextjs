@@ -52,9 +52,14 @@ export type Product = {
  * - last_checked (DB) → lastChecked (Product)
  * - All other fields match directly
  *
- * Database connection uses environment variables from .env.local
+ * Database connection uses environment variables from .env.development or .env.production
  */
 export async function getProducts(): Promise<Product[]> {
+  // Validate required environment variables
+  if (!process.env.POSTGRES_USER || !process.env.POSTGRES_PASSWORD || !process.env.POSTGRES_HOST || !process.env.POSTGRES_DATABASE) {
+    throw new Error('Missing required PostgreSQL environment variables. Check .env.development (dev) or .env.production (prod) file.');
+  }
+
   const pool = new Pool({
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,

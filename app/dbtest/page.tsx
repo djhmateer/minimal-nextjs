@@ -14,6 +14,19 @@ interface User {
 export default async function Dbtest() {
     console.log('Dbtest page');
 
+    // Validate required environment variables
+    if (!process.env.POSTGRES_USER || !process.env.POSTGRES_PASSWORD || !process.env.POSTGRES_HOST || !process.env.POSTGRES_DATABASE) {
+        return (
+            <div className="p-4">
+                <h1 className="text-2xl mb-4">Database Connection Test</h1>
+                <div className="text-red-600 mb-4">
+                    <p className="font-semibold">Error:</p>
+                    <p>Missing required PostgreSQL environment variables. Check .env.development (dev) or .env.production (prod) file.</p>
+                </div>
+            </div>
+        );
+    }
+
     const pool = new Pool({
         user: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
