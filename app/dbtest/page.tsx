@@ -15,11 +15,11 @@ export default async function Dbtest() {
     console.log('Dbtest page');
 
     const pool = new Pool({
-        user: 'bob',
-        password: 'password',
-        host: 'localhost',
-        database: 'minimal_nextjs',
-        port: 5432,
+        user: process.env.POSTGRES_USER,
+        password: process.env.POSTGRES_PASSWORD,
+        host: process.env.POSTGRES_HOST,
+        database: process.env.POSTGRES_DATABASE,
+        port: parseInt(process.env.POSTGRES_PORT || '5432'),
     });
 
     let tables: Table[] = [];
