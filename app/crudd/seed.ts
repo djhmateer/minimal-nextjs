@@ -77,7 +77,7 @@ async function seedProducts() {
     const statuses = ["in_stock", "low_stock", "out_of_stock"] as const;
 
     // Build insert values array
-    const values: any[] = [];
+    const values: (string | number | Date)[] = [];
     const placeholders: string[] = [];
     let paramIndex = 1;
 
