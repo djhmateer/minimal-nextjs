@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
@@ -16,53 +17,17 @@ interface DataTableProps {
   itemsPerPage: number
 }
 
-// Global timing marker for script execution
-declare global {
-  interface Window {
-    __cruddClientScriptStart?: number;
-  }
-}
-
-if (typeof window !== 'undefined') {
-  window.__cruddClientScriptStart = performance.now()
-  console.log('[CRUD-E Client] Script loaded at:', performance.now().toFixed(2) + 'ms since page navigation')
-}
-
 export function DataTable({ data, currentPage, totalPages, totalCount, itemsPerPage }: DataTableProps) {
-  const componentStart = performance.now()
-  const scriptLoadTime = typeof window !== 'undefined' ? window.__cruddClientScriptStart ?? 0 : 0
-
-  console.log('[CRUD-E Client] ==== TIMING BREAKDOWN ====')
-  console.log(`[CRUD-E Client] Component first called at: ${componentStart.toFixed(2)}ms since navigation`)
-  console.log(`[CRUD-E Client] Time from script load to component: ${(componentStart - scriptLoadTime).toFixed(2)}ms`)
-  console.log(`[CRUD-E Client] Received ${data.length} products (${(JSON.stringify(data).length / 1024 / 1024).toFixed(2)}MB)`)
-
+  const router = useRouter()
   const [formData, setFormData] = useState<Product | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
-
-  // Track initial mount/hydration and rendering complete
-  useEffect(() => {
-    const mountEnd = performance.now()
-    console.log(`[CRUD-E Client] Component mounted at: ${mountEnd.toFixed(2)}ms since navigation`)
-    console.log(`[CRUD-E Client] Mount/hydration took: ${(mountEnd - componentStart).toFixed(2)}ms`)
-
-    // Use requestIdleCallback to detect when React is done with all work
-    requestIdleCallback(() => {
-      const idleTime = performance.now()
-      console.log(`[CRUD-E Client] React idle at: ${idleTime.toFixed(2)}ms since navigation`)
-      console.log(`[CRUD-E Client] Total client-side time: ${(idleTime - scriptLoadTime).toFixed(2)}ms`)
-      console.log('[CRUD-E Client] ==== END TIMING ====')
-    })
-  }, [componentStart, scriptLoadTime])
 
   // Server-side pagination - data is already the current page
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = Math.min(startIndex + itemsPerPage, totalCount)
 
   const goToPage = (page: number) => {
-    const url = new URL(window.location.href)
-    url.searchParams.set('page', page.toString())
-    window.location.href = url.toString()
+    router.push(`/crude?page=${page}`)
   }
 
   return (
