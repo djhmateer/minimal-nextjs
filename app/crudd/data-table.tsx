@@ -15,14 +15,20 @@ interface DataTableProps {
 const ITEMS_PER_PAGE = 15
 
 // Global timing marker for script execution
+declare global {
+  interface Window {
+    __cruddClientScriptStart?: number;
+  }
+}
+
 if (typeof window !== 'undefined') {
-  (window as any).__cruddClientScriptStart = performance.now()
+  window.__cruddClientScriptStart = performance.now()
   console.log('[CRUD-D Client] Script loaded at:', performance.now().toFixed(2) + 'ms since page navigation')
 }
 
 export function DataTable({ data }: DataTableProps) {
   const componentStart = performance.now()
-  const scriptLoadTime = typeof window !== 'undefined' ? (window as any).__cruddClientScriptStart : 0
+  const scriptLoadTime = typeof window !== 'undefined' ? window.__cruddClientScriptStart ?? 0 : 0
 
   console.log('[CRUD-D Client] ==== TIMING BREAKDOWN ====')
   console.log(`[CRUD-D Client] Component first called at: ${componentStart.toFixed(2)}ms since navigation`)
@@ -46,7 +52,7 @@ export function DataTable({ data }: DataTableProps) {
       console.log(`[CRUD-D Client] Total client-side time: ${(idleTime - scriptLoadTime).toFixed(2)}ms`)
       console.log('[CRUD-D Client] ==== END TIMING ====')
     })
-  }, [])
+  }, [componentStart, scriptLoadTime])
 
   // Calculate pagination
   const paginationStart = performance.now()
