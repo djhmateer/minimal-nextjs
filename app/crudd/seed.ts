@@ -1,12 +1,12 @@
 // dev: pnpm seed:products
 // prod: NODE_ENV=production pnpm seed:products
 
-import { Pool } from 'pg';
+import { Client } from 'pg';
 import { config } from 'dotenv';
 
 config({ path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development' });
 
-const pool = new Pool({
+const client = new Client({
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   host: process.env.POSTGRES_HOST,
@@ -83,9 +83,11 @@ const statuses = ["in_stock", "low_stock", "out_of_stock"] as const;
 
 async function seed() {
   try {
+    await client.connect();
+
     // Drop and recreate table
-    await pool.query('DROP TABLE IF EXISTS products');
-    await pool.query(`
+    await client.query('DROP TABLE IF EXISTS products');
+    await client.query(`
       CREATE TABLE products (
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
@@ -99,7 +101,7 @@ async function seed() {
 
     // Generate products in batches
     const timestamp = new Date();
-    const totalProducts = 100000;
+    const totalProducts = 1000000;
     const batchSize = 5000;
     let inserted = 0;
 
@@ -126,7 +128,7 @@ async function seed() {
         idx += 6;
       }
 
-      await pool.query(
+      await client.query(
         `INSERT INTO products (name, category, price, status, quantity, last_checked) VALUES ${placeholders.join(', ')}`,
         values
       );
@@ -135,12 +137,12 @@ async function seed() {
       console.log(`Inserted ${inserted} / ${totalProducts} products...`);
     }
 
-    console.log('Seeded 100,000 products');
+    console.log('Seeded 1,000,000 products');
   } catch (error) {
     console.error('Error:', error);
     throw error;
   } finally {
-    await pool.end();
+    await client.end();
   }
 }
 
