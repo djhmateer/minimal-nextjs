@@ -18,9 +18,22 @@ export const dynamic = 'force-dynamic'
  * Database: Uses products table seeded via `pnpm seed:products`
  */
 export default async function CrudPageD() {
-  // Fetch products from PostgreSQL database
-  console.log('[CRUD-D] Server Component rendering at:', new Date().toISOString())
+  const pageStart = performance.now()
+  console.log('[CRUD-D] Server Component START at:', new Date().toISOString())
+
+  const fetchStart = performance.now()
   const data = await getProducts()
+  const fetchEnd = performance.now()
+  console.log(`[CRUD-D] getProducts() call took ${(fetchEnd - fetchStart).toFixed(2)}ms`)
+
+  const serializeStart = performance.now()
+  const dataSize = JSON.stringify(data).length
+  const serializeEnd = performance.now()
+  console.log(`[CRUD-D] Data serialization test took ${(serializeEnd - serializeStart).toFixed(2)}ms`)
+  console.log(`[CRUD-D] Serialized data size: ${(dataSize / 1024 / 1024).toFixed(2)}MB`)
+
+  const pageEnd = performance.now()
+  console.log(`[CRUD-D] Server Component END - total time: ${(pageEnd - pageStart).toFixed(2)}ms`)
 
   return (
     <div className="max-w-full mx-auto px-4 py-8">
