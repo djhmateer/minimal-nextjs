@@ -18,7 +18,7 @@ export const dynamic = 'force-dynamic'
  *
  * Database: Uses products table seeded via `pnpm seed:products`
  */
-const ITEMS_PER_PAGE = 100
+const ITEMS_PER_PAGE = 20
 
 export default async function CrudPageE({
   searchParams,
