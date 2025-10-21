@@ -20,6 +20,12 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
+  {
+    rules: {
+      'react-hooks/purity': 'off',
+      'react-hooks/incompatible-library': 'off',
+    },
+  },
 ];
 
 export default eslintConfig;
