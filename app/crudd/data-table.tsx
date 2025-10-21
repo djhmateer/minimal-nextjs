@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
@@ -15,15 +15,28 @@ interface DataTableProps {
 const ITEMS_PER_PAGE = 15
 
 export function DataTable({ data }: DataTableProps) {
+  const componentStart = performance.now()
+  console.log('[CRUD-D Client] DataTable component START')
+  console.log(`[CRUD-D Client] Received ${data.length} products`)
+
   const [formData, setFormData] = useState<Product | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
 
+  // Track initial mount/hydration
+  useEffect(() => {
+    const componentEnd = performance.now()
+    console.log(`[CRUD-D Client] DataTable mounted/hydrated in ${(componentEnd - componentStart).toFixed(2)}ms`)
+  }, [])
+
   // Calculate pagination
+  const paginationStart = performance.now()
   const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE)
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
   const currentData = data.slice(startIndex, endIndex)
+  const paginationEnd = performance.now()
+  console.log(`[CRUD-D Client] Pagination calculation took ${(paginationEnd - paginationStart).toFixed(2)}ms`)
 
   return (
     <div className="space-y-4">
