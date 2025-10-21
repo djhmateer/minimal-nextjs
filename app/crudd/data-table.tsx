@@ -14,19 +14,38 @@ interface DataTableProps {
 
 const ITEMS_PER_PAGE = 15
 
+// Global timing marker for script execution
+if (typeof window !== 'undefined') {
+  (window as any).__cruddClientScriptStart = performance.now()
+  console.log('[CRUD-D Client] Script loaded at:', performance.now().toFixed(2) + 'ms since page navigation')
+}
+
 export function DataTable({ data }: DataTableProps) {
   const componentStart = performance.now()
-  console.log('[CRUD-D Client] DataTable component START')
-  console.log(`[CRUD-D Client] Received ${data.length} products`)
+  const scriptLoadTime = typeof window !== 'undefined' ? (window as any).__cruddClientScriptStart : 0
+
+  console.log('[CRUD-D Client] ==== TIMING BREAKDOWN ====')
+  console.log(`[CRUD-D Client] Component first called at: ${componentStart.toFixed(2)}ms since navigation`)
+  console.log(`[CRUD-D Client] Time from script load to component: ${(componentStart - scriptLoadTime).toFixed(2)}ms`)
+  console.log(`[CRUD-D Client] Received ${data.length} products (${(JSON.stringify(data).length / 1024 / 1024).toFixed(2)}MB)`)
 
   const [formData, setFormData] = useState<Product | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
 
-  // Track initial mount/hydration
+  // Track initial mount/hydration and rendering complete
   useEffect(() => {
-    const componentEnd = performance.now()
-    console.log(`[CRUD-D Client] DataTable mounted/hydrated in ${(componentEnd - componentStart).toFixed(2)}ms`)
+    const mountEnd = performance.now()
+    console.log(`[CRUD-D Client] Component mounted at: ${mountEnd.toFixed(2)}ms since navigation`)
+    console.log(`[CRUD-D Client] Mount/hydration took: ${(mountEnd - componentStart).toFixed(2)}ms`)
+
+    // Use requestIdleCallback to detect when React is done with all work
+    requestIdleCallback(() => {
+      const idleTime = performance.now()
+      console.log(`[CRUD-D Client] React idle at: ${idleTime.toFixed(2)}ms since navigation`)
+      console.log(`[CRUD-D Client] Total client-side time: ${(idleTime - scriptLoadTime).toFixed(2)}ms`)
+      console.log('[CRUD-D Client] ==== END TIMING ====')
+    })
   }, [])
 
   // Calculate pagination
@@ -36,7 +55,10 @@ export function DataTable({ data }: DataTableProps) {
   const endIndex = startIndex + ITEMS_PER_PAGE
   const currentData = data.slice(startIndex, endIndex)
   const paginationEnd = performance.now()
-  console.log(`[CRUD-D Client] Pagination calculation took ${(paginationEnd - paginationStart).toFixed(2)}ms`)
+
+  if (paginationEnd - paginationStart > 1) {
+    console.log(`[CRUD-D Client] Pagination slice took ${(paginationEnd - paginationStart).toFixed(2)}ms`)
+  }
 
   return (
     <div className="space-y-4">
