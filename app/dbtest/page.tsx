@@ -1,4 +1,4 @@
-import { Pool } from 'pg';
+import { Client } from 'pg';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,7 +27,7 @@ export default async function Dbtest() {
         );
     }
 
-    const pool = new Pool({
+    const client = new Client({
         user: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
         host: process.env.POSTGRES_HOST,
@@ -40,20 +40,22 @@ export default async function Dbtest() {
     let error = null;
 
     try {
-        const tablesResult = await pool.query(
+        await client.connect();
+
+        const tablesResult = await client.query(
             "SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname = 'public'"
         );
         tables = tablesResult.rows;
         console.log('Tables:', tables);
 
-        const usersResult = await pool.query('SELECT * FROM users');
+        const usersResult = await client.query('SELECT * FROM users');
         users = usersResult.rows;
         console.log('Users:', users);
     } catch (err) {
         error = err instanceof Error ? err.message : 'Unknown error';
         console.error('Database error:', error);
     } finally {
-        await pool.end();
+        await client.end();
     }
 
     return (
