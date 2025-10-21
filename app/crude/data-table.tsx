@@ -10,17 +10,19 @@ import { Label } from "@/components/ui/label"
 import { Product } from "./page"
 
 interface DataTableProps {
-  data: Product[]
-  currentPage: number
-  totalPages: number
-  totalCount: number
+  data: Product[]           // Current page of products (already paginated from server)
+  currentPage: number       // Current page number (from URL ?page=2)
+  totalPages: number        // Total number of pages
+  totalCount: number        // Total number of products in database
 }
 
+// Client Component: displays products table with pagination controls and edit modal
 export function DataTable({ data, currentPage, totalPages, totalCount }: DataTableProps) {
   const router = useRouter()
   const [formData, setFormData] = useState<Product | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
+  // Navigate to different page by updating URL query param (?page=X)
   const goToPage = (page: number) => {
     router.push(`/crude?page=${page}`)
   }

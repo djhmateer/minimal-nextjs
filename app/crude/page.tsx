@@ -5,8 +5,9 @@ export const dynamic = 'force-dynamic'
 
 const ITEMS_PER_PAGE = 20
 
+// Server Component: reads URL params (?page=2) and fetches paginated data from database
 export default async function CrudPageE({
-  searchParams,
+  searchParams, // Note: "searchParams" is Next.js convention for URL query params (not related to searching)
 }: {
   searchParams: Promise<{ page?: string }>
 }) {
@@ -39,7 +40,8 @@ export type Product = {
   lastChecked: string
 }
 
-// Server-side paginated query: fetches only requested page from database
+// Fetches a single page of products from PostgreSQL using LIMIT/OFFSET
+// Returns both the products array and total count for pagination UI
 export async function getProducts(page: number = 1, limit: number = 100): Promise<{ products: Product[], totalCount: number }> {
   if (!process.env.POSTGRES_USER || !process.env.POSTGRES_PASSWORD || !process.env.POSTGRES_HOST || !process.env.POSTGRES_DATABASE) {
     throw new Error('Missing required PostgreSQL environment variables.');
@@ -57,7 +59,8 @@ export async function getProducts(page: number = 1, limit: number = 100): Promis
     await client.connect()
 
     const countResult = await client.query('SELECT COUNT(*) FROM products')
-    const totalCount = parseInt(countResult.rows[0].count, 10)
+    // const totalCount = parseInt(countResult.rows[0].count, 10)
+    const totalCount = parseInt(countResult.rows[0].count)
 
     const offset = (page - 1) * limit
     const result = await client.query(
