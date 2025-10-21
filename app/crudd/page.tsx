@@ -56,11 +56,14 @@ export type Product = {
  * Database connection uses environment variables from .env.development or .env.production
  */
 export async function getProducts(): Promise<Product[]> {
+  const totalStart = performance.now()
+
   // Validate required environment variables
   if (!process.env.POSTGRES_USER || !process.env.POSTGRES_PASSWORD || !process.env.POSTGRES_HOST || !process.env.POSTGRES_DATABASE) {
     throw new Error('Missing required PostgreSQL environment variables. Check .env.development (dev) or .env.production (prod) file.');
   }
 
+  const clientCreateStart = performance.now()
   const client = new Client({
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
@@ -68,22 +71,25 @@ export async function getProducts(): Promise<Product[]> {
     database: process.env.POSTGRES_DATABASE,
     port: parseInt(process.env.POSTGRES_PORT || '5432'),
   })
+  const clientCreateEnd = performance.now()
+  console.log(`[CRUD-D] Client created in ${(clientCreateEnd - clientCreateStart).toFixed(2)}ms`)
 
   try {
+    const connectStart = performance.now()
     await client.connect()
-    console.log('[CRUD-D] Fetching products from database...')
+    const connectEnd = performance.now()
+    console.log(`[CRUD-D] Connected to database in ${(connectEnd - connectStart).toFixed(2)}ms`)
 
     // Query all products ordered by id
-    const startTime = performance.now()
+    const queryStart = performance.now()
     const result = await client.query(
       'SELECT id, name, category, price, status, quantity, last_checked FROM products ORDER BY id'
     )
-    const endTime = performance.now()
-    const duration = (endTime - startTime).toFixed(2)
-
-    console.log(`[CRUD-D] Fetched ${result.rows.length} products from database in ${duration}ms`)
+    const queryEnd = performance.now()
+    console.log(`[CRUD-D] Query executed in ${(queryEnd - queryStart).toFixed(2)}ms - fetched ${result.rows.length} rows`)
 
     // Map database rows to Product type
+    const mapStart = performance.now()
     const products: Product[] = result.rows.map(row => ({
       id: String(row.id),             // Convert SERIAL id to string
       name: row.name,
@@ -93,12 +99,20 @@ export async function getProducts(): Promise<Product[]> {
       quantity: row.quantity,
       lastChecked: new Date(row.last_checked).toISOString(), // Convert TIMESTAMP to ISO string
     }))
+    const mapEnd = performance.now()
+    console.log(`[CRUD-D] Data mapping completed in ${(mapEnd - mapStart).toFixed(2)}ms`)
+
+    const totalEnd = performance.now()
+    console.log(`[CRUD-D] TOTAL getProducts() time: ${(totalEnd - totalStart).toFixed(2)}ms`)
 
     return products
   } catch (error) {
     console.error('[CRUD-D] Database error:', error)
     throw error
   } finally {
+    const disconnectStart = performance.now()
     await client.end()
+    const disconnectEnd = performance.now()
+    console.log(`[CRUD-D] Disconnected in ${(disconnectEnd - disconnectStart).toFixed(2)}ms`)
   }
 }
