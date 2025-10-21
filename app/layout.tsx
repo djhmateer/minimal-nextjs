@@ -73,7 +73,8 @@ export default function RootLayout({
                 <Link href="/crud" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 and 4. tasks crud</Link>
                 <Link href="/crudb" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 3 4. tasks crudb</Link>
                 <Link href="/crudc" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 3 4. tasks crudc</Link>
-                <Link href="/crudd" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 3 4. tasks crudd</Link>
+                <Link href="/crudd" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 3 4. tasks crudd (1million rows)</Link>
+                <Link href="/crude" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 3 4. tasks crudd (pagination)</Link>
               </div>
             </nav>
           </div>
