@@ -74,11 +74,14 @@ export async function getProducts(): Promise<Product[]> {
     console.log('[CRUD-D] Fetching products from database...')
 
     // Query all products ordered by id
+    const startTime = performance.now()
     const result = await client.query(
       'SELECT id, name, category, price, status, quantity, last_checked FROM products ORDER BY id'
     )
+    const endTime = performance.now()
+    const duration = (endTime - startTime).toFixed(2)
 
-    console.log(`[CRUD-D] Fetched ${result.rows.length} products from database`)
+    console.log(`[CRUD-D] Fetched ${result.rows.length} products from database in ${duration}ms`)
 
     // Map database rows to Product type
     const products: Product[] = result.rows.map(row => ({
