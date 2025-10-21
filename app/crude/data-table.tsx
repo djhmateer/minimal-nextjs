@@ -22,34 +22,27 @@ export function DataTable({ data, currentPage, totalPages, totalCount, itemsPerP
   const [formData, setFormData] = useState<Product | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
-  // Server-side pagination - data is already the current page
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const endIndex = Math.min(startIndex + itemsPerPage, totalCount)
-
   const goToPage = (page: number) => {
     router.push(`/crude?page=${page}`)
   }
 
   return (
     <div className="space-y-4">
-      {/* Success Message */}
       {successMessage && (
         <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
           {successMessage}
         </div>
       )}
 
-      {/* Pagination Info */}
       <div className="flex items-center justify-between">
         <div className="text-sm text-gray-600">
-          Showing {startIndex + 1} to {endIndex} of {totalCount.toLocaleString()} products
+          {totalCount.toLocaleString()} total products
         </div>
         <div className="text-sm text-gray-600">
           Page {currentPage} of {totalPages.toLocaleString()}
         </div>
       </div>
 
-      {/* Table */}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -60,10 +53,9 @@ export function DataTable({ data, currentPage, totalPages, totalCount, itemsPerP
               <TableHead>Price in £</TableHead>
               <TableHead>Quantity</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Last Time Checked Stock</TableHead>
+              <TableHead>Last Checked</TableHead>
             </TableRow>
           </TableHeader>
-
           <TableBody>
             {data.map((product) => (
               <TableRow
@@ -84,7 +76,6 @@ export function DataTable({ data, currentPage, totalPages, totalCount, itemsPerP
         </Table>
       </div>
 
-      {/* Pagination Controls */}
       <div className="flex items-center justify-center gap-2">
         <Button
           variant="outline"
@@ -138,7 +129,6 @@ export function DataTable({ data, currentPage, totalPages, totalCount, itemsPerP
               <Label htmlFor="name">Product Name</Label>
               <Input
                 id="name"
-                autoComplete="off"
                 value={formData?.name || ""}
                 onChange={(e) => setFormData({ ...formData!, name: e.target.value })}
               />
@@ -148,7 +138,6 @@ export function DataTable({ data, currentPage, totalPages, totalCount, itemsPerP
               <Label htmlFor="category">Category</Label>
               <Input
                 id="category"
-                autoComplete="off"
                 value={formData?.category || ""}
                 onChange={(e) => setFormData({ ...formData!, category: e.target.value })}
               />
@@ -160,7 +149,6 @@ export function DataTable({ data, currentPage, totalPages, totalCount, itemsPerP
                 id="price"
                 type="number"
                 step="0.01"
-                autoComplete="off"
                 value={formData?.price || ""}
                 onChange={(e) => setFormData({ ...formData!, price: parseFloat(e.target.value) || 0 })}
               />
@@ -171,7 +159,6 @@ export function DataTable({ data, currentPage, totalPages, totalCount, itemsPerP
               <Input
                 id="quantity"
                 type="number"
-                autoComplete="off"
                 value={formData?.quantity || ""}
                 onChange={(e) => setFormData({ ...formData!, quantity: parseInt(e.target.value) || 0 })}
               />
@@ -181,7 +168,6 @@ export function DataTable({ data, currentPage, totalPages, totalCount, itemsPerP
               <Label htmlFor="status">Status</Label>
               <select
                 id="status"
-                autoComplete="off"
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 value={formData?.status || ""}
                 onChange={(e) => setFormData({ ...formData!, status: e.target.value as Product["status"] })}
