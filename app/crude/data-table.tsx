@@ -14,10 +14,9 @@ interface DataTableProps {
   currentPage: number
   totalPages: number
   totalCount: number
-  itemsPerPage: number
 }
 
-export function DataTable({ data, currentPage, totalPages, totalCount, itemsPerPage }: DataTableProps) {
+export function DataTable({ data, currentPage, totalPages, totalCount }: DataTableProps) {
   const router = useRouter()
   const [formData, setFormData] = useState<Product | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)

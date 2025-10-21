@@ -24,7 +24,6 @@ export default async function CrudPageE({
         currentPage={currentPage}
         totalPages={totalPages}
         totalCount={totalCount}
-        itemsPerPage={ITEMS_PER_PAGE}
       />
     </div>
   )
