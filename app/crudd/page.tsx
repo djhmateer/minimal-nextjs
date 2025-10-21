@@ -1,5 +1,5 @@
 import { DataTable } from "./data-table"
-import { Pool } from 'pg'
+import { Client } from 'pg'
 
 // Force dynamic rendering - page is server-rendered on each request
 export const dynamic = 'force-dynamic'
@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
  * CRUD-D Page - PostgreSQL Database Integration
  *
  * Purpose: Test CRUD operations with 208 product rows from PostgreSQL
- * 1. Database persistence with pg Pool
+ * 1. Database persistence with pg Client
  * 2. Server-side data fetching in Server Component
  *
  * Architecture:
@@ -61,7 +61,7 @@ export async function getProducts(): Promise<Product[]> {
     throw new Error('Missing required PostgreSQL environment variables. Check .env.development (dev) or .env.production (prod) file.');
   }
 
-  const pool = new Pool({
+  const client = new Client({
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
     host: process.env.POSTGRES_HOST,
@@ -70,10 +70,11 @@ export async function getProducts(): Promise<Product[]> {
   })
 
   try {
+    await client.connect()
     console.log('[CRUD-D] Fetching products from database...')
 
     // Query all products ordered by id
-    const result = await pool.query(
+    const result = await client.query(
       'SELECT id, name, category, price, status, quantity, last_checked FROM products ORDER BY id'
     )
 
@@ -95,6 +96,6 @@ export async function getProducts(): Promise<Product[]> {
     console.error('[CRUD-D] Database error:', error)
     throw error
   } finally {
-    await pool.end()
+    await client.end()
   }
 }
