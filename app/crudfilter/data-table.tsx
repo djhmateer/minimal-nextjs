@@ -14,28 +14,81 @@ interface DataTableProps {
   currentPage: number       // Current page number (from URL ?page=2)
   totalPages: number        // Total number of pages
   totalCount: number        // Total number of products in database
+  initialSearch: string     // Initial search query from URL
 }
 
-// Client Component: displays products table with pagination controls and edit modal
-export function DataTable({ data, currentPage, totalPages, totalCount }: DataTableProps) {
+// Client Component: displays products table with search, pagination controls and edit modal
+export function DataTable({ data, currentPage, totalPages, totalCount, initialSearch }: DataTableProps) {
   const router = useRouter()
   const [formData, setFormData] = useState<Product | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [searchInput, setSearchInput] = useState(initialSearch)
 
-  // Navigate to different page by updating URL query param (?page=X)
+  // Navigate to different page by updating URL query param (?page=X&search=Y)
   const goToPage = (page: number) => {
-    router.push(`/crude?page=${page}`)
+    const params = new URLSearchParams()
+    params.set('page', page.toString())
+    if (initialSearch) {
+      params.set('search', initialSearch)
+    }
+    router.push(`/crudfilter?${params.toString()}`)
+  }
+
+  // Handle search form submission
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    const params = new URLSearchParams()
+    if (searchInput.trim()) {
+      params.set('search', searchInput.trim())
+    }
+    params.set('page', '1') // Reset to page 1 on new search
+    router.push(`/crudfilter?${params.toString()}`)
+  }
+
+  // Clear search and go back to full list
+  const clearSearch = () => {
+    setSearchInput('')
+    router.push('/crudfilter')
   }
 
   return (
-    <div className="space-y-4">
+    <div className="max-w-full mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">CRUD Filter - Products ({totalCount.toLocaleString()} total rows)</h1>
+
+      {/* Search form */}
+      <form onSubmit={handleSearch} className="mb-6">
+        <div className="flex gap-2">
+          <Input
+            type="text"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            placeholder="Search by product name..."
+            className="flex-1"
+            autoComplete="off"
+          />
+          <Button type="submit">
+            Search
+          </Button>
+          {initialSearch && (
+            <Button type="button" variant="outline" onClick={clearSearch}>
+              Clear
+            </Button>
+          )}
+        </div>
+        {initialSearch && (
+          <p className="mt-2 text-sm text-gray-600">
+            Searching for: <strong>{initialSearch}</strong>
+          </p>
+        )}
+      </form>
+
       {successMessage && (
-        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
           {successMessage}
         </div>
       )}
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-4">
         <div className="text-sm text-gray-600">
           {totalCount.toLocaleString()} total products
         </div>
@@ -44,7 +97,7 @@ export function DataTable({ data, currentPage, totalPages, totalCount }: DataTab
         </div>
       </div>
 
-      <div className="rounded-md border">
+      <div className="rounded-md border mb-4">
         <Table>
           <TableHeader>
             <TableRow>

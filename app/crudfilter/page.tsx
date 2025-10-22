@@ -5,28 +5,27 @@ export const dynamic = 'force-dynamic'
 
 const ITEMS_PER_PAGE = 20
 
-// Server Component: reads URL params (?page=2) and fetches paginated data from database
-export default async function CrudPageE({
-  searchParams, // Note: "searchParams" is Next.js convention for URL query params (not related to searching)
+// Server Component: fetches paginated and filtered data from database
+export default async function CrudFilterPage({
+  searchParams,
 }: {
-  searchParams: Promise<{ page?: string }>
+  searchParams: Promise<{ page?: string; search?: string }>
 }) {
   const params = await searchParams
   const currentPage = parseInt(params.page || '1', 10)
+  const searchQuery = params.search?.trim() || ''
 
-  const { products, totalCount } = await getProducts(currentPage, ITEMS_PER_PAGE)
+  const { products, totalCount } = await getProducts(currentPage, ITEMS_PER_PAGE, searchQuery)
   const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE)
 
   return (
-    <div className="max-w-full mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">CRUD-E - Products - Database ({totalCount.toLocaleString()} total rows)</h1>
-      <DataTable
-        data={products}
-        currentPage={currentPage}
-        totalPages={totalPages}
-        totalCount={totalCount}
-      />
-    </div>
+    <DataTable
+      data={products}
+      currentPage={currentPage}
+      totalPages={totalPages}
+      totalCount={totalCount}
+      initialSearch={searchQuery}
+    />
   )
 }
 
@@ -42,19 +41,50 @@ export type Product = {
 
 // Fetches a single page of products from PostgreSQL using LIMIT/OFFSET
 // Returns both the products array and total count for pagination UI
-export async function getProducts(page: number = 1, limit: number = 100): Promise<{ products: Product[], totalCount: number }> {
+// Uses parameterized queries to prevent SQL injection
+export async function getProducts(
+  page: number = 1,
+  limit: number = 20,
+  searchQuery: string = ''
+): Promise<{ products: Product[], totalCount: number }> {
   const client = createPgClient()
 
   try {
     await client.connect()
 
-    const countResult = await client.query('SELECT COUNT(*) FROM products')
+    const offset = (page - 1) * limit
+
+    // Build queries with optional WHERE clause for filtering
+    // IMPORTANT: Uses parameterized queries ($1, $2, etc.) to prevent SQL injection
+    let countQuery = 'SELECT COUNT(*) FROM products'
+    let selectQuery = 'SELECT id, name, category, price, status, quantity, last_checked FROM products'
+    const queryParams: (string | number)[] = []
+
+    if (searchQuery) {
+      // ILIKE is case-insensitive pattern matching in PostgreSQL
+      // $1 is a parameter placeholder that pg library will safely escape
+      countQuery += ' WHERE name ILIKE $1'
+      selectQuery += ' WHERE name ILIKE $1'
+      // Wrap search term with % for partial matching (e.g., "laptop" matches "Gaming Laptop")
+      queryParams.push(`%${searchQuery}%`)
+    }
+
+    // Add ORDER BY, LIMIT, and OFFSET with correct parameter numbers
+    const limitParam = queryParams.length + 1
+    const offsetParam = queryParams.length + 2
+    selectQuery += ` ORDER BY id LIMIT $${limitParam} OFFSET $${offsetParam}`
+
+    // Execute count query (for pagination total)
+    const countResult = await client.query(
+      countQuery,
+      searchQuery ? [queryParams[0]] : []
+    )
     const totalCount = parseInt(countResult.rows[0].count)
 
-    const offset = (page - 1) * limit
+    // Execute select query (for actual data)
     const result = await client.query(
-      'SELECT id, name, category, price, status, quantity, last_checked FROM products ORDER BY id LIMIT $1 OFFSET $2',
-      [limit, offset]
+      selectQuery,
+      [...queryParams, limit, offset]
     )
 
     const products: Product[] = result.rows.map(row => ({
@@ -69,7 +99,7 @@ export async function getProducts(page: number = 1, limit: number = 100): Promis
 
     return { products, totalCount }
   } catch (error) {
-    console.error('[CRUD-E] Database error:', error)
+    console.error('[CRUD-Filter] Database error:', error)
     throw error
   } finally {
     await client.end()
