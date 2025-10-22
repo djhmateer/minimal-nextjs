@@ -1,18 +1,12 @@
 // dev: pnpm seed:products
 // prod: NODE_ENV=production pnpm seed:products
 
-import { Client } from 'pg';
 import { config } from 'dotenv';
+import { createPgClient } from '../lib/db';
 
 config({ path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development' });
 
-const client = new Client({
-  user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
-  host: process.env.POSTGRES_HOST,
-  database: process.env.POSTGRES_DATABASE,
-  port: parseInt(process.env.POSTGRES_PORT || '5432'),
-});
+const client = createPgClient();
 
 const productNames = [
   "Premium Wireless Noise-Cancelling Headphones with Bluetooth 5.0 Technology",
