@@ -59,7 +59,6 @@ export async function getProducts(page: number = 1, limit: number = 100): Promis
     await client.connect()
 
     const countResult = await client.query('SELECT COUNT(*) FROM products')
-    // const totalCount = parseInt(countResult.rows[0].count, 10)
     const totalCount = parseInt(countResult.rows[0].count)
 
     const offset = (page - 1) * limit
