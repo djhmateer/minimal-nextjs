@@ -69,6 +69,7 @@ export default function RootLayout({
                 <Link href="/crud" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 and 4. tasks crud (modal)</Link>
                 <Link href="/crudc" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 3 4. tasks crudc (208 rows)</Link>
                 <Link href="/crude" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 3 4. tasks crude (1m rows pagination)</Link>
+                <Link href="/crudfilter" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 3 4. crudfilter (1m rows pagination, filtering)</Link>
               </div>
             </nav>
           </div>
