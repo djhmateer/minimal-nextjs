@@ -19,38 +19,6 @@ interface DataTableProps {
   sortOrder: 'asc' | 'desc' // Current sort order
 }
 
-// Sortable column header component with arrow indicator
-function SortableHeader({
-  column,
-  label,
-  sortBy,
-  sortOrder,
-  onClick,
-}: {
-  column: string
-  label: string
-  sortBy: string
-  sortOrder: 'asc' | 'desc'
-  onClick: (column: string) => void
-}) {
-  const isActive = sortBy === column
-  return (
-    <TableHead
-      className="cursor-pointer select-none hover:bg-gray-100"
-      onClick={() => onClick(column)}
-    >
-      <div className="flex items-center gap-1">
-        {label}
-        {isActive && (
-          <span className="text-xs">
-            {sortOrder === 'asc' ? '↑' : '↓'}
-          </span>
-        )}
-      </div>
-    </TableHead>
-  )
-}
-
 // Client Component: displays products table with search, pagination controls and edit modal
 export function DataTable({ data, currentPage, totalPages, totalCount, initialSearch, sortBy, sortOrder }: DataTableProps) {
   const router = useRouter()
@@ -107,6 +75,38 @@ export function DataTable({ data, currentPage, totalPages, totalCount, initialSe
     params.set('sortBy', sortBy)
     params.set('sortOrder', sortOrder)
     router.push(`/crudfiltersort?${params.toString()}`)
+  }
+
+  // Sortable column header component with arrow indicator
+  function SortableHeader({
+    column,
+    label,
+    sortBy,
+    sortOrder,
+    onClick,
+  }: {
+    column: string
+    label: string
+    sortBy: string
+    sortOrder: 'asc' | 'desc'
+    onClick: (column: string) => void
+  }) {
+    const isActive = sortBy === column
+    return (
+      <TableHead
+        className="cursor-pointer select-none hover:bg-gray-100"
+        onClick={() => onClick(column)}
+      >
+        <div className="flex items-center gap-1">
+          {label}
+          {isActive && (
+            <span className="text-xs">
+              {sortOrder === 'asc' ? '↑' : '↓'}
+            </span>
+          )}
+        </div>
+      </TableHead>
+    )
   }
 
   return (
@@ -188,6 +188,7 @@ export function DataTable({ data, currentPage, totalPages, totalCount, initialSe
         </Table>
       </div>
 
+      {/* Buttons at bottom for pagination */}
       <div className="flex items-center justify-center gap-2">
         <Button
           variant="outline"
