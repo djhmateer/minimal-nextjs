@@ -15,23 +15,76 @@ interface DataTableProps {
   totalPages: number        // Total number of pages
   totalCount: number        // Total number of products in database
   initialSearch: string     // Initial search query from URL
+  sortBy: string            // Current sort column
+  sortOrder: 'asc' | 'desc' // Current sort order
+}
+
+// Sortable column header component with arrow indicator
+function SortableHeader({
+  column,
+  label,
+  sortBy,
+  sortOrder,
+  onClick,
+}: {
+  column: string
+  label: string
+  sortBy: string
+  sortOrder: 'asc' | 'desc'
+  onClick: (column: string) => void
+}) {
+  const isActive = sortBy === column
+  return (
+    <TableHead
+      className="cursor-pointer select-none hover:bg-gray-100"
+      onClick={() => onClick(column)}
+    >
+      <div className="flex items-center gap-1">
+        {label}
+        {isActive && (
+          <span className="text-xs">
+            {sortOrder === 'asc' ? '↑' : '↓'}
+          </span>
+        )}
+      </div>
+    </TableHead>
+  )
 }
 
 // Client Component: displays products table with search, pagination controls and edit modal
-export function DataTable({ data, currentPage, totalPages, totalCount, initialSearch }: DataTableProps) {
+export function DataTable({ data, currentPage, totalPages, totalCount, initialSearch, sortBy, sortOrder }: DataTableProps) {
   const router = useRouter()
   const [formData, setFormData] = useState<Product | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [searchInput, setSearchInput] = useState(initialSearch)
 
-  // Navigate to different page by updating URL query param (?page=X&search=Y)
+  // Navigate to different page by updating URL query param (?page=X&search=Y&sortBy=Z&sortOrder=asc)
   const goToPage = (page: number) => {
     const params = new URLSearchParams()
     params.set('page', page.toString())
     if (initialSearch) {
       params.set('search', initialSearch)
     }
-    router.push(`/crudfilter?${params.toString()}`)
+    params.set('sortBy', sortBy)
+    params.set('sortOrder', sortOrder)
+    router.push(`/crudfiltersort?${params.toString()}`)
+  }
+
+  // Handle column header click to sort
+  const handleSort = (column: string) => {
+    const params = new URLSearchParams()
+    params.set('page', '1') // Reset to page 1 on sort change
+    if (initialSearch) {
+      params.set('search', initialSearch)
+    }
+    // Toggle sort order if clicking same column, otherwise default to asc
+    if (sortBy === column) {
+      params.set('sortOrder', sortOrder === 'asc' ? 'desc' : 'asc')
+    } else {
+      params.set('sortOrder', 'asc')
+    }
+    params.set('sortBy', column)
+    router.push(`/crudfiltersort?${params.toString()}`)
   }
 
   // Handle search form submission
@@ -42,18 +95,23 @@ export function DataTable({ data, currentPage, totalPages, totalCount, initialSe
       params.set('search', searchInput.trim())
     }
     params.set('page', '1') // Reset to page 1 on new search
-    router.push(`/crudfilter?${params.toString()}`)
+    params.set('sortBy', sortBy)
+    params.set('sortOrder', sortOrder)
+    router.push(`/crudfiltersort?${params.toString()}`)
   }
 
   // Clear search and go back to full list
   const clearSearch = () => {
     setSearchInput('')
-    router.push('/crudfilter')
+    const params = new URLSearchParams()
+    params.set('sortBy', sortBy)
+    params.set('sortOrder', sortOrder)
+    router.push(`/crudfiltersort?${params.toString()}`)
   }
 
   return (
     <div className="max-w-full mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">CRUD Filter - Products ({totalCount.toLocaleString()} total rows)</h1>
+      <h1 className="text-3xl font-bold mb-8">CRUD Filter + Sort - Products ({totalCount.toLocaleString()} total rows)</h1>
 
       {/* Search form */}
       <form onSubmit={handleSearch} className="mb-6">
@@ -101,13 +159,13 @@ export function DataTable({ data, currentPage, totalPages, totalCount, initialSe
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>Product Name</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Price in £</TableHead>
-              <TableHead>Quantity</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Last Checked</TableHead>
+              <SortableHeader column="id" label="ID" sortBy={sortBy} sortOrder={sortOrder} onClick={handleSort} />
+              <SortableHeader column="name" label="Product Name" sortBy={sortBy} sortOrder={sortOrder} onClick={handleSort} />
+              <SortableHeader column="category" label="Category" sortBy={sortBy} sortOrder={sortOrder} onClick={handleSort} />
+              <SortableHeader column="price" label="Price in £" sortBy={sortBy} sortOrder={sortOrder} onClick={handleSort} />
+              <SortableHeader column="quantity" label="Quantity" sortBy={sortBy} sortOrder={sortOrder} onClick={handleSort} />
+              <SortableHeader column="status" label="Status" sortBy={sortBy} sortOrder={sortOrder} onClick={handleSort} />
+              <SortableHeader column="last_checked" label="Last Checked" sortBy={sortBy} sortOrder={sortOrder} onClick={handleSort} />
             </TableRow>
           </TableHeader>
           <TableBody>

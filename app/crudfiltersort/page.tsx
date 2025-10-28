@@ -9,13 +9,26 @@ const ITEMS_PER_PAGE = 20
 export default async function CrudFilterSortPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string; search?: string }>
+  searchParams: Promise<{
+    page?: string
+    search?: string
+    sortBy?: string
+    sortOrder?: 'asc' | 'desc'
+  }>
 }) {
   const params = await searchParams
   const currentPage = parseInt(params.page || '1', 10)
   const searchQuery = params.search?.trim() || ''
+  const sortBy = params.sortBy || 'id'
+  const sortOrder = params.sortOrder || 'asc'
 
-  const { products, totalCount } = await getProducts(currentPage, ITEMS_PER_PAGE, searchQuery)
+  const { products, totalCount } = await getProducts(
+    currentPage,
+    ITEMS_PER_PAGE,
+    searchQuery,
+    sortBy,
+    sortOrder
+  )
   const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE)
 
   return (
@@ -25,6 +38,8 @@ export default async function CrudFilterSortPage({
       totalPages={totalPages}
       totalCount={totalCount}
       initialSearch={searchQuery}
+      sortBy={sortBy}
+      sortOrder={sortOrder}
     />
   )
 }
@@ -45,7 +60,9 @@ export type Product = {
 export async function getProducts(
   page: number = 1,
   limit: number = 20,
-  searchQuery: string = ''
+  searchQuery: string = '',
+  sortBy: string = 'id',
+  sortOrder: 'asc' | 'desc' = 'asc'
   // returns a Promise resolving to an object with products array and totalCount
 ): Promise<{ products: Product[], totalCount: number }> {
   const client = createPgClient()
@@ -70,10 +87,15 @@ export async function getProducts(
       queryParams.push(`%${searchQuery}%`)
     }
 
+    // Whitelist allowed sort columns to prevent SQL injection
+    const allowedSortColumns = ['id', 'name', 'category', 'price', 'status', 'quantity', 'last_checked']
+    const safeColumn = allowedSortColumns.includes(sortBy) ? sortBy : 'id'
+    const safeOrder = sortOrder === 'desc' ? 'DESC' : 'ASC'
+
     // Add ORDER BY, LIMIT, and OFFSET with correct parameter numbers
     const limitParam = queryParams.length + 1
     const offsetParam = queryParams.length + 2
-    selectQuery += ` ORDER BY id LIMIT $${limitParam} OFFSET $${offsetParam}`
+    selectQuery += ` ORDER BY ${safeColumn} ${safeOrder} LIMIT $${limitParam} OFFSET $${offsetParam}`
 
     // Execute count query (for pagination total)
     const countResult = await client.query(
