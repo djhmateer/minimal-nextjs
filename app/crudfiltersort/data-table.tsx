@@ -155,7 +155,7 @@ export function DataTable({ data, currentPage, totalPages, totalCount, initialSe
         </div>
       </div>
 
-      <div className="rounded-md border mb-4">
+      <div className="rounded-md border mb-4 overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
