@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic'
 const ITEMS_PER_PAGE = 20
 
 // Server Component: fetches paginated and filtered data from database
-export default async function CrudFilterPage({
+export default async function CrudFilterSortPage({
   searchParams,
 }: {
   searchParams: Promise<{ page?: string; search?: string }>
