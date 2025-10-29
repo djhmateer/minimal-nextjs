@@ -1,3 +1,19 @@
+/**
+ * Better Auth Demo Page - Client Component Pattern
+ *
+ * PATTERN: 4. Client Component (Browser)
+ * - 'use client' directive = Runs in the browser
+ * - Has access to useState, useEffect, browser APIs
+ * - Interactive forms and real-time session updates
+ * - console.log appears in browser console
+ *
+ * This demonstrates email/password authentication with Better Auth:
+ * - Sign up new users
+ * - Sign in existing users
+ * - Display current session
+ * - Sign out functionality
+ */
+
 "use client";
 
 import { authClient } from "@/lib/auth-client";
@@ -66,7 +82,17 @@ export default function BetterAuthPage() {
 
   return (
     <div className="max-w-2xl mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-8">Better Auth Demo</h1>
+      <h1 className="text-3xl font-bold mb-4">Better Auth Demo</h1>
+
+      {/* Pattern indicator */}
+      <div className="mb-6 p-3 bg-blue-50 rounded-lg border border-blue-200">
+        <p className="text-sm text-blue-900">
+          <strong>Pattern:</strong> 4. Client Component (Browser) - <code className="bg-blue-100 px-1 rounded">'use client'</code>
+        </p>
+        <p className="text-xs text-blue-700 mt-1">
+          Interactive authentication with useState, form handling, and reactive session updates
+        </p>
+      </div>
 
       {/* Session Status */}
       <div className="mb-8 p-4 border rounded">
