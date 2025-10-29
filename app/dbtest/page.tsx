@@ -7,8 +7,9 @@ interface Table {
 }
 
 interface User {
-    id: number;
+    id: string;
     name: string;
+    email: string;
 }
 
 export default async function Dbtest() {
@@ -27,7 +28,7 @@ export default async function Dbtest() {
         tables = tablesResult.rows;
         console.log('Tables:', tables);
 
-        const usersResult = await pool.query('SELECT * FROM users');
+        const usersResult = await pool.query('SELECT * FROM "user"');
         users = usersResult.rows;
         console.log('Users:', users);
     } catch (err) {
@@ -71,7 +72,7 @@ export default async function Dbtest() {
                             ) : (
                                 users.map((user) => (
                                     <li key={user.id} className="bg-white border rounded p-2">
-                                        {user.id}. {user.name}
+                                        <strong>{user.name}</strong> ({user.email})
                                     </li>
                                 ))
                             )}
