@@ -2,11 +2,11 @@
 // prod: NODE_ENV=production pnpm seed:products
 
 import { config } from 'dotenv';
-import { createPgClient } from '../lib/db';
+import { getPool } from '../lib/db';
 
 config({ path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development' });
 
-const client = createPgClient();
+const pool = getPool();
 
 const productNames = [
   "Premium Wireless Noise-Cancelling Headphones with Bluetooth 5.0 Technology",
@@ -77,11 +77,9 @@ const statuses = ["in_stock", "low_stock", "out_of_stock"] as const;
 
 async function seed() {
   try {
-    await client.connect();
-
     // Drop and recreate table
-    await client.query('DROP TABLE IF EXISTS products');
-    await client.query(`
+    await pool.query('DROP TABLE IF EXISTS products');
+    await pool.query(`
       CREATE TABLE products (
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
@@ -122,7 +120,7 @@ async function seed() {
         idx += 6;
       }
 
-      await client.query(
+      await pool.query(
         `INSERT INTO products (name, category, price, status, quantity, last_checked) VALUES ${placeholders.join(', ')}`,
         values
       );
@@ -136,7 +134,7 @@ async function seed() {
     console.error('Error:', error);
     throw error;
   } finally {
-    await client.end();
+    await pool.end();
   }
 }
 

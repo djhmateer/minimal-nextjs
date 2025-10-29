@@ -1,5 +1,5 @@
 import { DataTable } from "./data-table"
-import { createPgClient } from '@/lib/db'
+import { getPool } from '@/lib/db'
 
 export const dynamic = 'force-dynamic'
 
@@ -48,11 +48,9 @@ export async function getProducts(
   searchQuery: string = ''
   // returns a Promise resolving to an object with products array and totalCount
 ): Promise<{ products: Product[], totalCount: number }> {
-  const client = createPgClient()
+  const pool = getPool()
 
   try {
-    await client.connect()
-
     const offset = (page - 1) * limit
 
     // Build queries with optional WHERE clause for filtering
@@ -76,14 +74,14 @@ export async function getProducts(
     selectQuery += ` ORDER BY id LIMIT $${limitParam} OFFSET $${offsetParam}`
 
     // Execute count query (for pagination total)
-    const countResult = await client.query(
+    const countResult = await pool.query(
       countQuery,
       searchQuery ? [queryParams[0]] : []
     )
     const totalCount = parseInt(countResult.rows[0].count)
 
     // Execute select query (for actual data)
-    const result = await client.query(
+    const result = await pool.query(
       selectQuery,
       [...queryParams, limit, offset]
     )
@@ -102,7 +100,5 @@ export async function getProducts(
   } catch (error) {
     console.error('[CRUD-Filter] Database error:', error)
     throw error
-  } finally {
-    await client.end()
   }
 }

@@ -1,4 +1,4 @@
-import { createPgClient } from '@/lib/db';
+import { getPool } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,23 +19,17 @@ export default async function Dbtest() {
     let error = null;
 
     try {
-        const client = createPgClient();
+        const pool = getPool();
 
-        try {
-            await client.connect();
+        const tablesResult = await pool.query(
+            "SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname = 'public'"
+        );
+        tables = tablesResult.rows;
+        console.log('Tables:', tables);
 
-            const tablesResult = await client.query(
-                "SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname = 'public'"
-            );
-            tables = tablesResult.rows;
-            console.log('Tables:', tables);
-
-            const usersResult = await client.query('SELECT * FROM users');
-            users = usersResult.rows;
-            console.log('Users:', users);
-        } finally {
-            await client.end();
-        }
+        const usersResult = await pool.query('SELECT * FROM users');
+        users = usersResult.rows;
+        console.log('Users:', users);
     } catch (err) {
         error = err instanceof Error ? err.message : 'Unknown error';
         console.error('Database error:', error);

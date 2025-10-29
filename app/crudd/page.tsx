@@ -1,5 +1,5 @@
 import { DataTable } from "./data-table"
-import { createPgClient } from '@/lib/db'
+import { getPool } from '@/lib/db'
 
 export const dynamic = 'force-dynamic'
 
@@ -25,12 +25,10 @@ export type Product = {
 }
 
 export async function getProducts(): Promise<Product[]> {
-  const client = createPgClient()
+  const pool = getPool()
 
   try {
-    await client.connect()
-
-    const result = await client.query(
+    const result = await pool.query(
       'SELECT id, name, category, price, status, quantity, last_checked FROM products ORDER BY id'
     )
 
@@ -48,7 +46,5 @@ export async function getProducts(): Promise<Product[]> {
   } catch (error) {
     console.error('[CRUD-D] Database error:', error)
     throw error
-  } finally {
-    await client.end()
   }
 }

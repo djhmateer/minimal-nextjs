@@ -1,5 +1,5 @@
 import { DataTable } from "./data-table"
-import { createPgClient } from '@/lib/db'
+import { getPool } from '@/lib/db'
 
 export const dynamic = 'force-dynamic'
 
@@ -43,16 +43,14 @@ export type Product = {
 // Fetches a single page of products from PostgreSQL using LIMIT/OFFSET
 // Returns both the products array and total count for pagination UI
 export async function getProducts(page: number = 1, limit: number = 100): Promise<{ products: Product[], totalCount: number }> {
-  const client = createPgClient()
+  const pool = getPool()
 
   try {
-    await client.connect()
-
-    const countResult = await client.query('SELECT COUNT(*) FROM products')
+    const countResult = await pool.query('SELECT COUNT(*) FROM products')
     const totalCount = parseInt(countResult.rows[0].count)
 
     const offset = (page - 1) * limit
-    const result = await client.query(
+    const result = await pool.query(
       'SELECT id, name, category, price, status, quantity, last_checked FROM products ORDER BY id LIMIT $1 OFFSET $2',
       [limit, offset]
     )
@@ -71,7 +69,5 @@ export async function getProducts(page: number = 1, limit: number = 100): Promis
   } catch (error) {
     console.error('[CRUD-E] Database error:', error)
     throw error
-  } finally {
-    await client.end()
   }
 }
