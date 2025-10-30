@@ -112,7 +112,11 @@ export async function signInAction(
 
   // Redirect outside try-catch (throws NEXT_REDIRECT which is not a real error)
   // Redirect to callback URL if provided, otherwise go to home
-  const redirectUrl = callbackUrl || '/';
+  // Add loggedIn query parameter to trigger success toast
+  const baseUrl = callbackUrl || '/';
+  const redirectUrl = baseUrl.includes('?')
+    ? `${baseUrl}&loggedIn=true`
+    : `${baseUrl}?loggedIn=true`;
   console.log('[signInAction] Redirecting to:', redirectUrl);
   redirect(redirectUrl);
 }

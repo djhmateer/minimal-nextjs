@@ -1,3 +1,5 @@
+import { LoginSuccessToast } from './login-success-toast';
+
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
@@ -5,6 +7,8 @@ export default async function Home() {
 
   return (
     <div className="max-w-3xl mx-auto pt-8 px-8">
+      <LoginSuccessToast />
+
       {/* Page title */}
       <h1 className="text-3xl font-bold mb-6">Next.js App Router Patterns</h1>
 
