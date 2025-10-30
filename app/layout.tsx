@@ -5,6 +5,9 @@ import Link from "next/link";
 import { readFileSync } from "fs";
 import { join } from "path";
 import { Toaster } from "sonner";
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
+import { SignOutButton } from './sign-out-button';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,13 +34,18 @@ function getGitInfo() {
   }
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   // an any type because the structure of git-info.json can vary
   const gitInfo = getGitInfo();
+
+  // Check authentication status
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
   return (
     <html lang="en">
@@ -51,28 +59,58 @@ export default function RootLayout({
           {/* <div className="max-w-4xl mx-auto px-4 py-4"> */}
           <div className="max-w-8xl mx-auto px-4 py-4">
             {/* Navigation: flexbox, vertically centered items, 24px horizontal gap */}
-            <nav className="flex items-center space-x-6">
-              <Link href="/" className="text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors" prefetch={false}>
-                Minimal Next.js
-              </Link>
-              <div className="flex space-x-4">
-                <Link href="/" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>1.Home (Static SSG) </Link>
-                <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2. (Dynamic SSR) </Link>
-                <Link href="/client" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>1 and 4. Browser Client Component (Static SSG) </Link>
-                <Link href="/posts" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2. Posts Server Component (Dynamic SSR) </Link>
-                <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 and 4. Contact Component inside Dynamic Server Component</Link>
-                <Link href="/dbtest" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2.Dbtest</Link>
-                {/* <Link href="/foo" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>404</Link> */}
-                {/* <Link href="/shadcn" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2.shadcn</Link> */}
-                <Link href="/shadcnzod" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>1. 3 and 4.shadcnzod (standard form)</Link>
-                <Link href="/shadcngrid" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 and 4. shadcngrid (standard grid - read db)</Link>
-                <Link href="/crud" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 and 4. tasks crud (modal)</Link>
-                <Link href="/crudc" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 3 4. tasks crudc (208 rows)</Link>
-                <Link href="/crude" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 3 4. tasks crude (1m rows pagination)</Link>
-                <Link href="/crudfilter" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 3 4. crudfilter (1m rows pagination, filtering)</Link>
-                <Link href="/crudfiltersort" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>crudfiltersort</Link>
-                <Link href="/betterauth" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>betterauth</Link>
-                <Link href="/betterauthserver" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>betterauthserver</Link>
+            <nav className="flex items-center justify-between">
+              <div className="flex items-center space-x-6">
+                <Link href="/" className="text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors" prefetch={false}>
+                  Minimal Next.js
+                </Link>
+                <div className="flex space-x-4">
+                  <Link href="/" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>1.Home (Static SSG) </Link>
+                  <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2. (Dynamic SSR) </Link>
+                  <Link href="/client" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>1 and 4. Browser Client Component (Static SSG) </Link>
+                  <Link href="/posts" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2. Posts Server Component (Dynamic SSR) </Link>
+                  <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 and 4. Contact Component inside Dynamic Server Component</Link>
+                  <Link href="/dbtest" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2.Dbtest</Link>
+                  {/* <Link href="/foo" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>404</Link> */}
+                  {/* <Link href="/shadcn" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2.shadcn</Link> */}
+                  <Link href="/shadcnzod" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>1. 3 and 4.shadcnzod (standard form)</Link>
+                  <Link href="/shadcngrid" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 and 4. shadcngrid (standard grid - read db)</Link>
+                  <Link href="/crud" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 and 4. tasks crud (modal)</Link>
+                  <Link href="/crudc" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 3 4. tasks crudc (208 rows)</Link>
+                  <Link href="/crude" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 3 4. tasks crude (1m rows pagination)</Link>
+                  <Link href="/crudfilter" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 3 4. crudfilter (1m rows pagination, filtering)</Link>
+                  <Link href="/crudfiltersort" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>crudfiltersort</Link>
+                  <Link href="/betterauth" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>betterauth</Link>
+                  <Link href="/betterauthserver" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>betterauthserver</Link>
+                </div>
+              </div>
+              {/* Auth Links */}
+              <div className="flex items-center gap-4">
+                {session ? (
+                  <>
+                    <span className="text-sm text-gray-600">
+                      {session.user.name}
+                    </span>
+                    <SignOutButton />
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="/sign-in"
+                      className="text-gray-600 hover:text-blue-600 transition-colors"
+                      prefetch={false}
+                    >
+                      Sign In
+                    </Link>
+                    <Link
+                      href="/register"
+                      className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                      prefetch={false}
+                    >
+                      Register
+                    </Link>
+                  </>
+                )}
               </div>
             </nav>
           </div>

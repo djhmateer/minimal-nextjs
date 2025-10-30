@@ -1,69 +1,56 @@
-/**
- * Home Page - Static Site Generation (SSG) Demo
- *
- * This is a Server Component that demonstrates Static Site Generation:
- * - No 'use client' directive = Server Component (default in App Router)
- * - export const dynamic = 'force-static' = Build-time rendering
- * - Not async = No dynamic data fetching
- * - Generates static HTML at build time
- *
- * LIFECYCLE:
- * 1. Build Time: Component runs ONCE during `pnpm build`
- * 2. console.log appears in build output (not runtime logs)
- * 3. HTML is generated and cached
- * 4. All requests serve the same cached HTML (fast!)
- * 5. No server computation on each request
- *
- * WHEN TO USE SSG:
- * - Content doesn't change per request
- * - Same content for all users
- * - Maximum performance (pre-rendered HTML)
- * - Examples: landing pages, docs, blogs, marketing pages
- *
- * TECHNOLOGIES:
- * - Next.js 15.5.4 App Router
- * - React 19.2.0 Server Components
- * - TailwindCSS 4.1.14 for styling
- * - TypeScript 5.9.3
- *
- * RENDERING STRATEGY:
- * force-static = Build-time rendering (SSG)
- * - Alternative: 'force-dynamic' for SSR (renders on each request)
- * - Alternative: 'auto' lets Next.js decide (async = dynamic, sync = static)
- *
- * See: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamic
- */
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
+import { SignOutButton } from './sign-out-button';
 
-// Force static generation at build time
-// Without this, Next.js uses 'auto' which infers from code (async = dynamic)
-export const dynamic = 'force-static'
+export const dynamic = 'force-dynamic';
 
-/**
- * Home Component - Static Server Component
- *
- * This component:
- * - Runs ONLY at build time (not on each request)
- * - Captures timestamp during build
- * - console.log appears in build output only
- * - Generates static HTML served to all users
- *
- * Note: currentTime shows BUILD time, not request time
- * This proves the page is truly static (same HTML for everyone)
- */
-export default function Home() {
-  // Captured at BUILD time, not request time
-  // Same value for all users since it's static HTML
+export default async function Home() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
   const currentTime = new Date().toLocaleString();
-
-  // This console.log appears in build output (pnpm build)
-  // NOT in server logs during runtime
-  // NOT in browser console (this is a Server Component)
-  console.log('Home page');
 
   return (
     <div className="max-w-3xl mx-auto pt-8 px-8">
+      {/* Authentication Status */}
+      {session ? (
+        <div className="mb-8 p-6 bg-green-50 rounded-lg border border-green-300">
+          <h2 className="text-xl font-semibold text-green-900 mb-2">
+            Welcome back, {session.user.name}!
+          </h2>
+          <p className="text-sm text-green-700 mb-4">
+            You are signed in as <strong>{session.user.email}</strong>
+          </p>
+          <SignOutButton />
+        </div>
+      ) : (
+        <div className="mb-8 p-6 bg-blue-50 rounded-lg border border-blue-300">
+          <h2 className="text-xl font-semibold text-blue-900 mb-2">
+            Welcome to Better Auth Demo
+          </h2>
+          <p className="text-sm text-blue-700 mb-4">
+            Get started by creating an account or signing in.
+          </p>
+          <div className="flex gap-4">
+            <a
+              href="/register"
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+            >
+              Register
+            </a>
+            <a
+              href="/sign-in"
+              className="px-4 py-2 bg-white text-blue-600 border border-blue-600 rounded hover:bg-blue-50 transition"
+            >
+              Sign In
+            </a>
+          </div>
+        </div>
+      )}
+
       {/* Page title */}
-      <h1 className="text-3xl font-bold mb-6">Static Site Generation (SSG)</h1>
+      <h1 className="text-3xl font-bold mb-6">Next.js App Router Patterns</h1>
 
       {/* Rendering Strategies Overview */}
       <div className="mb-8 p-6 bg-slate-50 rounded-lg border border-slate-200">
@@ -114,13 +101,13 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Build timestamp proof */}
+      {/* Server timestamp proof */}
       <div className="mb-8 p-4 bg-purple-50 rounded-lg border border-purple-200">
         <p className="text-sm text-purple-900">
-          <strong>Build Time:</strong> {currentTime}
+          <strong>Server Time:</strong> {currentTime}
         </p>
         <p className="text-xs text-purple-700 mt-1">
-          This timestamp is captured during <code className="bg-purple-100 px-1 rounded">pnpm build</code> and is the same for all users. Refresh the page - it won&apos;t change!
+          This page uses <code className="bg-purple-100 px-1 rounded">force-dynamic</code> to check authentication on each request. Refresh to see the timestamp update!
         </p>
       </div>
 
@@ -129,64 +116,34 @@ export default function Home() {
         <h2 className="text-lg font-semibold mb-3 text-blue-900">How This Works</h2>
         <div className="text-sm text-blue-800 space-y-2">
           <p>
-            <strong>Server Component</strong> with <strong>Static Site Generation (SSG)</strong>
+            <strong>Server Component</strong> with <strong>Server-Side Rendering (SSR)</strong>
           </p>
           <p>
-            <strong>Lifecycle:</strong> Component runs ONCE at build time → HTML generated → Cached → Served to all users (no re-rendering)
+            <strong>Lifecycle:</strong> Component runs on each request → Checks session → Renders personalized HTML → Sends to user
           </p>
           <p>
-            <strong>Key Setting:</strong> <code className="bg-blue-100 px-1 rounded">export const dynamic = &apos;force-static&apos;</code>
+            <strong>Key Setting:</strong> <code className="bg-blue-100 px-1 rounded">export const dynamic = &apos;force-dynamic&apos;</code>
           </p>
           <p>
-            <strong>Technologies:</strong> Next.js 15.5.4 App Router + React 19.2.0 Server Components + TailwindCSS 4.1.14 + TypeScript 5.9.3
+            <strong>Technologies:</strong> Next.js 15.5.4 App Router + React 19.2.0 Server Components + Better Auth + TailwindCSS 4.1.14 + TypeScript 5.9.3
           </p>
         </div>
       </div>
 
-      {/* Pros & Cons */}
+      {/* Authentication Routes */}
       <div className="mb-8 p-6 bg-gray-50 rounded-lg border border-gray-200">
-        <div className="grid grid-cols-2 gap-6">
-          {/* Pros */}
-          <div>
-            <h3 className="text-sm font-semibold text-green-700 mb-2">✅ Pros</h3>
-            <ul className="text-xs text-gray-700 space-y-1">
-              <li>• Maximum performance (pre-rendered HTML)</li>
-              <li>• Zero server computation per request</li>
-              <li>• Perfect for CDN distribution</li>
-              <li>• Lowest Time to First Byte (TTFB)</li>
-              <li>• Works without JavaScript</li>
-              <li>• SEO friendly (crawlers get full HTML)</li>
-              <li>• Scales to millions of users easily</li>
-              <li>• Lowest hosting costs</li>
-            </ul>
+        <h2 className="text-lg font-semibold mb-3 text-gray-900">Authentication Routes</h2>
+        <div className="space-y-2 text-sm text-gray-700">
+          <div className="p-3 bg-white rounded border">
+            <strong>/register</strong> - Create a new account
           </div>
-
-          {/* Cons */}
-          <div>
-            <h3 className="text-sm font-semibold text-amber-700 mb-2">⚠️ Trade-offs</h3>
-            <ul className="text-xs text-gray-700 space-y-1">
-              <li>• Content same for all users</li>
-              <li>• Must rebuild to update content</li>
-              <li>• Not suitable for personalized data</li>
-              <li>• No real-time updates</li>
-              <li>• Build time increases with pages</li>
-            </ul>
+          <div className="p-3 bg-white rounded border">
+            <strong>/sign-in</strong> - Sign in to existing account
+          </div>
+          <div className="p-3 bg-white rounded border">
+            <strong>/betterauthserver</strong> - Protected page (requires authentication)
           </div>
         </div>
-      </div>
-
-      {/* Console.log behavior */}
-      <div className="mb-8 p-4 bg-green-50 rounded-lg border-2 border-green-300">
-        <h2 className="text-sm font-semibold text-green-900 mb-2">🔍 Debugging: Where Does console.log Appear?</h2>
-        <p className="text-xs text-green-800 mb-2">
-          This page has <code className="bg-green-100 px-1 rounded">console.log(&apos;Home page&apos;)</code> in the component:
-        </p>
-        <ul className="text-xs text-green-700 space-y-1 ml-4">
-          <li>✅ <strong>Build output:</strong> Visible during <code className="bg-green-100 px-1 rounded">pnpm build</code></li>
-          <li>✅ <strong>Dev mode:</strong> Server terminal (page re-renders on each request in dev)</li>
-          <li>❌ <strong>Production runtime:</strong> NOT in server logs (page is cached HTML)</li>
-          <li>❌ <strong>Browser console:</strong> Never (this is a Server Component, not Client Component)</li>
-        </ul>
       </div>
     </div>
   );
