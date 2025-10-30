@@ -12,9 +12,9 @@ export default async function BetterAuthServerPage() {
     headers: await headers(),
   });
 
-  // Redirect to sign-in if not authenticated
+  // Redirect to login if not authenticated
   if (!session) {
-    redirect('/sign-in?callbackUrl=/betterauthserver');
+    redirect('/login?callbackUrl=/betterauthserver');
   }
 
   console.log('BetterAuthServerPage: Authenticated user:', session.user.email);

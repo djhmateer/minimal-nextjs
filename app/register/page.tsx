@@ -25,10 +25,10 @@ export default async function RegisterPage() {
           <p className="mt-3 text-center text-sm text-gray-600">
             Already have an account?{' '}
             <a
-              href="/sign-in"
+              href="/login"
               className="font-medium text-blue-600 hover:text-blue-500 transition"
             >
-              Sign in
+              Log in
             </a>
           </p>
         </div>

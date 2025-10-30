@@ -1,13 +1,13 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
-import { SignInForm } from './sign-in-form';
+import { LoginForm } from './login-form';
 
 export const dynamic = 'force-dynamic';
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-export default async function SignInPage({
+export default async function LoginPage({
   searchParams,
 }: {
   searchParams: SearchParams;
@@ -35,7 +35,7 @@ export default async function SignInPage({
       <div className="max-w-md mx-auto pt-16 pb-24 px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <h2 className="text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
+            Log in to your account
           </h2>
           <p className="mt-3 text-center text-sm text-gray-600">
             Don&apos;t have an account?{' '}
@@ -51,7 +51,7 @@ export default async function SignInPage({
         {callbackUrl && (
           <div className="mb-6 rounded-lg bg-yellow-50 p-4 border border-yellow-300">
             <p className="text-sm text-yellow-800">
-              ⚠️ Please sign in to access this page.
+              ⚠️ Please log in to access this page.
             </p>
           </div>
         )}
@@ -59,12 +59,12 @@ export default async function SignInPage({
         {registered && (
           <div className="mb-6 rounded-lg bg-green-50 p-4 border border-green-300">
             <p className="text-sm text-green-800">
-              ✓ Account created successfully! Please sign in with your credentials.
+              ✓ Account created successfully! Please log in with your credentials.
             </p>
           </div>
         )}
 
-        <SignInForm callbackUrl={callbackUrl} />
+        <LoginForm callbackUrl={callbackUrl} />
       </div>
     </div>
   );

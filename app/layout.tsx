@@ -96,11 +96,11 @@ export default async function RootLayout({
                 ) : (
                   <>
                     <Link
-                      href="/sign-in"
+                      href="/login"
                       className="text-gray-600 hover:text-blue-600 transition-colors"
                       prefetch={false}
                     >
-                      Sign In
+                      Log in
                     </Link>
                     <Link
                       href="/register"

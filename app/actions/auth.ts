@@ -73,7 +73,7 @@ export async function signUpAction(
   }
 
   // Redirect outside try-catch (throws NEXT_REDIRECT)
-  redirect('/sign-in?registered=true');
+  redirect('/login?registered=true');
 }
 
 /**
@@ -131,7 +131,7 @@ export async function signInAction(
 
 /**
  * Server Action: Sign out the current user
- * Redirects to sign-in page
+ * Redirects to login page
  */
 export async function signOutAction(): Promise<void> {
   try {
@@ -146,5 +146,5 @@ export async function signOutAction(): Promise<void> {
   }
 
   // Redirect outside try-catch
-  redirect('/sign-in');
+  redirect('/login');
 }
