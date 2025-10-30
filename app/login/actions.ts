@@ -81,8 +81,8 @@ export async function signInAction(
   if (!password || password.length < 8) {
     return {
       success: false,
-      message: 'Password must be at least 8 characters long.',
-      errors: { password: 'Password must be at least 8 characters' },
+      message: 'Password not correct (too short - it is at least 8 characters).',
+      errors: { password: 'Password not correct (too short - it is at least 8 characters)' },
       values: { email },
     };
   }
