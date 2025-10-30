@@ -310,10 +310,11 @@ Better Auth automatically creates and manages these tables:
 Authentication operations are handled by Server Actions colocated with their routes:
 
 **signUpAction** (`app/register/actions.ts`):
-- Validates name (min 2 chars), email format, password (min 8 chars)
+- Validates email format, password (min 8 chars), and password confirmation
+- Ensures passwords match before creating account
 - Calls `auth.api.signUpEmail()` to create user in database
 - Redirects to login page with success message
-- Preserves name and email values on validation/submission errors
+- Preserves email value on validation/submission errors
 
 **signInAction** (`app/login/actions.ts`):
 - Validates email format and password length
@@ -366,7 +367,7 @@ export default async function ProtectedPage() {
 #### 6. Layout Integration (`app/layout.tsx`)
 
 The root layout checks authentication status and displays:
-- **Logged in**: User's name + Sign Out button
+- **Logged in**: User's email + Sign Out button
 - **Logged out**: Log in + Register buttons
 
 ```typescript
@@ -375,7 +376,7 @@ const session = await auth.api.getSession({
 });
 
 {session ? (
-  <><span>{session.user.name}</span><SignOutButton /></>
+  <><span>{session.user.email}</span><SignOutButton /></>
 ) : (
   <><Link href="/login">Log in</Link><Link href="/register">Register</Link></>
 )}
@@ -467,7 +468,7 @@ View logs in terminal where Next.js dev server is running.
 ```typescript
 const session = await auth.api.getSession({ headers: await headers() });
 if (session) {
-  // User is logged in: session.user.email, session.user.name
+  // User is logged in: session.user.email, session.user.id
 }
 ```
 

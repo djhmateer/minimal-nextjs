@@ -89,7 +89,7 @@ export default async function RootLayout({
                 {session ? (
                   <>
                     <span className="text-sm text-gray-600">
-                      {session.user.name}
+                      {session.user.email}
                     </span>
                     <SignOutButton />
                   </>

@@ -8,8 +8,8 @@
  * be called directly from Client Components or Server Components.
  *
  * Registration Flow:
- * 1. Client submits form with name, email, password
- * 2. Server Action validates input
+ * 1. Client submits form with email, password, confirmPassword
+ * 2. Server Action validates input and password match
  * 3. Better Auth API creates user in PostgreSQL
  * 4. Redirects to login page on success
  */
@@ -26,12 +26,11 @@ export type ActionState = {
   success: boolean;
   message: string;
   errors?: {
-    name?: string;
     email?: string;
     password?: string;
+    confirmPassword?: string;
   };
   values?: {
-    name?: string;
     email?: string;
   };
 } | null;
@@ -40,16 +39,17 @@ export type ActionState = {
  * Server Action: Sign up a new user with email and password
  *
  * This action:
- * 1. Validates form input (name, email, password)
- * 2. Calls Better Auth's signUpEmail API to create user in database
- * 3. Revalidates cache to update auth state across the app
- * 4. Redirects to login page on success
+ * 1. Validates form input (email, password, confirmPassword)
+ * 2. Ensures passwords match
+ * 3. Calls Better Auth's signUpEmail API to create user in database
+ * 4. Revalidates cache to update auth state across the app
+ * 5. Redirects to login page on success
  *
  * Note: redirect() is called outside try-catch because it throws a special
  * NEXT_REDIRECT error by design - this is not a real error.
  *
  * @param _prevState - Previous action state (unused, required by useActionState)
- * @param formData - Form data containing name, email, password
+ * @param formData - Form data containing email, password, confirmPassword
  * @returns ActionState with success/error messages, or redirects on success
  */
 export async function signUpAction(
@@ -58,28 +58,19 @@ export async function signUpAction(
 ): Promise<ActionState> {
   console.log('[signUpAction] Starting sign up process');
 
-  const name = formData.get('name') as string;
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
+  const confirmPassword = formData.get('confirmPassword') as string;
 
   console.log('[signUpAction] Validating input for email:', email);
 
   // Basic validation
-  if (!name || name.length < 2) {
-    return {
-      success: false,
-      message: 'Please enter a valid name (at least 2 characters).',
-      errors: { name: 'Name must be at least 2 characters' },
-      values: { name, email },
-    };
-  }
-
   if (!email || !email.includes('@')) {
     return {
       success: false,
       message: 'Please enter a valid email address.',
       errors: { email: 'Invalid email address' },
-      values: { name, email },
+      values: { email },
     };
   }
 
@@ -88,7 +79,25 @@ export async function signUpAction(
       success: false,
       message: 'Password must be at least 8 characters long.',
       errors: { password: 'Password must be at least 8 characters' },
-      values: { name, email },
+      values: { email },
+    };
+  }
+
+  if (!confirmPassword) {
+    return {
+      success: false,
+      message: 'Please confirm your password.',
+      errors: { confirmPassword: 'Password confirmation is required' },
+      values: { email },
+    };
+  }
+
+  if (password !== confirmPassword) {
+    return {
+      success: false,
+      message: 'Passwords do not match.',
+      errors: { confirmPassword: 'Passwords do not match' },
+      values: { email },
     };
   }
 
@@ -96,7 +105,7 @@ export async function signUpAction(
     console.log('[signUpAction] Calling Better Auth signUpEmail API');
     await auth.api.signUpEmail({
       body: {
-        name,
+        name: email, // Use email as the name
         email,
         password,
       },
@@ -111,7 +120,7 @@ export async function signUpAction(
     return {
       success: false,
       message: 'Sign up failed. This email may already be registered.',
-      values: { name, email },
+      values: { email },
     };
   }
 
