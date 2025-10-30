@@ -46,6 +46,6 @@ export async function signOutAction(): Promise<void> {
   }
 
   // Redirect outside try-catch (throws NEXT_REDIRECT which is not a real error)
-  console.log('[signOutAction] Redirecting to login page');
-  redirect('/login');
+  console.log('[signOutAction] Redirecting to home page');
+  redirect('/');
 }

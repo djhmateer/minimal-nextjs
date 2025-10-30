@@ -31,6 +31,9 @@ export type ActionState = {
     email?: string;
     password?: string;
   };
+  values?: {
+    email?: string;
+  };
 } | null;
 
 /**
@@ -71,6 +74,7 @@ export async function signInAction(
       success: false,
       message: 'Please enter a valid email address.',
       errors: { email: 'Invalid email address' },
+      values: { email },
     };
   }
 
@@ -79,6 +83,7 @@ export async function signInAction(
       success: false,
       message: 'Password must be at least 8 characters long.',
       errors: { password: 'Password must be at least 8 characters' },
+      values: { email },
     };
   }
 
@@ -101,6 +106,7 @@ export async function signInAction(
     return {
       success: false,
       message: 'Sign in failed. Please check your email and password.',
+      values: { email },
     };
   }
 

@@ -30,6 +30,10 @@ export type ActionState = {
     email?: string;
     password?: string;
   };
+  values?: {
+    name?: string;
+    email?: string;
+  };
 } | null;
 
 /**
@@ -66,6 +70,7 @@ export async function signUpAction(
       success: false,
       message: 'Please enter a valid name (at least 2 characters).',
       errors: { name: 'Name must be at least 2 characters' },
+      values: { name, email },
     };
   }
 
@@ -74,6 +79,7 @@ export async function signUpAction(
       success: false,
       message: 'Please enter a valid email address.',
       errors: { email: 'Invalid email address' },
+      values: { name, email },
     };
   }
 
@@ -82,6 +88,7 @@ export async function signUpAction(
       success: false,
       message: 'Password must be at least 8 characters long.',
       errors: { password: 'Password must be at least 8 characters' },
+      values: { name, email },
     };
   }
 
@@ -104,6 +111,7 @@ export async function signUpAction(
     return {
       success: false,
       message: 'Sign up failed. This email may already be registered.',
+      values: { name, email },
     };
   }
 

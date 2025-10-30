@@ -313,18 +313,20 @@ Authentication operations are handled by Server Actions colocated with their rou
 - Validates name (min 2 chars), email format, password (min 8 chars)
 - Calls `auth.api.signUpEmail()` to create user in database
 - Redirects to login page with success message
+- Preserves name and email values on validation/submission errors
 
 **signInAction** (`app/login/actions.ts`):
 - Validates email format and password length
 - Calls `auth.api.signInEmail()` to verify credentials
 - Sets session cookie via nextCookies plugin
 - Redirects to callback URL or home page
+- Preserves email value on validation/submission errors (password not preserved for security)
 
 **signOutAction** (`app/actions/auth.ts`):
 - Global action used from layout and sign-out button
 - Calls `auth.api.signOut()` to invalidate session
 - Clears session cookie
-- Redirects to login page
+- Redirects to home page
 
 #### 4. Authentication Routes
 
@@ -417,6 +419,7 @@ The `nextCookies` plugin is **essential** for Server Actions to work with Better
 2. Better Auth deletes session record from database
 3. Better Auth sends `Set-Cookie` header to clear cookie
 4. nextCookies plugin applies cookie deletion
+5. User is redirected to home page
 
 #### Why Server-Side Only?
 
@@ -487,6 +490,7 @@ export function SignOutButton() {
     </button>
   );
 }
+// After sign out, user is redirected to home page
 ```
 
 ### Troubleshooting
