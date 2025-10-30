@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState } from 'react';
-import { signInAction, type ActionState } from '@/app/actions/auth';
+import { signInAction, type ActionState } from './actions';
 
 type LoginFormProps = {
   callbackUrl?: string;

@@ -97,7 +97,7 @@ export default async function Home() {
             <strong>/login</strong> - Log in to existing account
           </div>
           <div className="p-3 bg-white rounded border">
-            <strong>/betterauthserver</strong> - Protected page (requires authentication)
+            <strong>/protectedpage</strong> - Protected page (requires authentication)
           </div>
         </div>
       </div>

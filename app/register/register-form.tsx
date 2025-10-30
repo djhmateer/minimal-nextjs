@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState } from 'react';
-import { signUpAction, type ActionState } from '@/app/actions/auth';
+import { signUpAction, type ActionState } from './actions';
 
 export function RegisterForm() {
   const [state, formAction, isPending] = useActionState<ActionState, FormData>(
