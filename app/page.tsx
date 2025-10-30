@@ -1,54 +1,10 @@
-import { auth } from '@/lib/auth';
-import { headers } from 'next/headers';
-import { SignOutButton } from './sign-out-button';
-
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
   const currentTime = new Date().toLocaleString();
 
   return (
     <div className="max-w-3xl mx-auto pt-8 px-8">
-      {/* Authentication Status */}
-      {session ? (
-        <div className="mb-8 p-6 bg-green-50 rounded-lg border border-green-300">
-          <h2 className="text-xl font-semibold text-green-900 mb-2">
-            Welcome back, {session.user.name}!
-          </h2>
-          <p className="text-sm text-green-700 mb-4">
-            You are signed in as <strong>{session.user.email}</strong>
-          </p>
-          <SignOutButton />
-        </div>
-      ) : (
-        <div className="mb-8 p-6 bg-blue-50 rounded-lg border border-blue-300">
-          <h2 className="text-xl font-semibold text-blue-900 mb-2">
-            Welcome to Better Auth Demo
-          </h2>
-          <p className="text-sm text-blue-700 mb-4">
-            Get started by creating an account or signing in.
-          </p>
-          <div className="flex gap-4">
-            <a
-              href="/register"
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-            >
-              Register
-            </a>
-            <a
-              href="/login"
-              className="px-4 py-2 bg-white text-blue-600 border border-blue-600 rounded hover:bg-blue-50 transition"
-            >
-              Log in
-            </a>
-          </div>
-        </div>
-      )}
-
       {/* Page title */}
       <h1 className="text-3xl font-bold mb-6">Next.js App Router Patterns</h1>
 
