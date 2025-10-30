@@ -12,6 +12,7 @@ This project uses a carefully selected modern tech stack designed for learning a
 - **Turbopack** - Next-generation bundler (successor to Webpack) for faster dev server and builds
 - **TailwindCSS 4.1.14** - Utility-first CSS framework with v4's improved performance and new `@theme` directive
 - **Better Auth v1.3.34** - Type-safe authentication library with email/password auth and session management
+- **Sonner** - Beautiful, accessible toast notifications for user feedback
 - **PostgreSQL (via pg 8.16.3)** - Production-ready relational database for persistent data storage
 - **pnpm** - Fast, disk space efficient package manager with strict node_modules structure
 - **ESLint** - Code quality and consistency (planned migration to Biome for faster linting)
@@ -44,6 +45,7 @@ This project serves as a learning playground for exploring Next.js App Router co
 - **TypeScript** 5.9.3
 - **TailwindCSS** 4.1.14
 - **Better Auth** v1.3.34
+- **Sonner** - Toast notifications
 - **PostgreSQL** with node-postgres (pg)
 - **Turbopack** (dev & build)
 - **pnpm** package manager
@@ -124,6 +126,7 @@ app/
 ├── login/
 │   ├── page.tsx           # Login page (SSR)
 │   ├── login-form.tsx     # Client Component for login form
+│   ├── success-toast.tsx  # Client Component for success toast
 │   └── actions.ts         # Server Action for login (signIn)
 └── protectedpage/
     └── page.tsx           # Protected route requiring authentication
@@ -313,7 +316,8 @@ Authentication operations are handled by Server Actions colocated with their rou
 - Validates email format, password (min 8 chars), and password confirmation
 - Ensures passwords match before creating account
 - Calls `auth.api.signUpEmail()` to create user in database
-- Redirects to login page with success message
+- Redirects to login page with `?registered=true` query parameter
+- Login page displays a professional toast notification (Sonner) welcoming the user
 - Preserves email value on validation/submission errors
 
 **signInAction** (`app/login/actions.ts`):
@@ -363,6 +367,13 @@ export default async function ProtectedPage() {
 2. Page redirects to `/login?callbackUrl=/protectedpage`
 3. Login page shows "Please log in to access this page"
 4. After successful login, user is redirected back to `/protectedpage`
+
+**Registration Success Flow:**
+1. User completes registration form with email and matching passwords
+2. Server Action creates account in database
+3. User redirected to `/login?registered=true`
+4. Login page displays professional toast notification: "Welcome! Account created successfully"
+5. Toast auto-dismisses after 5 seconds
 
 #### 6. Layout Integration (`app/layout.tsx`)
 

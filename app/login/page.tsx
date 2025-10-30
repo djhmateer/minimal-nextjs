@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 import { LoginForm } from './login-form';
+import { SuccessToast } from './success-toast';
 
 export const dynamic = 'force-dynamic';
 
@@ -48,18 +49,12 @@ export default async function LoginPage({
           </p>
         </div>
 
+        <SuccessToast registered={registered} />
+
         {callbackUrl && (
           <div className="mb-6 rounded-lg bg-yellow-50 p-4 border border-yellow-300">
             <p className="text-sm text-yellow-800">
               ⚠️ Please log in to access this page.
-            </p>
-          </div>
-        )}
-
-        {registered && (
-          <div className="mb-6 rounded-lg bg-green-50 p-4 border border-green-300">
-            <p className="text-sm text-green-800">
-              ✓ Account created successfully! Please log in with your credentials.
             </p>
           </div>
         )}
