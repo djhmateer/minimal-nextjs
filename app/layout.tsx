@@ -72,6 +72,7 @@ export default function RootLayout({
                 <Link href="/crudfilter" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>2 3 4. crudfilter (1m rows pagination, filtering)</Link>
                 <Link href="/crudfiltersort" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>crudfiltersort</Link>
                 <Link href="/betterauth" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>betterauth</Link>
+                <Link href="/betterauthserver" className="text-gray-600 hover:text-blue-600 transition-colors" prefetch={false}>betterauthserver</Link>
               </div>
             </nav>
           </div>
