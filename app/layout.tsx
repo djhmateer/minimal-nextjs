@@ -52,7 +52,23 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 min-h-screen`}
       >
-        <Toaster />
+        <Toaster
+          position="top-center"
+          richColors
+          closeButton
+          expand={true}
+          duration={5000}
+          toastOptions={{
+            style: {
+              padding: '16px',
+              fontSize: '16px',
+              borderRadius: '12px',
+              boxShadow: '0 8px 16px rgba(0, 0, 0, 0.15)',
+              border: '2px solid',
+            },
+            className: 'font-medium',
+          }}
+        />
         {/* Header: white bg, small shadow, bottom border */}
         <header className="bg-white shadow-sm border-b">
           {/* Container: max-width 896px, centered, 16px padding */}
